@@ -61,7 +61,6 @@ class EmptyControl implements Control {
  * Makes a circle move around the screen, prints profiling information.
  */
 class DemoControl implements Control {
-    private var scene:Sprite;
     private var time:Float = 0;
 
     public function new():Void {

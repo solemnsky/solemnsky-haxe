@@ -1,7 +1,7 @@
 package solemnsky.control;
 
 import haxe.Timer;
-import kha.FrameBuffer;
+import kha.Framebuffer;
 import kha.Game;
 
 /**
@@ -13,6 +13,13 @@ class Manager extends Game {
     /* variables
     /*************************************************************************/
 
+    /**
+     * global settings
+     */ 
+    private var tps:Float;
+    private var tickLength:Float;
+    private var ctrl:Control;
+  
     /**
      * tick state
      */ 
@@ -123,8 +130,7 @@ class Manager extends Game {
         renderStart = Timer.stamp(); // BEGIN RENDER
 
         var delta = deltaRaw * 1000;
-        removeChildren();
-        addChild(ctrl.render(delta));
+        ctrl.render(delta);
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
     }
@@ -136,7 +142,7 @@ class Manager extends Game {
     /**
      * called on frame render
      */
-    override function render(frame:FrameBuffer):Void
+    override function render(frame:Framebuffer):Void
     {
         profileTicker ++;
         if (profileTicker > profileUpdate) {
@@ -169,6 +175,4 @@ class Manager extends Game {
 
         sleepStart = Timer.stamp(); // BEGIN SLEEP
     }
-
-    override functionk
 }
