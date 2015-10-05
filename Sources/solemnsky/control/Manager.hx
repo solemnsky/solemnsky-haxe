@@ -126,11 +126,11 @@ class Manager extends Game {
     /**
      * called on a render
      */ 
-    private function controlRender(deltaRaw:Float):Void {
+    private function controlRender(frame: Framebuffer, deltaRaw:Float):Void {
         renderStart = Timer.stamp(); // BEGIN RENDER
 
         var delta = deltaRaw * 1000;
-        ctrl.render(delta);
+        ctrl.render(frame, delta);
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
     }
@@ -170,7 +170,7 @@ class Manager extends Game {
             var newRender = Timer.stamp();
             var sleepTime:Float = newRender - lastRender;
             lastRender = newRender;
-            controlRender(sleepTime);
+            controlRender(frame, sleepTime);
         }
 
         sleepStart = Timer.stamp(); // BEGIN SLEEP

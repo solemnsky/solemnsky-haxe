@@ -1,5 +1,8 @@
 package solemnsky.control;
 
+import kha.Framebuffer;
+import kha.graphics2.Graphics;
+
 /*****************************************************************************/
 /* Control object definition                                                 */
 /*****************************************************************************/
@@ -21,7 +24,7 @@ interface Control {
      * since the last render. Only called when necessary, should not do
      * critical logic or simulation.
      */
-    public function render(delta:Float):Void;
+    public function render(frame: Framebuffer, delta:Float):Void;
 
 
     /**
@@ -47,7 +50,7 @@ class EmptyControl implements Control {
 
     public function tick(delta:Float):Void {}
 
-    public function render(delta:Float):Void {
+    public function render(frame: Framebuffer, delta:Float):Void {
     }
 
     public function profiling(_:String, _:String, _:String):Void {}
@@ -70,8 +73,9 @@ class DemoControl implements Control {
         time += delta;
     }
 
-    public function render(delta:Float):Void {
-        trace('lol I\'m totally rendering');
+    public function render(frame: Framebuffer, delta:Float):Void {
+        // g.begin(false, 0xffffff);
+        frame.g2.drawRect(0, 0, 50, 50);
     }
 
     public function profiling(l:String, r:String, s:String):Void {
