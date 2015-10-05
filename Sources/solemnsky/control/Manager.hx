@@ -175,4 +175,8 @@ class Manager extends Game {
 
         sleepStart = Timer.stamp(); // BEGIN SLEEP
     }
+
+    override function mouseMove(x:Int, y:Int):Void {
+        ctrl.handle(MouseMove(x, y));
+    }
 }

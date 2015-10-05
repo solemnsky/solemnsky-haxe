@@ -30,7 +30,13 @@ interface Control {
     /**
      * Accept some profiling data.
      */
-     public function profiling(l:String, r:String, s:String):Void;
+    public function profiling(l:String, r:String, s:String):Void;
+
+     /**
+     * Accept events.
+     */
+     public function handle(e:Event):Void;
+         
 
     /**
      * Application quits when this returns true.
@@ -55,6 +61,8 @@ class EmptyControl implements Control {
 
     public function profiling(_:String, _:String, _:String):Void {}
 
+    public function handle(e:Event):Void {}
+
     public function hasEnded():Bool {
         return false;
     }
@@ -65,6 +73,9 @@ class EmptyControl implements Control {
  */
 class DemoControl implements Control {
     private var time:Float = 0;
+    private var x = 0;
+    private var y = 0;
+
 
     public function new():Void {
     }
@@ -74,8 +85,19 @@ class DemoControl implements Control {
     }
 
     public function render(frame: Framebuffer, delta:Float):Void {
-        // g.begin(false, 0xffffff);
-        frame.g2.drawRect(0, 0, 50, 50);
+        frame.g2.begin(false);
+        frame.g2.drawRect(x - 25, y - 25, 50, 50);
+        frame.g2.end();
+    }
+
+    public function handle(e:Event):Void {
+        switch (e) {
+            case MouseMove(x, y): {
+                trace('the mouse moved');
+                this.x = x; this.y = y;
+            }
+            default: { }
+        }
     }
 
     public function profiling(l:String, r:String, s:String):Void {
