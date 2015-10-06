@@ -33,7 +33,7 @@ interface Control {
     /**
      * Accept some profiling data.
      */
-    public function profiling(l:String, r:String, s:String):Void;
+    public function profiling(l:String, r:String, ls:String, rs:String):Void;
 
      /**
      * Accept an event.
@@ -63,7 +63,7 @@ class EmptyControl implements Control {
         return new Scene();
     }
 
-    public function profiling(_:String, _:String, _:String):Void {}
+    public function profiling(_:String, _:String, _:String, _:String):Void {}
 
     public function handle(e:Event):Void {}
 
@@ -96,16 +96,36 @@ class DemoControl implements Control {
     }
 
     public function render(delta:Float):Scene {
-        var pos = new Vec2(x, y);
         var offset  = new Vec2(40, 40);
         var offset2 = new Vec2(-40, 40);
-        scene.prims = 
-            [ DrawCircle(pos, 20)
-            , DrawCircle(pos.sub(offset), 20)
-            , DrawCircle(pos.add(offset), 20)
-            , DrawCircle(pos.sub(offset2), 20)
-            , DrawCircle(pos.add(offset2), 20)];
-        return scene;
+
+        var pos = new Vec2(x, y);
+        scene.prims = [];
+        for (i in 1 ... 20) {
+            scene.prims.push(DrawCircle(pos, 20));
+            pos = pos.add(offset);
+        }
+        pos = new Vec2(x, y);
+        for (i in 1 ... 20) {
+            scene.prims.push(DrawCircle(pos, 20));
+            pos = pos.add(offset2);
+        }
+        pos = new Vec2(x, y);
+        for (i in 1 ... 20) {
+            scene.prims.push(DrawCircle(pos, 20));
+            pos = pos.sub(offset2);
+        }
+        pos = new Vec2(x, y);
+        for (i in 1 ... 20) {
+            scene.prims.push(DrawCircle(pos, 20));
+            pos = pos.sub(offset);
+        }
+        // scene.prims = 
+        //     [ DrawCircle(pos, 20)
+        //     , DrawCircle(pos.sub(offset), 20)
+        //     , DrawCircle(pos.add(offset), 20)
+        //     , DrawCircle(pos.sub(offset2), 20)
+        //     , DrawCircle(pos.add(offset2), 20)];
         return scene;
     }
 
@@ -118,8 +138,10 @@ class DemoControl implements Control {
         }
     }
 
-    public function profiling(l:String, r:String, s:String):Void {
-        trace("l / r / s: "+l+" / "+r+" / "+s);
+    public function profiling(l:String, r:String, ls:String, rs:String):Void {
+        trace(
+            'logic / render / logic sleep / render sleep: '
+            +l+' / '+r+' / '+ls+' / '+rs);
     }
 
     public function hasEnded():Bool {

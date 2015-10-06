@@ -41,18 +41,20 @@ class Manager extends Game {
     /**
      * profiling state
      */ 
-    private var profileTicker:Int = 0;
+    private var profileTicker:Int = 0; // ticks on render
 
     private var logicStart:Float;
     private var renderStart:Float;
-    private var sleepStart:Float;
+    private var logicSleepStart:Float;
+    private var renderSleepStart:Float;
 
     /**
      * profiles
      */ 
     private var logicProfile:Array<Float> = [];
     private var renderProfile:Array<Float> = [];
-    private var sleepProfile:Array<Float> = [];
+    private var logicSleepProfile:Array<Float> = [];
+    private var renderSleepProfile:Array<Float> = [];
 
     /*************************************************************************/
     /* constructor
@@ -69,7 +71,7 @@ class Manager extends Game {
         // initialise timings
         var now = Timer.stamp();
         lastTick = now; lastRender = now; logicStart = now;
-        renderStart = now; sleepStart = now;
+        renderStart = now; renderSleepStart = now; logicSleepStart = now;
     }
 
     /*************************************************************************/
@@ -81,31 +83,42 @@ class Manager extends Game {
      */
     override function render(frame:Framebuffer):Void
     {
-        profileTicker ++;
+        // tick profile uplink
+        profileTicker ++; 
         if (profileTicker > profileUpdate) {
             profileTicker = 0;
             ctrl.profiling(
                 profileResult(logicProfile)
                 , profileResult(renderProfile)
-                , profileResult(sleepProfile)
+                , profileResult(logicSleepProfile)
+                , profileResult(renderSleepProfile)
             );
         }
 
-        pushProfile(Timer.stamp() - sleepStart, sleepProfile); // END SLEEP
+        var now = Timer.stamp(); 
 
-        var newRender = Timer.stamp(); 
+        pushProfile(
+            now - renderSleepStart, 
+            renderSleepProfile); // END SLEEP
+
+        var newRender = now;
         var sleepTime:Float = newRender - lastRender;
         lastRender = newRender;
         controlRender(frame, sleepTime);
 
-        sleepStart = Timer.stamp(); // BEGIN SLEEP
+        renderSleepStart = Timer.stamp(); // BEGIN SLEEP
     }
 
     /**
      * called on update
      */
     override function update():Void {
-        var newTick = Timer.stamp();
+        var now = Timer.stamp();
+        pushProfile(
+            now - logicSleepStart,
+            logicSleepProfile); // END SLEEP
+
+        var newTick = now;
         tickAccum += (newTick - lastTick);
         lastTick = newTick;
 
@@ -113,9 +126,9 @@ class Manager extends Game {
             tickAccum -= tickLength;
             controlTick(tickLength);
         }
+
+        logicSleepStart = Timer.stamp(); // BEGIN SLEEP
     }
-
-
 
     override function mouseMove(x:Int, y:Int):Void {
         ctrl.handle(MouseMove(x, y));
