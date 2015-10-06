@@ -4,7 +4,7 @@ import solemnsky.math.Mat3;
 import solemnsky.math.Vec2;
 
 enum DrawPrim {
-    Circle(pos:Vec2, radius:Int);
+    DrawCircle(pos:Vec2, radius:Int);
 }
 
 class Scene {
@@ -32,7 +32,8 @@ class Scene {
 
     private static function transformPrim(mat:Mat3, prim:DrawPrim):DrawPrim {
         switch (prim) {
-            case Circle(pos, radius): return Circle(mat.apply(pos), radius);
+            case DrawCircle(pos, radius): 
+                return DrawCircle(mat.apply(pos), radius);
         }
     }
 

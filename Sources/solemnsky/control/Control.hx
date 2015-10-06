@@ -3,6 +3,9 @@ package solemnsky.control;
 import kha.Framebuffer;
 import kha.graphics2.Graphics;
 
+import solemnsky.math.Vec2;
+import solemnsky.math.Mat3;
+
 /*****************************************************************************/
 /* Control object definition                                                 */
 /*****************************************************************************/
@@ -76,8 +79,16 @@ class DemoControl implements Control {
     private var time:Float = 0;
     private var x = 0;
     private var y = 0;
+    private var scene:Scene;
 
     public function new():Void {
+        scene = new Scene();
+        for (i in 0 ... 100) {
+            var t = (360 / 100) * i;
+            var pos = new Vec2(Math.cos(t), Math.sin(t));
+            scene.prims.push(DrawCircle(pos, 20));
+        }
+        scene.trans = Mat3.translation(100, 100).compose(Mat3.scale(20, 20));
     }
 
     public function tick(delta:Float):Void {
@@ -85,7 +96,7 @@ class DemoControl implements Control {
     }
 
     public function render(delta:Float):Scene {
-        return new Scene();
+        return scene;
     }
 
     public function handle(e:Event):Void {

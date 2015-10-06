@@ -10,10 +10,11 @@ import solemnsky.control.Scene;
 class Render {
     private static function renderPrimInFrame(frame:Framebuffer
                                              , prim:DrawPrim) {
-        // test graphics
-        frame.g2.begin(false, 0xff0000);
-        frame.g2.fillCircle(20, 20, 20);
-        frame.g2.end();
+        switch (prim) {
+            case DrawCircle(p, r): {
+                frame.g2.fillCircle(p.x, p.y, 20);
+            }
+        }
     }
 
     public static function render(frame:Framebuffer, scene:Scene) {
@@ -22,6 +23,8 @@ class Render {
             renderPrimInFrame(frame, prim);
         }
 
+        frame.g2.begin(false, 0xff0000);
         scene.drawWith(renderPrim);
+        frame.g2.end();
     }
 }
