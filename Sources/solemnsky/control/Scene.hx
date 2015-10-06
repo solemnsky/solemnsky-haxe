@@ -53,7 +53,6 @@ class Scene {
 
     public function drawWith(render:DrawPrim->Void):Void {
         var flattened = flattenPrims(Mat3.identity());
-        trace('drawing ' + flattened.length + ' prims');
         for (prim in flattened) {
             render(prim);
         }

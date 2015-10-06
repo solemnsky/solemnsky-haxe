@@ -35,8 +35,8 @@ class Manager extends Game {
     /**
      * profiling settings
      */ 
-    private static inline var profileWindow:Int = 10; 
-    private static inline var profileUpdate:Int = 10;
+    private static inline var profileWindow:Int = 50;
+    private static inline var profileUpdate:Int = 100;
 
     /**
      * profiling state
