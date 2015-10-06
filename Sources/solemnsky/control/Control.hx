@@ -33,7 +33,7 @@ interface Control {
     public function profiling(l:String, r:String, s:String):Void;
 
      /**
-     * Accept events.
+     * Accept an event.
      */
      public function handle(e:Event):Void;
          
@@ -76,7 +76,6 @@ class DemoControl implements Control {
     private var time:Float = 0;
     private var x = 0;
     private var y = 0;
-
 
     public function new():Void {
     }
