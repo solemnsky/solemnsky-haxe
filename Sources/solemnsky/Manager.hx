@@ -1,12 +1,12 @@
-package solemnsky.control;
+package solemnsky;
 
 import haxe.Timer;
 import kha.Framebuffer;
 import kha.Game;
 
 /**
- * Singular top-level manager, runs a control object to generate an 
- * effectful application.
+ * This is the interface between our Control interface and whatever toolchain
+ * we're using. Simply construct a Manager object with a control object to run.
  */
 class Manager extends Game {
     /*************************************************************************/
@@ -53,7 +53,7 @@ class Manager extends Game {
     /* constructor
     /*************************************************************************/
 
-    public function new(tps:Int, ctrl:Control):Void {
+    public function new(ctrl:Control, tps:Int = 60):Void {
         super("solemnsky", false); // initialise our game, I think kha does
                                    // a whole bunch of stuff here
 
@@ -65,6 +65,51 @@ class Manager extends Game {
         var now = Timer.stamp();
         lastTick = now; lastRender = now; logicStart = now;
         renderStart = now; sleepStart = now;
+    }
+
+    /*************************************************************************/
+    /* game interface
+    /*************************************************************************/
+
+    /**
+     * called on frame render
+     */
+    override function render(frame:Framebuffer):Void
+    {
+        profileTicker ++;
+        if (profileTicker > profileUpdate) {
+            profileTicker = 0;
+            ctrl.profiling(
+                profileResult(logicProfile)
+                , profileResult(renderProfile)
+                , profileResult(sleepProfile)
+            );
+        }
+
+        pushProfile(Timer.stamp() - sleepStart, sleepProfile); // END SLEEP
+
+        var newTick = Timer.stamp();
+        tickAccum += (newTick - lastTick);
+        lastTick = newTick;
+
+        var needsPaint = false;
+        while (tickAccum >= tickLength) {
+            tickAccum -= tickLength;
+            needsPaint = true;
+            controlTick(tickLength);
+        }
+        if (needsPaint) {
+            var newRender = Timer.stamp();
+            var sleepTime:Float = newRender - lastRender;
+            lastRender = newRender;
+            controlRender(frame, sleepTime);
+        }
+
+        sleepStart = Timer.stamp(); // BEGIN SLEEP
+    }
+
+    override function mouseMove(x:Int, y:Int):Void {
+        ctrl.handle(MouseMove(x, y));
     }
 
     /*************************************************************************/
@@ -133,50 +178,5 @@ class Manager extends Game {
         ctrl.render(frame, delta);
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
-    }
-
-    /*************************************************************************/
-    /* game interface
-    /*************************************************************************/
-
-    /**
-     * called on frame render
-     */
-    override function render(frame:Framebuffer):Void
-    {
-        profileTicker ++;
-        if (profileTicker > profileUpdate) {
-            profileTicker = 0;
-            ctrl.profiling(
-                profileResult(logicProfile)
-                , profileResult(renderProfile)
-                , profileResult(sleepProfile)
-            );
-        }
-
-        pushProfile(Timer.stamp() - sleepStart, sleepProfile); // END SLEEP
-
-        var newTick = Timer.stamp();
-        tickAccum += (newTick - lastTick);
-        lastTick = newTick;
-
-        var needsPaint = false;
-        while (tickAccum >= tickLength) {
-            tickAccum -= tickLength;
-            needsPaint = true;
-            controlTick(tickLength);
-        }
-        if (needsPaint) {
-            var newRender = Timer.stamp();
-            var sleepTime:Float = newRender - lastRender;
-            lastRender = newRender;
-            controlRender(frame, sleepTime);
-        }
-
-        sleepStart = Timer.stamp(); // BEGIN SLEEP
-    }
-
-    override function mouseMove(x:Int, y:Int):Void {
-        ctrl.handle(MouseMove(x, y));
     }
 }
