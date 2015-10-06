@@ -83,12 +83,12 @@ class DemoControl implements Control {
 
     public function new():Void {
         scene = new Scene();
-        for (i in 0 ... 100) {
-            var t = (360 / 100) * i;
-            var pos = new Vec2(Math.cos(t), Math.sin(t));
-            scene.prims.push(DrawCircle(pos, 20));
-        }
-        scene.trans = Mat3.translation(100, 100).compose(Mat3.scale(20, 20));
+        // for (i in 0 ... 100) {
+        //     var t = (360 / 100) * i;
+        //     var pos = new Vec2(Math.cos(t), Math.sin(t));
+        //     scene.prims.push(DrawCircle(pos, 20));
+        // }
+        // scene.trans = Mat3.translation(100, 100).compose(Mat3.scale(20, 20));
     }
 
     public function tick(delta:Float):Void {
@@ -96,6 +96,16 @@ class DemoControl implements Control {
     }
 
     public function render(delta:Float):Scene {
+        var pos = new Vec2(x, y);
+        var offset  = new Vec2(40, 40);
+        var offset2 = new Vec2(-40, 40);
+        scene.prims = 
+            [ DrawCircle(pos, 20)
+            , DrawCircle(pos.sub(offset), 20)
+            , DrawCircle(pos.add(offset), 20)
+            , DrawCircle(pos.sub(offset2), 20)
+            , DrawCircle(pos.add(offset2), 20)];
+        return scene;
         return scene;
     }
 
