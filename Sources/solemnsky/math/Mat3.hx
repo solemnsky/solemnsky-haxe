@@ -68,7 +68,7 @@ class Mat3 {
     }
 
     /*************************************************************************/
-    /* combinators
+    /* mutators
     /*************************************************************************/
 
     public inline function add(m: Mat3): Mat3 {
@@ -103,7 +103,7 @@ class Mat3 {
         );
     }
 
-    public inline function multmat(m: Mat3): Mat3 {
+    public inline function compose(m: Mat3): Mat3 {
         return new Mat3(
             _00 * m._00 + _10 * m._01 + _20 * m._02, _00 * m._10 + _10 * m._11 + _20 * m._12, _00 * m._20 + _10 * m._21 + _20 * m._22,
             _01 * m._00 + _11 * m._01 + _21 * m._02, _01 * m._10 + _11 * m._11 + _21 * m._12, _01 * m._20 + _11 * m._21 + _21 * m._22,
@@ -120,7 +120,7 @@ class Mat3 {
     }
 
 
-    public inline function multvec(value: Vec2): Vec2 {
+    public inline function apply(value: Vec2): Vec2 {
         var w = _02 * value.x + _12 * value.y + _22 * 1;
         var x = (_00 * value.x + _10 * value.y + _20 * 1) / w;
         var y = (_01 * value.x + _11 * value.y + _21 * 1) / w;
