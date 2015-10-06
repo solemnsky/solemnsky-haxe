@@ -93,27 +93,29 @@ class Manager extends Game {
 
         pushProfile(Timer.stamp() - sleepStart, sleepProfile); // END SLEEP
 
+        var newRender = Timer.stamp(); 
+        var sleepTime:Float = newRender - lastRender;
+        lastRender = newRender;
+        controlRender(frame, sleepTime);
+
+        sleepStart = Timer.stamp(); // BEGIN SLEEP
+    }
+
+    /**
+     * called on update
+     */
+    override function update():Void {
         var newTick = Timer.stamp();
         tickAccum += (newTick - lastTick);
         lastTick = newTick;
 
-        var needsPaint = false;
         while (tickAccum >= tickLength) {
             tickAccum -= tickLength;
-            needsPaint = true;
             controlTick(tickLength);
         }
-        if (needsPaint) {
-            var newRender = Timer.stamp();
-            var sleepTime:Float = newRender - lastRender;
-            // if (sleepTime > 15) {
-                lastRender = newRender;
-                controlRender(frame, sleepTime);
-            // }
-        }
-
-        sleepStart = Timer.stamp(); // BEGIN SLEEP
     }
+
+
 
     override function mouseMove(x:Int, y:Int):Void {
         ctrl.handle(MouseMove(x, y));
