@@ -24,19 +24,19 @@ class Manager extends Game {
     private var tps:Float;
     private var tickLength:Float;
     private var ctrl:Control;
-  
-    /**
-     * tick state
-     */ 
-    private var lastTick:Float;
-    private var tickAccum:Float = 0;
-    private var lastRender:Float;
 
     /**
      * profiling settings
      */ 
     private static inline var profileWindow:Int = 50;
     private static inline var profileUpdate:Int = 100;
+  
+    /**
+     * timing state
+     */ 
+    private var lastTick:Float;
+    private var tickAccum:Float = 0;
+    private var lastRender:Float;
 
     /**
      * profiling state
