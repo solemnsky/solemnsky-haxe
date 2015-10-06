@@ -83,12 +83,6 @@ class DemoControl implements Control {
 
     public function new():Void {
         scene = new Scene();
-        // for (i in 0 ... 100) {
-        //     var t = (360 / 100) * i;
-        //     var pos = new Vec2(Math.cos(t), Math.sin(t));
-        //     scene.prims.push(DrawCircle(pos, 20));
-        // }
-        // scene.trans = Mat3.translation(100, 100).compose(Mat3.scale(20, 20));
     }
 
     public function tick(delta:Float):Void {
@@ -101,31 +95,25 @@ class DemoControl implements Control {
 
         var pos = new Vec2(x, y);
         scene.prims = [];
-        for (i in 1 ... 20) {
+        for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.add(offset);
         }
         pos = new Vec2(x, y);
-        for (i in 1 ... 20) {
+        for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.add(offset2);
         }
         pos = new Vec2(x, y);
-        for (i in 1 ... 20) {
+        for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.sub(offset2);
         }
         pos = new Vec2(x, y);
-        for (i in 1 ... 20) {
+        for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.sub(offset);
         }
-        // scene.prims = 
-        //     [ DrawCircle(pos, 20)
-        //     , DrawCircle(pos.sub(offset), 20)
-        //     , DrawCircle(pos.add(offset), 20)
-        //     , DrawCircle(pos.sub(offset2), 20)
-        //     , DrawCircle(pos.add(offset2), 20)];
         return scene;
     }
 
