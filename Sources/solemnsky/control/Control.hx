@@ -20,11 +20,11 @@ interface Control {
     public function tick(delta:Float):Void;
 
     /**
-     * Return a sprite with a new render of the scene, given the delta
+     * Return a scene with a new render of the scene, given the delta
      * since the last render. Only called when necessary, should not do
      * critical logic or simulation.
      */
-    public function render(frame: Framebuffer, delta:Float):Void;
+    public function render(delta:Float):Scene;
 
 
     /**
@@ -56,7 +56,8 @@ class EmptyControl implements Control {
 
     public function tick(delta:Float):Void {}
 
-    public function render(frame: Framebuffer, delta:Float):Void {
+    public function render(delta:Float):Scene {
+        return new Scene();
     }
 
     public function profiling(_:String, _:String, _:String):Void {}
@@ -84,16 +85,13 @@ class DemoControl implements Control {
         time += delta;
     }
 
-    public function render(frame: Framebuffer, delta:Float):Void {
-        frame.g2.begin(false);
-        frame.g2.drawRect(x - 25, y - 25, 50, 50);
-        frame.g2.end();
+    public function render(delta:Float):Scene {
+        return new Scene();
     }
 
     public function handle(e:Event):Void {
         switch (e) {
             case MouseMove(x, y): {
-                trace('the mouse moved');
                 this.x = x; this.y = y;
             }
             default: { }

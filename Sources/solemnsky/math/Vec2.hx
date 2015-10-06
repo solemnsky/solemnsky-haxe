@@ -23,23 +23,23 @@ class Vec2 {
         return length;
     }
     
-    public inline function add(vec: Vector2): Vector2 {
-        return new Vector2(x + vec.x, y + vec.y);
+    public inline function add(vec: Vec2): Vec2 {
+        return new Vec2(x + vec.x, y + vec.y);
     }
     
-    public inline function sub(vec: Vector2): Vector2 {
-        return new Vector2(x - vec.x, y - vec.y);
+    public inline function sub(vec: Vec2): Vec2 {
+        return new Vec2(x - vec.x, y - vec.y);
     }
     
-    public inline function mult(value: Float): Vector2 {
-        return new Vector2(x * value, y * value);
+    public inline function mult(value: Float): Vec2 {
+        return new Vec2(x * value, y * value);
     }
     
-    public inline function div(value: Float): Vector2 {
+    public inline function div(value: Float): Vec2 {
         return mult(1 / value);
     }
     
-    public inline function dot(v: Vector2): Float {
+    public inline function dot(v: Vec2): Float {
         return x * v.x + y * v.y;
     }
     

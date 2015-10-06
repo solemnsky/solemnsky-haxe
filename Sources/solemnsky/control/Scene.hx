@@ -1,8 +1,7 @@
 package solemnsky.control;
 
-import solemnsky.math;
-// import solemnsky.math.Mat3;
-// import solemnsky.math.Vec2;
+import solemnsky.math.Mat3;
+import solemnsky.math.Vec2;
 
 enum DrawPrim {
     Circle(pos:Vec2, radius:Int);

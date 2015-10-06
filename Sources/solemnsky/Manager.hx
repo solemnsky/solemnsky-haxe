@@ -3,6 +3,11 @@ package solemnsky;
 import haxe.Timer;
 import kha.Framebuffer;
 import kha.Game;
+using kha.graphics2.GraphicsExtension;
+
+import solemnsky.control.Control;
+import solemnsky.control.Event;
+import solemnsky.control.Scene;
 
 /**
  * This is the interface between our Control interface and whatever toolchain
@@ -101,8 +106,10 @@ class Manager extends Game {
         if (needsPaint) {
             var newRender = Timer.stamp();
             var sleepTime:Float = newRender - lastRender;
-            lastRender = newRender;
-            controlRender(frame, sleepTime);
+            // if (sleepTime > 15) {
+                lastRender = newRender;
+                controlRender(frame, sleepTime);
+            // }
         }
 
         sleepStart = Timer.stamp(); // BEGIN SLEEP
@@ -175,7 +182,13 @@ class Manager extends Game {
         renderStart = Timer.stamp(); // BEGIN RENDER
 
         var delta = deltaRaw * 1000;
-        ctrl.render(frame, delta);
+
+        // test graphics
+        frame.g2.begin();
+        frame.g2.fillCircle(20, 20, 20);
+        frame.g2.end();
+
+        // ctrl.render(frame, delta);
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
     }
