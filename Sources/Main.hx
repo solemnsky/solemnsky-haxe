@@ -1,7 +1,7 @@
 package;
 
 import kha.Starter;
-import solemnsky.Manager;
+import solemnsky.kha.Manager;
 import solemnsky.control.Control;
 
 

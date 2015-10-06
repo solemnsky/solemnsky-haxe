@@ -1,4 +1,4 @@
-package solemnsky;
+package solemnsky.kha;
 
 import haxe.Timer;
 import kha.Framebuffer;
@@ -183,12 +183,7 @@ class Manager extends Game {
 
         var delta = deltaRaw * 1000;
 
-        // test graphics
-        frame.g2.begin();
-        frame.g2.fillCircle(20, 20, 20);
-        frame.g2.end();
-
-        // ctrl.render(frame, delta);
+        Render.render(frame, ctrl.render(delta));
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
     }
