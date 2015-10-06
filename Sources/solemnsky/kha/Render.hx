@@ -12,7 +12,7 @@ class Render {
                                              , prim:DrawPrim) {
         switch (prim) {
             case DrawCircle(p, r): {
-                frame.g2.fillCircle(p.x, p.y, 20);
+                frame.g2.fillCircle(p.x, p.y, r);
             }
         }
     }
