@@ -38,7 +38,7 @@ class Render {
     }
 
     public static function render(frame:Framebuffer, scene:Scene) {
-        frame.g2.begin(false, 0xff0000);
+        frame.g2.begin(true, 0xff0000);
         renderNoInit(Mat3.identity(), 1, frame, scene);
         frame.g2.end();
     }

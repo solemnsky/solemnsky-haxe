@@ -100,11 +100,11 @@ class DemoControl implements Control {
     }
 
     public function render(delta:Float):Scene {
-        var scene1 = new Scene();
+        var scene = new Scene();
 
-        scene1.children = [renderElem()];
-        scene1.trans = Mat3.translation(x, y);
-        return scene1;
+        scene.children = [renderElem()];
+        scene.trans = Mat3.translation(x, y);
+        return scene;
     }
 
     public function handle(e:Event):Void {
