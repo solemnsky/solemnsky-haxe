@@ -5,9 +5,14 @@ import kha.math.FastVector2;
 
 enum DrawPrim {
     DrawCircle(pos:FastVector2, radius:Int);
-    DrawColor(r:Int, g:Int, b:Int, a:Int);
+    DrawColor (r:Int, g:Int, b:Int, a:Int) ;
 }
 
+/*
+ * Scene graph, representing a hierarchical structure containing arrays
+ * of graphic primitives at each level, through which affine transformations
+ * and opacity values can traverse from parent to child.
+ */
 class Scene {
     /*************************************************************************/
     /* variables
