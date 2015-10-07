@@ -79,49 +79,32 @@ class DemoControl implements Control {
     private var time:Float = 0;
     private var x = 0;
     private var y = 0;
-    private var scene:Scene;
 
-    public function new():Void {
-        scene = new Scene();
-    }
+    public function new():Void {}
 
     public function tick(delta:Float):Void {
         time += delta;
     }
 
-    public function render(delta:Float):Scene {
-        var offset  = new Vec2(40, 40);
-        var offset2 = new Vec2(-40, 40);
-
+    private function renderElem():Scene {
+        var scene = new Scene();
         var pos = new Vec2(0, 0);
-        scene.prims = [];
-        for (i in 1 ... 25) {
-            scene.prims.push(DrawCircle(pos, 20));
-            pos = pos.add(offset);
-        }
-        pos = new Vec2(0, 0);
-        for (i in 1 ... 25) {
-            scene.prims.push(DrawCircle(pos, 20));
-            pos = pos.add(offset2);
-        }
-        pos = new Vec2(0, 0);
-        for (i in 1 ... 25) {
-            scene.prims.push(DrawCircle(pos, 20));
-            pos = pos.sub(offset2);
-        }
-        pos = new Vec2(0, 0);
-        for (i in 1 ... 25) {
-            scene.prims.push(DrawCircle(pos, 20));
-            pos = pos.sub(offset);
-        }
+        var offset = new Vec2(25, 0);
 
-        scene.trans = 
-            Mat3.identity()
-            .compose(Mat3.translation(x, y))
-            .compose(Mat3.rotation(time / 1000))
-            ;
-
+        scene.prims = 
+            [ DrawCircle(pos, 20)
+            , DrawCircle(pos.add(offset), 5)
+            ];
+        scene.trans = Mat3.rotation(time / 1000);
         return scene;
+    }
+
+    public function render(delta:Float):Scene {
+        var scene1 = new Scene();
+
+        scene1.children = [renderElem()];
+        scene1.trans = Mat3.translation(x, y);
+        return scene1;
     }
 
     public function handle(e:Event):Void {

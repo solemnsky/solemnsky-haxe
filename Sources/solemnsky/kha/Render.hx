@@ -11,7 +11,7 @@ import solemnsky.math.Mat3;
 
 class Render {
     private static function renderPrim(frame:Framebuffer
-                                      , prim:DrawPrim) {
+                                      ,prim:DrawPrim) {
         switch (prim) {
             case DrawCircle(p, r): {
                 frame.g2.fillCircle(p.x, p.y, r);
@@ -19,22 +19,27 @@ class Render {
         }
     }
 
-    public static function renderNoInit(frame:Framebuffer, scene:Scene) {
-        frame.g2.pushTransformation(matToTransform(scene.trans));
-        frame.g2.pushOpacity(scene.alpha);
+    public static function renderNoInit(pTrans:Mat3, pOpacity:Float
+                                       ,frame:Framebuffer
+                                       ,scene:Scene) {
+        var resultTrans = pTrans.compose(scene.trans);
+        var resultOpacity = pOpacity * scene.alpha;
+
+        frame.g2.pushTransformation(matToTransform(resultTrans));
+        frame.g2.pushOpacity(resultOpacity);
         for (prim in scene.prims){
             renderPrim(frame, prim);
         }
-        for (child in scene.children){
-            renderNoInit(frame, child);
-        }
         frame.g2.popOpacity();
         frame.g2.popTransformation();
+        for (child in scene.children){
+            renderNoInit(resultTrans, resultOpacity, frame, child);
+        }
     }
 
     public static function render(frame:Framebuffer, scene:Scene) {
         frame.g2.begin(false, 0xff0000);
-        renderNoInit(frame, scene);
+        renderNoInit(Mat3.identity(), 1, frame, scene);
         frame.g2.end();
     }
 
