@@ -39,6 +39,8 @@ class Render {
     }
 
     private static function matToTransform(mat:Mat3):FastMatrix3 {
-        return FastMatrix3.identity();
+        return new FastMatrix3(mat._00, mat._10, mat._20
+                              ,mat._01, mat._11, mat._21
+                              ,mat._02, mat._12, mat._22);
     }
 }

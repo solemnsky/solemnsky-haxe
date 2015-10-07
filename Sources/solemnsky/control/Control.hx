@@ -93,27 +93,34 @@ class DemoControl implements Control {
         var offset  = new Vec2(40, 40);
         var offset2 = new Vec2(-40, 40);
 
-        var pos = new Vec2(x, y);
+        var pos = new Vec2(0, 0);
         scene.prims = [];
         for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.add(offset);
         }
-        pos = new Vec2(x, y);
+        pos = new Vec2(0, 0);
         for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.add(offset2);
         }
-        pos = new Vec2(x, y);
+        pos = new Vec2(0, 0);
         for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.sub(offset2);
         }
-        pos = new Vec2(x, y);
+        pos = new Vec2(0, 0);
         for (i in 1 ... 25) {
             scene.prims.push(DrawCircle(pos, 20));
             pos = pos.sub(offset);
         }
+
+        scene.trans = 
+            Mat3.identity()
+            .compose(Mat3.translation(x, y))
+            .compose(Mat3.rotation(time / 1000))
+            ;
+
         return scene;
     }
 

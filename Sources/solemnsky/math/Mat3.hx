@@ -62,8 +62,8 @@ class Mat3 {
     public static inline function rotation(alpha: Float): Mat3 {
         return new Mat3(
             Math.cos(alpha), -Math.sin(alpha), 0,
-            Math.sin(alpha), Math.cos(alpha), 0,
-            0, 0, 1
+            Math.sin(alpha), Math.cos(alpha) , 0,
+            0              , 0               , 1
         );
     }
 
