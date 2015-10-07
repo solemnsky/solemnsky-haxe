@@ -1,10 +1,10 @@
 package solemnsky.control;
 
-import solemnsky.math.Mat3;
-import solemnsky.math.Vec2;
+import kha.math.FastMatrix3;
+import kha.math.FastVector2;
 
 enum DrawPrim {
-    DrawCircle(pos:Vec2, radius:Int);
+    DrawCircle(pos:FastVector2, radius:Int);
     DrawColor(r:Int, g:Int, b:Int, a:Int);
 }
 
@@ -15,7 +15,7 @@ class Scene {
 
     public var prims:Array<DrawPrim> = [];
     public var children:Array<Scene> = [];
-    public var trans:Mat3 = Mat3.identity();
+    public var trans:FastMatrix3 = FastMatrix3.identity();
     public var alpha:Float = 1;
 
     /*************************************************************************/

@@ -3,11 +3,13 @@ package solemnsky.kha;
 import haxe.Timer;
 import kha.Framebuffer;
 import kha.Game;
-using kha.graphics2.GraphicsExtension;
-
+import kha.Image;
+import kha.Scaler;
+import kha.Sys;
+import kha.graphics2.Graphics;
 import solemnsky.control.Control;
-import solemnsky.control.Event;
-import solemnsky.control.Scene;
+
+using kha.graphics2.GraphicsExtension;
 
 /**
  * This is the interface between our Control interface and whatever toolchain
@@ -24,6 +26,8 @@ class Manager extends Game {
     private var tps:Float;
     private var tickLength:Float;
     private var ctrl:Control;
+    private var backbuffer:Image;
+    private var g:Graphics;
 
     /**
      * profiling settings
@@ -78,10 +82,18 @@ class Manager extends Game {
     /* game interface
     /*************************************************************************/
 
+    override public function init():Void {
+        super.init();
+
+        backbuffer = Image.createRenderTarget(1600, 900);
+        g = backbuffer.g2;
+    }
+
+
     /**
      * called on frame render
      */
-    override function render(frame:Framebuffer):Void
+    override public function render(frame:Framebuffer):Void
     {
         // tick profile uplink
         profileTicker ++; 
@@ -112,7 +124,7 @@ class Manager extends Game {
     /**
      * called on update
      */
-    override function update():Void {
+    override public function update():Void {
         var now = Timer.stamp();
         pushProfile(
             now - logicSleepStart,
@@ -130,7 +142,7 @@ class Manager extends Game {
         logicSleepStart = Timer.stamp(); // BEGIN SLEEP
     }
 
-    override function mouseMove(x:Int, y:Int):Void {
+    override public function mouseMove(x:Int, y:Int):Void {
         ctrl.handle(MouseMove(x, y));
     }
 
@@ -198,7 +210,14 @@ class Manager extends Game {
 
         var delta = deltaRaw * 1000;
 
-        Render.render(frame, ctrl.render(delta));
+        Render.render(g, ctrl.render(delta));
+        // g.begin();
+        // g.fillCircle(20, 20, 20);
+        // g.end();
+
+        startRender(frame);
+        Scaler.scale(backbuffer, frame, Sys.screenRotation);
+        endRender(frame);
 
         pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
     }

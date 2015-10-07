@@ -3,8 +3,8 @@ package solemnsky.control;
 import kha.Framebuffer;
 import kha.graphics2.Graphics;
 
-import solemnsky.math.Vec2;
-import solemnsky.math.Mat3;
+import kha.math.FastVector2;
+import kha.math.FastMatrix3;
 
 /*****************************************************************************/
 /* Control object definition                                                 */
@@ -86,19 +86,19 @@ class DemoControl implements Control {
         time += delta;
     }
 
-    private function renderElem(centerPos:Vec2):Scene {
+    private function renderElem(centerPos:FastVector2):Scene {
         var scene = new Scene();
-        var pos = new Vec2(0, 0);
-        var offset = new Vec2(27, 0);
+        var pos = new FastVector2(0, 0);
+        var offset = new FastVector2(27, 0);
 
         scene.prims = 
             [ DrawColor(0, 255, 0, 255)
             , DrawCircle(pos, 20)
             , DrawCircle(pos.add(offset), 7)
             ];
-        scene.trans = Mat3.identity()
-            .compose(Mat3.translation(centerPos.x, centerPos.y))
-            .compose(Mat3.rotation(time / 1000))
+        scene.trans = FastMatrix3.identity()
+            .multmat(FastMatrix3.translation(centerPos.x, centerPos.y))
+            .multmat(FastMatrix3.rotation(time / 1000))
             ;
         return scene;
     }
@@ -106,36 +106,36 @@ class DemoControl implements Control {
     public function render(delta:Float):Scene {
         var scene = new Scene();
 
-        var offset  = new Vec2(40, -40);
-        var offset2 = new Vec2(40, 40);
+        var offset  = new FastVector2(40, -40);
+        var offset2 = new FastVector2(40, 40);
 
-        var pos = new Vec2(0, 0);
+        var pos = new FastVector2(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.add(offset);
         }
 
-        pos = new Vec2(0, 0);
+        pos = new FastVector2(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.add(offset2);
         }
 
-        pos = new Vec2(0, 0);
+        pos = new FastVector2(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.sub(offset2);
         }
 
-        pos = new Vec2(0, 0);
+        pos = new FastVector2(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.sub(offset);
         }
 
-        scene.trans = Mat3.identity()
-            .compose(Mat3.translation(x, y))
-            .compose(Mat3.rotation(-time / 1200))
+        scene.trans = FastMatrix3.identity()
+            .multmat(FastMatrix3.translation(x, y))
+            .multmat(FastMatrix3.rotation(-time / 1200))
             ;
         return scene;
     }
