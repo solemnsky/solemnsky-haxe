@@ -86,24 +86,56 @@ class DemoControl implements Control {
         time += delta;
     }
 
-    private function renderElem():Scene {
+    private function renderElem(centerPos:Vec2):Scene {
         var scene = new Scene();
         var pos = new Vec2(0, 0);
-        var offset = new Vec2(25, 0);
+        var offset = new Vec2(27, 0);
 
         scene.prims = 
             [ DrawCircle(pos, 20)
-            , DrawCircle(pos.add(offset), 5)
+            , DrawCircle(pos.add(offset), 7)
             ];
-        scene.trans = Mat3.rotation(time / 1000);
+        scene.trans = Mat3.identity()
+            .compose(Mat3.translation(centerPos.x, centerPos.y))
+            .compose(Mat3.rotation(time / 1000))
+            ;
         return scene;
     }
 
     public function render(delta:Float):Scene {
         var scene = new Scene();
 
-        scene.children = [renderElem()];
-        scene.trans = Mat3.translation(x, y);
+        var offset  = new Vec2(40, -40);
+        var offset2 = new Vec2(40, 40);
+
+        var pos = new Vec2(0, 0);
+        for (i in 1 ... 20) {
+            scene.children.push(renderElem(pos));
+            pos = pos.add(offset);
+        }
+
+        pos = new Vec2(0, 0);
+        for (i in 1 ... 20) {
+            scene.children.push(renderElem(pos));
+            pos = pos.add(offset2);
+        }
+
+        pos = new Vec2(0, 0);
+        for (i in 1 ... 20) {
+            scene.children.push(renderElem(pos));
+            pos = pos.sub(offset2);
+        }
+
+        pos = new Vec2(0, 0);
+        for (i in 1 ... 20) {
+            scene.children.push(renderElem(pos));
+            pos = pos.sub(offset);
+        }
+
+        scene.trans = Mat3.identity()
+            .compose(Mat3.translation(x, y))
+            .compose(Mat3.rotation(time / 1200))
+            ;
         return scene;
     }
 
