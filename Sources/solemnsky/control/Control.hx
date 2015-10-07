@@ -92,7 +92,8 @@ class DemoControl implements Control {
         var offset = new Vec2(27, 0);
 
         scene.prims = 
-            [ DrawCircle(pos, 20)
+            [ DrawColor(0, 255, 0, 255)
+            , DrawCircle(pos, 20)
             , DrawCircle(pos.add(offset), 7)
             ];
         scene.trans = Mat3.identity()
@@ -134,7 +135,7 @@ class DemoControl implements Control {
 
         scene.trans = Mat3.identity()
             .compose(Mat3.translation(x, y))
-            .compose(Mat3.rotation(time / 1200))
+            .compose(Mat3.rotation(-time / 1200))
             ;
         return scene;
     }

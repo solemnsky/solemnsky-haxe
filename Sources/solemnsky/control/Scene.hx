@@ -5,6 +5,7 @@ import solemnsky.math.Vec2;
 
 enum DrawPrim {
     DrawCircle(pos:Vec2, radius:Int);
+    DrawColor(r:Int, g:Int, b:Int, a:Int);
 }
 
 class Scene {

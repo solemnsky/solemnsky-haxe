@@ -4,6 +4,7 @@ import haxe.Timer;
 import kha.Framebuffer;
 import kha.Game;
 import kha.math.FastMatrix3;
+import kha.Color;
 using kha.graphics2.GraphicsExtension;
 
 import solemnsky.control.Scene;
@@ -15,6 +16,9 @@ class Render {
         switch (prim) {
             case DrawCircle(p, r): {
                 frame.g2.fillCircle(p.x, p.y, r);
+            }
+            case DrawColor(r, g, b, a): {
+                frame.g2.set_color(Color.fromBytes(r, g, b, a));
             }
         }
     }
@@ -30,8 +34,6 @@ class Render {
         for (prim in scene.prims){
             renderPrim(frame, prim);
         }
-        frame.g2.popOpacity();
-        frame.g2.popTransformation();
         for (child in scene.children){
             renderNoInit(resultTrans, resultOpacity, frame, child);
         }
