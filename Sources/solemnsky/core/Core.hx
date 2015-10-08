@@ -22,7 +22,7 @@ interface Core {
     /* simulation
     /*************************************************************************/
 
-    public function acceptEvent(event:Event):Void;
+    public function acceptEvent(id:Int, event:Event):Void; 
     public function tick(delta:Float):Array<String>;
     public function render(delta:Float):Scene;
 

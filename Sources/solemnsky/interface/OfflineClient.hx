@@ -12,11 +12,12 @@ class OfflineClient implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
+    private var myId:Int;
 
     public function new(core:Core<Dynamic>) {
         this.core = core;
         core.init();
-        core.join('offline player');
+        myId = core.join('offline player');
     }
 
     /*************************************************************************/
@@ -43,7 +44,7 @@ class OfflineClient implements Control {
     }
 
     public function handle(e:Event):Void {
-        core.handle(e);
+        core.handle(myId, e);
     }
 
     public function hasEnded():Bool {
