@@ -36,7 +36,7 @@ interface Control {
     /**
      * Accept some profiling data.
      */
-    public function profiling(l:String, r:String, ls:String, rs:String):Void;
+    public function profiling(data:Profile):Void;
 
      /**
      * Accept an event.
@@ -66,7 +66,7 @@ class EmptyControl implements Control {
         return new Scene();
     }
 
-    public function profiling(_:String, _:String, _:String, _:String):Void {}
+    public function profiling(data:Profile):Void {}
 
     public function handle(e:Event):Void {}
 
@@ -152,10 +152,11 @@ class DemoControl implements Control {
         }
     }
 
-    public function profiling(l:String, r:String, ls:String, rs:String):Void {
-        trace(
-            'logic / render / logic sleep / render sleep: '
-            +l+' / '+r+' / '+ls+' / '+rs);
+    public function profiling(data:Profile):Void {
+        // trace(
+        //     'logic / render / logic sleep / render sleep: '
+        //     +l+' / '+r+' / '+ls+' / '+rs);
+        trace(data.print());
     }
 
     public function hasEnded():Bool {

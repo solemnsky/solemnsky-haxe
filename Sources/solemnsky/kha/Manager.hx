@@ -8,6 +8,8 @@ import kha.Scaler;
 import kha.Sys;
 import kha.graphics2.Graphics;
 import solemnsky.control.Control;
+import solemnsky.control.Event;
+import solemnsky.control.Profile;
 
 using kha.graphics2.GraphicsExtension;
 
@@ -48,18 +50,18 @@ class Manager extends Game {
      */ 
     private var profileTicker:Int = 0; // ticks on render
 
-    private var logicStart:Float;
+    private var tickStart:Float;
     private var renderStart:Float;
-    private var logicSleepStart:Float;
+    private var tickSleepStart:Float;
     private var renderSleepStart:Float;
 
     /**
      * profiles
      */ 
-    private var logicProfile:Array<Float> = [];
-    private var renderProfile:Array<Float> = [];
-    private var logicSleepProfile:Array<Float> = [];
-    private var renderSleepProfile:Array<Float> = [];
+    private var renderOn:Array<Int> = [];
+    private var renderOff:Array<Int> = [];
+    private var tickOn:Array<Int> = [];
+    private var tickOff:Array<Int> = [];
 
     /*************************************************************************/
     /* constructor
@@ -75,8 +77,8 @@ class Manager extends Game {
 
         // initialise timings
         var now = Timer.stamp();
-        lastTick = now; lastRender = now; logicStart = now;
-        renderStart = now; renderSleepStart = now; logicSleepStart = now;
+        lastTick = now; lastRender = now; tickStart = now;
+        renderStart = now; renderSleepStart = now; tickSleepStart = now;
     }
 
     /*************************************************************************/
@@ -100,19 +102,19 @@ class Manager extends Game {
         profileTicker ++; 
         if (profileTicker > profileUpdate) {
             profileTicker = 0;
-            ctrl.profiling(
-                profileResult(logicProfile)
-                , profileResult(renderProfile)
-                , profileResult(logicSleepProfile)
-                , profileResult(renderSleepProfile)
-            );
+            ctrl.profiling(new Profile(
+                renderOn
+                , renderOff
+                , tickOn
+                , tickOff
+            ));
         }
 
         var now = Timer.stamp(); 
 
         pushProfile(
             now - renderSleepStart, 
-            renderSleepProfile); // END SLEEP
+            renderOff); // END SLEEP
 
         var newRender = now;
         var sleepTime:Float = newRender - lastRender;
@@ -128,8 +130,8 @@ class Manager extends Game {
     override public function update():Void {
         var now = Timer.stamp();
         pushProfile(
-            now - logicSleepStart,
-            logicSleepProfile); // END SLEEP
+            now - tickSleepStart,
+            tickOff); // END SLEEP
 
         var newTick = now;
         tickAccum += (newTick - lastTick);
@@ -140,11 +142,12 @@ class Manager extends Game {
             controlTick(tickLength);
         }
 
-        logicSleepStart = Timer.stamp(); // BEGIN SLEEP
+        tickSleepStart = Timer.stamp(); // BEGIN SLEEP
     }
 
     override public function mouseMove(x:Int, y:Int):Void {
-        ctrl.handle(MouseMove(x, y));
+        var event:Event = MouseMove(x, y);
+        ctrl.handle(event);
     }
 
     /*************************************************************************/
@@ -155,36 +158,11 @@ class Manager extends Game {
      * pushes a profile value to a profile
      */ 
     private function 
-        pushProfile(point:Float, profile:Array<Float>):Void {
+        pushProfile(point:Float, profile:Array<Int>):Void {
+        profile.push(Math.round(point * 1000));
         if (profile.length > profileWindow) {
-            profile.push(point);
             profile.shift(); 
-        } else {
-            profile.push(point);
-        }
-    }
-
-    /**
-     * statistics on a certain profile
-     */ 
-    private function profileResult(profile:Array<Float>):String {
-        var sum:Float = 0;
-        var min:Float = profile[0];
-        var max:Float = profile[0];
-
-        for (i in profile) {
-            sum += i;
-            min = Math.min(min, i);
-            max = Math.max(max, i);
-        }
-
-        function dispT(v:Float):String {
-            return Math.round(v * 1000) + 'ms';
-        }
-
-        return 
-            dispT(min) + '-' + dispT(max) 
-            + '~' + dispT(sum / profileWindow);
+        } 
     }
 
     /*************************************************************************/
@@ -195,12 +173,12 @@ class Manager extends Game {
      * called on a tick
      */ 
     private function controlTick(deltaRaw:Float):Void {
-        logicStart = Timer.stamp(); // BEGIN LOGIC
+        tickStart = Timer.stamp(); // BEGIN LOGIC
 
         var delta = deltaRaw * 1000;
         ctrl.tick(delta);
 
-        pushProfile(Timer.stamp() - logicStart, logicProfile); // END LOGIC
+        pushProfile(Timer.stamp() - tickStart, tickOn); // END LOGIC
     }
 
     /**
@@ -217,6 +195,6 @@ class Manager extends Game {
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
         endRender(frame);
 
-        pushProfile(Timer.stamp() - renderStart, renderProfile); // END RENDER
+        pushProfile(Timer.stamp() - renderStart, renderOn); // END RENDER
     }
 }
