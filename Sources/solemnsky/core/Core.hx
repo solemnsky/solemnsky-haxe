@@ -24,10 +24,15 @@ interface Core {
 
     public function acceptEvent(id:Int, event:Event):Void; 
     public function tick(delta:Float):Array<String>;
-    public function render(delta:Float):Scene;
 
     public function listPlayers():Array<String>;
     public function hasEnded():Bool;
+
+    /*************************************************************************/
+    /* rendering
+    /*************************************************************************/
+    
+    public function render(delta:Float):Scene;
 
     /*************************************************************************/
     /* discrete networking

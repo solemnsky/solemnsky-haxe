@@ -1,6 +1,7 @@
 package solemnsky.core;
 
-import kha.math.Vector2;
+import kha.math.FastVector2;
+import kha.math.FastMatrix3;
 
 /**
  * solemnsky.core.Demo:
@@ -12,7 +13,7 @@ import kha.math.Vector2;
  */
 private typedef Player = {
     var name:String;
-    var position:Vector2;
+    var position:FastVector2;
 }
 
 class Demo {
@@ -20,18 +21,19 @@ class Demo {
     /* variables and constructor
     /*************************************************************************/
 
-    private var players:Array<String> = [];
+    private var players:Map<Int, Player> = new Map();
 
     public function new() {
-
+        // empty
     }
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
 
+    // TODO: rationalise why this isn't the same as new()
     public function init() {
-        // empty
+        initGraphics();
     }
 
     public var modeId = 'demo';
@@ -46,55 +48,56 @@ class Demo {
      * failing and returning false.
      */
     private function doForPlayer(f:Player->Player, id:Int):Bool {
-        var success = false;
-        var currId = 0;
-        for (player in players) {
-            currId++;
-            if (currId == id) {
-                f(player);
-                success = true;
-                break;
-            }
+        var player = players.get(id);
+        if (player == null) {
+            f(player);
+            return true;                    
         }
-        return success;
+        return false;
+    }
+
+    /**
+     * Function used to allocate new player IDs.
+     * There are several ways of doing this, this is the more obvious one.
+     */
+    private function takeUnique(taken:Iterator<Int>):Int {
+        var last:Int;
+        for (id in taken) 
+            last = id;
+        return last + 1;
+    }
+
+    private static function initialPlayer(name:String) {
+        return { name: name, position: new FastVector2(0, 0) };
     }
 
     /*************************************************************************/
     /* simulation
     /*************************************************************************/
 
-    /**
-     * Get the transformation that should be applied to a player
-     * that accepts a certain event.
-     */
-    private function getEventAction(event:Event):Player->Player {
-        return function(player:Player) {
-            switch (event) {
-                case MouseMove(x, y): {
-                    player.position = new Vector2(x, y);
-                }
+    private function mutateByEvent(player:Player, event:Event):Player {
+        switch (event) {
+            case MouseMove(x, y): {
+                player.position = new FastVector2(x, y);
             }
-            return player;
         }
+        return player;
     }
 
     public function acceptEvent(id:Int, event:Event):Void {
-        if !(doForPlayer(getEventAction(event), id)) {
+        function mutate(player) 
+            return mutateByEvent(event, player);
+
+        if !(doForPlayer(mutate, id)) 
             trace('no such player ' + id + ' to accept event!');
-        }
     }
 
     public function tick(delta:Float):Array<String> {
         return [];
     }
 
-    public function render(delta:Float):Scene {
-        return new Scene();
-    }
-
     public function listPlayers():Array<String> {
-        var names:Array<String> = [];
-        for (player in players) {
+        for (player in players.iterator) {
             names.push(player.name);
         }
         return names;
@@ -105,31 +108,78 @@ class Demo {
     }
 
     /*************************************************************************/
+    /* rendering
+    /*************************************************************************/
+
+    private var playerSprite:Scene;
+
+    private function initGraphics() {
+        playerSprite = new Scene();
+        scene.prims = // medium red circle
+            [ DrawColor(0, 0, 255, 255)
+            , DrawCircle(new FastVector2(0, 0), 50) ];
+    }
+
+    private static function renderPlayer(player:Player) {
+        var pos = player.position;
+        var scene = new Scene();
+        scene.children = [playerSprite];
+        scene.transform = FastMatrix3.identity
+            .compose(FastMatrix3.translation(pos.x, pos.y));
+    }
+
+    public function render(delta:Float):Scene {
+        var scene = new Scene();
+
+        for (player in players.iterator) {
+            scene.children.push(renderPlayer(player));
+        }
+
+        return scene;
+    }
+
+
+    /*************************************************************************/
     /* discrete networking
     /*************************************************************************/
 
-    public function join(name:String):Int;
-    public function quit(id:Int):Void;
+    public function join(name:String):Int {
+        var newId = takeUnique(players.keys);
+        players.set(newId, initialPlayer(name));
+        return newId;
+    }
+
+    public function quit(id:Int):Void {
+        players.remove(id);
+    }
 
     /*************************************************************************/
     /* continuous networking
     /*************************************************************************/
 
-    public function clientAssert(id:Int):Dynamic; // assert as a client
-    public function serverAssert():Dynamic; // assert as a server
+    public function clientAssert(id:Int):Dynamic {
+        return null;
+    }
+    public function serverAssert():Dynamic {
+        return null;
+    }
 
-    public function clientMerge(id:Int, snap:Dynamic):Void; 
-                                                    // merge as a client
-    public function serverMerge(id:Int, snap:Dynamic):Void;
-                           // merge as a server, recieving from a client
+    public function clientMerge(id:Int, snap:Dynamic):Void {
+        // empty
+    }
+    public function serverMerge(id:Int, snap:Dynamic):Void {
+        // empty
+    }
 
     /*************************************************************************/
     /* network compression
     /*************************************************************************/
 
-    public function serialiseSnap(snap:Dynamic):Bytes;
-    public function readSnap(bytes:Bytes):Dynamic;
+    public function serialiseSnap(snap:Dynamic):Bytes {
+        return null;
+    }
+    public function readSnap(bytes:Bytes):Dynamic {
+        return null;
+    }
 
 }
-
- 
