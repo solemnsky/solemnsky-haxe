@@ -3,8 +3,8 @@ package;
 import kha.Starter;
 import kha.Game;
 import solemnsky.control.Control;
-import solemnsky.logic.demo.Demo;
-import solemnsky.logic.Core;
+import solemnsky.core.demo.Demo;
+import solemnsky.core.Core;
 import solemnsky.ui.OfflineClient;
 import solemnsky.kha.Manager;
 

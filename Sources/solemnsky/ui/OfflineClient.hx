@@ -3,7 +3,8 @@ package solemnsky.ui;
 import solemnsky.control.Control;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
-import solemnsky.logic.Core;
+import solemnsky.control.Profile;
+import solemnsky.core.Core;
 
 /**
  * solemnsky.ui.OfflineClient: 
@@ -39,11 +40,8 @@ class OfflineClient implements Control {
         return core.render(delta);
     }
 
-    public function profiling(l:String, r:String, ls:String, rs:String):Void {
-        profileString = 
-            'logic / render / logic sleep / render sleep: '
-            +l+' / '+r+' / '+ls+' / '+rs;
-        trace(profileString);
+    public function profiling(profile:Profile):Void {
+        trace(profile.print());
     }
 
     public function handle(e:Event):Void {
