@@ -11,9 +11,12 @@ import solemnsky.core.Core;
 class OfflineClient implements Control {
     private var core:Core;
     private var profileString:String;
+    private var notes:Array<String> = [];
 
-    public function new(core:Core) {
+    public function new(core:Core<Dynamic>) {
         this.core = core;
+        core.init();
+        core.join('offline player');
     }
 
     /*************************************************************************/
@@ -21,7 +24,11 @@ class OfflineClient implements Control {
     /*************************************************************************/
 
     public function tick(delta:Float):Void {
-        core.tick(delta);
+        var newNotes = core.tick(delta);
+        for (note in newNotes) {
+            trace(note);
+        }
+        notes = notes.append(newNotes);
     }
 
     public function render(delta:Float):Scene {

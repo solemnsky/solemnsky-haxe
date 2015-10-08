@@ -23,7 +23,7 @@ interface Core {
     /*************************************************************************/
 
     public function acceptEvent(event:Event):Void;
-    public function tick(delta:Float):Void;
+    public function tick(delta:Float):Array<String>;
     public function render(delta:Float):Scene;
 
     public function listPlayers():Array<String>;
