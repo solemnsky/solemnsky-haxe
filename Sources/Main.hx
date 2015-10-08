@@ -2,8 +2,12 @@ package;
 
 import kha.Starter;
 import solemnsky.kha.Manager;
-import solemnsky.control.Control;
 
+/**
+ * solemnsky.Main: 
+ * The only main class ever implied by Kha/make. All client-side targets
+ * stem from here.
+ */
 
 class Main {
   public static function main() {
@@ -14,4 +18,3 @@ class Main {
     starter.start(manager); // this runs all that shit
   }
 }
-

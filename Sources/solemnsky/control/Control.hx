@@ -6,14 +6,17 @@ import kha.graphics2.Graphics;
 import kha.math.FastVector2;
 import kha.math.FastMatrix3;
 
+/**
+ * solemnsky.control.Control:
+ * Interface that lets an object do realtime logic, accept events,
+ * draw to the screen, and potentially quit. One level above whatever API /
+ * toolchains we're using.
+ */
+
 /*****************************************************************************/
 /* Control object definition                                                 */
 /*****************************************************************************/
 
-/**
- * Interface that lets an object do realtime logic, accept events,
- * draw to the screen, and potentially quit.
- */
 interface Control {
     /**
      * Tick internal simulation forward, given a delta; this ticks

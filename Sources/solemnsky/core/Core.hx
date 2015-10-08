@@ -1,11 +1,14 @@
-/*                  ******** core ********                            //
-\\ Definition of the core game logic interface.                       \\
-//                  ******** core ********                            */
 package solemnsky.core;
 
 import haxe.io.Bytes;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
+
+/**
+ * solemnsky.core.Core: 
+ * The Core interface, representing the core logic an implementation of our
+ * game can hold; decoupled from interface code and backend code.
+ */
 
 interface Core {
     /*************************************************************************/

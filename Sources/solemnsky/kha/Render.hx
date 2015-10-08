@@ -7,6 +7,11 @@ import solemnsky.control.Scene;
 
 using kha.graphics2.GraphicsExtension;
 
+/**
+ * solemnsky.kha.Render:
+ * Renders scene graphs to a kha graphics object.
+ */
+
 class Render {
     private static function renderPrim(gr:Graphics
                                       ,prim:DrawPrim) {

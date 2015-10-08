@@ -2,6 +2,12 @@ package solemnsky.interface;
 
 import solemnsky.core.Core;
 
+/**
+ * solemnsky.interface.OfflineClient: 
+ * Transforms a Core object into a Control object, implementing only offline 
+ * functionalities (runs an offline demo).
+ */
+
 class OfflineClient implements Control {
     private var core:Core;
     private var profileString:String;

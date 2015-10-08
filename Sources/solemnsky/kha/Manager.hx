@@ -12,9 +12,10 @@ import solemnsky.control.Control;
 using kha.graphics2.GraphicsExtension;
 
 /**
- * This is the interface between our Control interface and whatever toolchain
- * we're using. Simply construct a Manager object with a control object to run.
+ * solemnsky.kha.Manager: 
+ * This is the interface between a Control object and a kha Game object.
  */
+
 class Manager extends Game {
     /*************************************************************************/
     /* variables
@@ -210,10 +211,7 @@ class Manager extends Game {
 
         var delta = deltaRaw * 1000;
 
-        Render.render(g, ctrl.render(delta));
-        // g.begin();
-        // g.fillCircle(20, 20, 20);
-        // g.end();
+        Render.render(g, ctrl.render(delta)); // render to backbuffer
 
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
