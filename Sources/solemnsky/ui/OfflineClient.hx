@@ -3,7 +3,7 @@ package solemnsky.ui;
 import solemnsky.control.Control;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
-import solemnsky.core.Core;
+import solemnsky.logic.Core;
 
 /**
  * solemnsky.ui.OfflineClient: 
@@ -32,7 +32,7 @@ class OfflineClient implements Control {
         for (note in newNotes) {
             trace(note);
         }
-        notes = notes.append(newNotes);
+        notes = notes.concat(newNotes);
     }
 
     public function render(delta:Float):Scene {
@@ -47,7 +47,7 @@ class OfflineClient implements Control {
     }
 
     public function handle(e:Event):Void {
-        core.handle(myId, e);
+        core.acceptEvent(myId, e);
     }
 
     public function hasEnded():Bool {

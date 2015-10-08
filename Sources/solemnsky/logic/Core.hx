@@ -1,4 +1,4 @@
-package solemnsky.core;
+package solemnsky.logic;
 
 import haxe.io.Bytes;
 import solemnsky.control.Event;

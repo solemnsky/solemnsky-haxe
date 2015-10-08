@@ -1,4 +1,4 @@
-package solemnsky.core.demo;
+package solemnsky.logic.demo;
 
 import haxe.io.Bytes;
 import kha.math.FastMatrix3;
@@ -88,8 +88,9 @@ class Demo {
     }
 
     public function acceptEvent(id:Int, event:Event):Void {
-        function mutate(player) 
-            return mutateByEvent(event, player);
+        function mutate(player) {
+            return mutateByEvent(player, event);
+        }
 
         if (! doForPlayer(mutate, id)) 
             trace('no such player ' + id + ' to accept event!');
@@ -100,7 +101,8 @@ class Demo {
     }
 
     public function listPlayers():Array<String> {
-        for (player in players.iterator) {
+        var names:Array<String> = [];
+        for (player in players.iterator()) {
             names.push(player.name);
         }
         return names;
@@ -118,23 +120,24 @@ class Demo {
 
     private function initGraphics() {
         playerSprite = new Scene();
-        scene.prims = // medium red circle
+        playerSprite.prims = // medium red circle
             [ DrawColor(0, 0, 255, 255)
             , DrawCircle(new FastVector2(0, 0), 50) ];
     }
 
-    private static function renderPlayer(player:Player) {
+    private function renderPlayer(player:Player):Scene {
         var pos = player.position;
         var scene = new Scene();
         scene.children = [playerSprite];
-        scene.transform = FastMatrix3.identity
-            .compose(FastMatrix3.translation(pos.x, pos.y));
+        scene.trans = FastMatrix3.identity()
+            .multmat(FastMatrix3.translation(pos.x, pos.y));
+        return scene;            
     }
 
     public function render(delta:Float):Scene {
         var scene = new Scene();
 
-        for (player in players.iterator) {
+        for (player in players.iterator()) {
             scene.children.push(renderPlayer(player));
         }
 
@@ -147,7 +150,7 @@ class Demo {
     /*************************************************************************/
 
     public function join(name:String):Int {
-        var newId = takeUnique(players.keys);
+        var newId = takeUnique(players.keys());
         players.set(newId, initialPlayer(name));
         return newId;
     }
