@@ -1,9 +1,12 @@
-package solemnsky.interface;
+package solemnsky.ui;
 
+import solemnsky.control.Control;
+import solemnsky.control.Event;
+import solemnsky.control.Scene;
 import solemnsky.core.Core;
 
 /**
- * solemnsky.interface.OfflineClient: 
+ * solemnsky.ui.OfflineClient: 
  * Transforms a Core object into a Control object, implementing only offline 
  * functionalities (runs an offline demo).
  */
@@ -14,7 +17,7 @@ class OfflineClient implements Control {
     private var notes:Array<String> = [];
     private var myId:Int;
 
-    public function new(core:Core<Dynamic>) {
+    public function new(core:Core) {
         this.core = core;
         core.init();
         myId = core.join('offline player');

@@ -1,7 +1,10 @@
-package solemnsky.core;
+package solemnsky.core.demo;
 
-import kha.math.FastVector2;
+import haxe.io.Bytes;
 import kha.math.FastMatrix3;
+import kha.math.FastVector2;
+import solemnsky.control.Event;
+import solemnsky.control.Scene;
 
 /**
  * solemnsky.core.Demo:
@@ -88,7 +91,7 @@ class Demo {
         function mutate(player) 
             return mutateByEvent(event, player);
 
-        if !(doForPlayer(mutate, id)) 
+        if (! doForPlayer(mutate, id)) 
             trace('no such player ' + id + ' to accept event!');
     }
 

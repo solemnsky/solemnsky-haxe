@@ -3,7 +3,7 @@ package;
 import kha.Starter;
 import solemnsky.control.Control;
 import solemnsky.core.demo.Demo;
-import solemnsky.interface.OfflineClient;
+import solemnsky.ui.OfflineClient;
 import solemnsky.kha.Manager;
 
 /**
@@ -21,7 +21,7 @@ class Main {
         // we're running the Core object with
         // the OfflineClient interface, to produce
         // a Control object
-    var control:Control = new OfflineClient(core) 
+    var control:Control = new OfflineClient(core);
 
     // STEP TWO: run the Control object
 
