@@ -19,7 +19,7 @@ private typedef Player = {
     var position:FastVector2;
 }
 
-class Demo {
+class Demo implements Core {
     /*************************************************************************/
     /* variables and constructor
     /*************************************************************************/
