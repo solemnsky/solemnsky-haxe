@@ -1,4 +1,4 @@
-package solemnsky.logic.demo;
+package solemnsky.core.demo;
 
 import haxe.io.Bytes;
 import kha.math.FastMatrix3;
