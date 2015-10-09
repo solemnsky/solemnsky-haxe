@@ -52,7 +52,7 @@ class Demo implements Core {
      */
     private function doForPlayer(f:Player->Player, id:Int):Bool {
         var player = players.get(id);
-        if (player == null) {
+        if (player != null) {
             f(player);
             return true;                    
         }
@@ -64,7 +64,7 @@ class Demo implements Core {
      * There are several ways of doing this, this is the more obvious one.
      */
     private function takeUnique(taken:Iterator<Int>):Int {
-        var last:Int;
+        var last:Int = -1;
         for (id in taken) 
             last = id;
         return last + 1;
@@ -152,6 +152,7 @@ class Demo implements Core {
     public function join(name:String):Int {
         var newId = takeUnique(players.keys());
         players.set(newId, initialPlayer(name));
+        trace('joining ' + name + ' as id ' + newId);
         return newId;
     }
 

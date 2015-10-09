@@ -16,7 +16,7 @@ class OfflineClient implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
-    private var myId:Int;
+    private var myId:Int = 0;
 
     public function new(core:Core) {
         this.core = core;
