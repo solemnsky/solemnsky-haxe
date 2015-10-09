@@ -22,7 +22,7 @@ Inside the development environment:
 
 solemnsky.control contains a small API of sorts to wrap the program control (control.Control), an event datatype (control.Event), and a scenegraph system (control.Scene), which are implemented through kha in solemnsky.kha, exporting a top-level interface in solemnsky.kha.Manager. This is the extent of the low-ish level boilerplate in the project.
 
-solemnsky.core defines a Core interface representing the logic our game can define (multiplayer interaction, event handling, player listing etc) and definitions of inter-dependant classes that implement it. To turn a Core into a client through the Control system or a standalone server, an interface from solemnsky.interface is used.
+solemnsky.core defines a Core interface representing the logic our game can define (multiplayer interaction, event handling, player listing etc) and definitions of inter-dependant classes that implement it. To turn a Core into a client through the Control system or a standalone server, an interface from solemnsky.ui is used.
 
 ## contact 
 
