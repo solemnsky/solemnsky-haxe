@@ -16,11 +16,27 @@ class Render {
     private static function renderPrim(gr:Graphics
                                       ,prim:DrawPrim) {
         switch (prim) {
-            case DrawCircle(p, r): {
-                gr.fillCircle(p.x, p.y, r);
+            // setting state
+            case SetColor(r, g, b, a): {
+                gr.color = Color.fromBytes(r, g, b, a);
             }
-            case DrawColor(r, g, b, a): {
-                gr.set_color(Color.fromBytes(r, g, b, a));
+
+            case SetFont(font): {
+                gr.font = font;
+            }
+
+            // drawing primitives
+            case DrawCircle(pos, radius): {
+                gr.fillCircle(pos.x, pos.y, radius);
+            }
+
+            case DrawText(pos, align, text): {
+                gr.drawString(text, pos.x, pos.y);
+            }
+
+            // images
+            case DrawImage(pos, image): {
+                gr.drawImage(image, pos.x, pos.y);
             }
         }
     }

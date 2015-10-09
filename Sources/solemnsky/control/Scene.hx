@@ -1,5 +1,7 @@
 package solemnsky.control;
 
+import kha.Font;
+import kha.Image;
 import kha.math.FastMatrix3;
 import kha.math.FastVector2;
 
@@ -8,9 +10,19 @@ import kha.math.FastVector2;
  * A Scene class representing a general scene graph.
  */
 
+enum TextAlign { CenterText; LeftText; RightText; }
+
 enum DrawPrim {
-    DrawCircle(pos:FastVector2, radius:Int);
-    DrawColor (r:Int, g:Int, b:Int, a:Int) ;
+    // setting state
+    SetColor   (r:Int, g:Int, b:Int, a:Int);
+    SetFont    (font:Font);
+
+    // drawing primitives
+    DrawCircle (pos:FastVector2, radius:Int);
+    DrawText   (pos:FastVector2, align:TextAlign, text:String);
+
+    // images
+    DrawImage  (pos:FastVector2, image:Image);
 }
 
 /**

@@ -95,7 +95,7 @@ class DemoControl implements Control {
         var offset = new FastVector2(27, 0);
 
         scene.prims = 
-            [ DrawColor(0, 255, 0, 255)
+            [ SetColor(0, 255, 0, 255)
             , DrawCircle(pos, 20)
             , DrawCircle(pos.add(offset), 7)
             ];

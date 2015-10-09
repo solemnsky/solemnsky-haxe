@@ -1,6 +1,8 @@
 package solemnsky.core.demo;
 
 import haxe.io.Bytes;
+import kha.FontStyle;
+import kha.Loader;
 import kha.math.FastMatrix3;
 import kha.math.FastVector2;
 import solemnsky.control.Event;
@@ -121,14 +123,22 @@ class Demo implements Core {
     private function initGraphics() {
         playerSprite = new Scene();
         playerSprite.prims = // medium red circle
-            [ DrawColor(0, 0, 255, 255)
-            , DrawCircle(new FastVector2(0, 0), 50) ];
+            [ SetColor(0, 0, 255, 255)
+            , DrawCircle(new FastVector2(0, 0), 20) ];
     }
 
     private function renderPlayer(player:Player):Scene {
         var pos = player.position;
         var scene = new Scene();
         scene.children = [playerSprite];
+        scene.prims = [];
+            // [ SetFont(
+            //     Loader.the.loadFont(
+            //         "Arial"
+            //         , new FontStyle(false, false, false)
+            //         , 14)
+            //     )
+            // , DrawText(new FastVector2(20, 0), LeftText, "player") ];
         scene.trans = FastMatrix3.identity()
             .multmat(FastMatrix3.translation(pos.x, pos.y));
         return scene;            
