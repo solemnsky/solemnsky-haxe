@@ -7,6 +7,7 @@ import kha.math.FastMatrix3;
 import kha.math.FastVector2;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
+import nape;
 
 /**
  * solemnsky.core.Demo:

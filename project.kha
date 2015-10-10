@@ -3,7 +3,8 @@
 	"game": {
 		"name": "solemnsky",
 		"width": 1600,
-		"height": 900
+		"height": 900,
+		"antiAliasingSamples": 2
 	},
 	"assets": [
 		{
@@ -22,5 +23,8 @@
 				"Arial14.kravur"
 			]
 		}
+	],
+	"libraries": [
+		"nape"
 	]
 }

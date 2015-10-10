@@ -2,3 +2,6 @@
 	path = Kha
 	url = http://github.com/KTXSoftware/Kha
 	branch = master
+[submodule "Libraries/nape"]
+	path = Libraries/nape
+	url = https://github.com/deltaluca/nape
