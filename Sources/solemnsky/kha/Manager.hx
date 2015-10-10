@@ -50,16 +50,20 @@ class Manager extends Game {
      */ 
     private var profileTicker:Int = 0; // ticks on render
 
-    private var tickStart:Float;
+    private var bufferStart:Float;
     private var renderStart:Float;
-    private var tickSleepStart:Float;
     private var renderSleepStart:Float;
+
+    private var tickStart:Float;
+    private var tickSleepStart:Float;
 
     /**
      * profiles
      */ 
+    private var bufferOn:Array<Int> = [];
     private var renderOn:Array<Int> = [];
     private var renderOff:Array<Int> = [];
+    private var primCount:Array<Int> = [];
     private var tickOn:Array<Int> = [];
     private var tickOff:Array<Int> = [];
 
@@ -77,9 +81,17 @@ class Manager extends Game {
 
         // initialise timings
         var now = Timer.stamp();
-        lastTick = now; lastRender = now; tickStart = now;
-        renderStart = now; renderSleepStart = now; tickSleepStart = now;
-    }
+        bufferStart = now;
+        renderStart = now; 
+        renderSleepStart = now; 
+
+        tickStart = now;
+        tickSleepStart = now;
+        
+        lastTick = now; 
+        lastRender = now; 
+
+   }
 
     /*************************************************************************/
     /* game interface
@@ -103,8 +115,10 @@ class Manager extends Game {
         if (profileTicker > profileUpdate) {
             profileTicker = 0;
             ctrl.profiling(new Profile(
-                renderOn
+                bufferOn
+                , renderOn
                 , renderOff
+                , primCount
                 , tickOn
                 , tickOff
             ));
@@ -174,10 +188,8 @@ class Manager extends Game {
      */ 
     private function controlTick(deltaRaw:Float):Void {
         tickStart = Timer.stamp(); // BEGIN LOGIC
-
         var delta = deltaRaw * 1000;
         ctrl.tick(delta);
-
         pushProfile(Timer.stamp() - tickStart, tickOn); // END LOGIC
     }
 
@@ -185,16 +197,18 @@ class Manager extends Game {
      * called on a render
      */ 
     private function controlRender(frame: Framebuffer, deltaRaw:Float):Void {
-        renderStart = Timer.stamp(); // BEGIN RENDER
+        bufferStart = Timer.stamp(); // BEGIN BUFFER
+        var buffer = ctrl.render(delta);
+        now = Timer.stamp();
+        pushProfile(now - bufferStart, bufferOn); // END BUFFER
 
+        renderStart = now // BEGIN RENDER
         var delta = deltaRaw * 1000;
-
-        Render.render(g, ctrl.render(delta)); // render to backbuffer
-
+        var prims = Render.render(g, buffer); // render to backbuffer
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
         endRender(frame);
-
         pushProfile(Timer.stamp() - renderStart, renderOn); // END RENDER
+        pushProfile(prims, primCount)
     }
 }

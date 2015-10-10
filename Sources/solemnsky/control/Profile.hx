@@ -10,26 +10,28 @@ package solemnsky.control;
  * Describes a series of intervals recorded during the execution
  * of an application.
  */
-typedef IntervalData = {
-    var average:Int; // all values in milliseconds
+typedef SampleData = {
+    var average:Int; 
     var min:Int;
     var max:Int;
 }
 
- class Profile {
-    public var renderOn:IntervalData;
-    public var renderOff:IntervalData;
-    public var tickOn:IntervalData;
-    public var tickOff:IntervalData;
+class Profile {
+    public var bufferOn:SampleData;
+    public var renderOn:SampleData;
+    public var renderOff:SampleData;
+    public var primCount:SampleData;
 
-    static function dataFromArray(a:Array<Int>):IntervalData {
+    public var tickOn:SampleData;
+    public var tickOff:SampleData;
+
+    static function dataFromArray(a:Array<Int>):SampleData {
         var sum:Int = 0;
         var min:Int = a[0];
         var max:Int = a[0];
 
         for (i in a) {
             sum += i;
-            // FIXME
             min = Math.round(Math.min(min, i));
             max = Math.round(Math.max(max, i));
         }
@@ -40,8 +42,10 @@ typedef IntervalData = {
         }
     }
 
-    public function new(renderOn:Array<Int>
+    public function new(bufferOn:Array<Int>
+                       ,renderOn:Array<Int>
                        ,renderOff:Array<Int>
+                       ,primCount:Array<Int>
                        ,tickOn:Array<Int>
                        ,tickOff:Array<Int>):Void {
         this.renderOn  = dataFromArray(renderOn); 
@@ -50,16 +54,19 @@ typedef IntervalData = {
         this.tickOff   = dataFromArray(tickOff);
     }
 
-    private static function printInterval(i:IntervalData):String {
+    private static function printInterval(i:SampleData):String {
         return i.min + 'ms - ' + i.max + 'ms ~ ' + i.average + 'ms';
     }
 
     public function print():String {
         return ''
-            + 'RENDER on/off: ' + printInterval(renderOn) 
-            + ' / ' + printInterval(renderOff)
-            + '; TICK on/off: ' + printInterval(tickOn) 
-            + ' / ' + printInterval(tickOff);
+            + 'buffer/render/sleep/prims;tick/sleep' 
+            + printInterval(bufferOn) + '/'
+            + printInterval(renderOn) + '/'
+            + printInterval(renderOff) + '/'
+            + printInterval(primCount) + ';'
+            + printInterval(tickOn) + '/'
+            + printInterval(tickOff) + '/';
     }
 
  }
