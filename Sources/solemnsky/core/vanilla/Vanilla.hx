@@ -63,11 +63,16 @@ class Vanilla {
 
     private function mutateByEvent(player:Player, event:Event):Player {
         switch (event) {
-            case CharKey(key, state): {
-                if (state) {
-                    trace(key);
+            case CharKey(char, state): {
+                switch (char){
+                    case 'i': ControlUp(state);
+                    case 'j': ControlLeft(state);
+                    case 'l': ControlRight(state);
+                    case 'k': ControlDown(state);
+                    default: {}
                 }
             }
+            default: {}
         }
         return player;
     }

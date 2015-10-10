@@ -171,7 +171,7 @@ class Manager extends Game {
     }
 
     override public function keyDown(key, char):Void {
-        if (key == null) {
+        if (char != "") {
             ctrl.handle(CharKey(char, true));
         } else {
             ctrl.handle(SpecialKey(key, true));
@@ -179,7 +179,7 @@ class Manager extends Game {
     }
 
     override public function keyUp(key, char):Void {
-        if (key == null) {
+        if (char != null) {
             ctrl.handle(CharKey(char, false));
         } else {
             ctrl.handle(SpecialKey(key, false));

@@ -45,7 +45,7 @@ class OfflineClient implements Control {
     }
 
     public function handle(e:Event):Void {
-        core.acceptEvent(myId, e);
+        core.handle(myId, e);
     }
 
     public function hasEnded():Bool {

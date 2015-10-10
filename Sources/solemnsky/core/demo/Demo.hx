@@ -84,6 +84,11 @@ class Demo implements Core {
             case MouseMove(x, y): {
                 player.position = new FastVector2(x, y);
             }
+            case CharKey(char, state): {
+                if (state)
+                    trace(char);
+            }
+            default: {}
         }
         return player;
     }
