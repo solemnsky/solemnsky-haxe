@@ -31,7 +31,20 @@ class Render {
             }
 
             case DrawText(pos, align, text): {
-                gr.drawString(text, pos.x, pos.y);
+                var xPos:Float = pos.x;
+                var textWidth:Float;
+                switch (align) {
+                    case CenterText: {
+                        textWidth = gr.font.stringWidth(text);
+                        xPos -= textWidth / 2;
+                    }
+                    case RightText: {
+                        textWidth = gr.font.stringWidth(text);
+                        xPos += textWidth;
+                    }
+                    default: {}
+                }
+                gr.drawString(text, xPos, pos.y);
             }
 
             // images
