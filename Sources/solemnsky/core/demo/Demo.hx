@@ -36,7 +36,6 @@ class Demo implements Core {
     /* initialisation and modeId
     /*************************************************************************/
 
-    // TODO: rationalise why this isn't the same as new()
     public function init() {
         initGraphics();
     }
@@ -176,7 +175,7 @@ class Demo implements Core {
     /*************************************************************************/
 
     public function clientAssert(id:Int):Dynamic {
-        return null;
+        return null; 
     }
     public function serverAssert():Dynamic {
         return null;
