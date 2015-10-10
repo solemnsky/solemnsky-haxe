@@ -1,6 +1,7 @@
 package solemnsky.core.vanilla;
 
-import nape.nape.Space;
+import nape.space.Space;
+import nape.geom.Vector2;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -13,28 +14,44 @@ class Vanilla {
     /*************************************************************************/
 
     private var players:Map<Int, Player>;
-    private var space;
+    private var space:Space;
 
-    /
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
 
     public function init():Void {
-
+        space = new Space();
+        space.gravity = new Vector2
     }
+
     public var modeId:String;
 
     /*************************************************************************/
     /* simulation
     /*************************************************************************/
 
-    public function acceptEvent(id:Int, event:Event):Void; 
-    public function tick(delta:Float):Array<String>;
+    public function acceptEvent(id:Int, event:Event):Void {
+        
+    }
+    
+    public function tick(delta:Float):Array<String> {
+        for (player in players.iterator()) {
+            player.tick();
+        }
+    }
 
-    public function listPlayers():Array<String>;
-    public function hasEnded():Bool;
+    public function listPlayers():Array<String> {
+        var names = [];
+        for (player in players.iterator()) {
+            names.push(player.getTangible().name);
+        }
+        return names;
+    }
+    public function hasEnded():Bool {
+        return false;
+    }
 
     /*************************************************************************/
     /* rendering
