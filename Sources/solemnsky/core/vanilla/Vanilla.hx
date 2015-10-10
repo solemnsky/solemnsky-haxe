@@ -12,14 +12,18 @@ class Vanilla {
     /* variables
     /*************************************************************************/
 
-    private var players;
+    private var players:Map<Int, Player>;
     private var space;
+
+    /
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
 
-    public function init():Void;
+    public function init():Void {
+
+    }
     public var modeId:String;
 
     /*************************************************************************/
