@@ -15,7 +15,7 @@
 	],
 	"rooms": [
 		{
-			"name": "level1",
+			"name": "main",
 			"parent": null,
 			"neighbours": [],
 			"assets": [

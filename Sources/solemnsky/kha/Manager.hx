@@ -1,9 +1,12 @@
 package solemnsky.kha;
 
 import haxe.Timer;
+import kha.Configuration;
+import kha.LoadingScreen;
 import kha.Framebuffer;
 import kha.Game;
 import kha.Image;
+import kha.Loader;
 import kha.Scaler;
 import kha.Sys;
 import kha.graphics2.Graphics;
@@ -90,7 +93,6 @@ class Manager extends Game {
         
         lastTick = now; 
         lastRender = now; 
-
    }
 
     /*************************************************************************/
@@ -102,6 +104,10 @@ class Manager extends Game {
 
         backbuffer = Image.createRenderTarget(1600, 900);
         g = backbuffer.g2;
+
+        Configuration.setScreen(new LoadingScreen());
+        Loader.the.loadRoom("main", 
+            function(){Configuration.setScreen(this);});
     }
 
 
