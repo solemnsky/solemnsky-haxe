@@ -10,6 +10,14 @@ import nape.phys.BodyType;
  * Player object, with physics wrapper methods and flight mechanics.
  */
 
+// toggles
+enum ControlEvent {
+    ControlRight(state:Bool);
+    ControlLeft(state:Bool);
+    ControlUp(state:Bool);
+    ControlDown(state:Bool);
+}
+
 typedef Movement = {
     right:Bool; left:Bool;
     up:Bool; down:Bool;
@@ -74,11 +82,29 @@ class Player {
     }
 
     /*************************************************************************/
-    /* ticking
+    /* simulation
     /*************************************************************************/
+
+    public function handle(event:ControlEvent):Void {
+        switch (event){
+            case ControlRight(state): {
+                movement.right = state;
+            }
+            case ControlLeft(state): {
+                movement.left = state;
+            }
+            case ControlUp(state): {
+                movement.up = state;
+            }
+            case ControlDown(state): {
+                movement.down = state;
+            }
+        }
+    }
 
     public function tick():Void {
         // stub
     }
+
 
 }

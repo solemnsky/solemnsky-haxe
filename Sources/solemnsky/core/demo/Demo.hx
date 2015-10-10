@@ -88,7 +88,7 @@ class Demo implements Core {
         return player;
     }
 
-    public function acceptEvent(id:Int, event:Event):Void {
+    public function handle(id:Int, event:Event):Void {
         function mutate(player) {
             return mutateByEvent(player, event);
         }

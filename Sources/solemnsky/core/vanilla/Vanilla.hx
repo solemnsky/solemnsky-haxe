@@ -29,17 +29,63 @@ class Vanilla {
     public var modeId:String;
 
     /*************************************************************************/
+    /* top-level helper functions
+    /*************************************************************************/
+
+    /**
+     * Given a transformation function and an id to target, execute
+     * the transformation on the player with that id, potentially
+     * failing and returning false.
+     */
+    private function doForPlayer(f:Player->Player, id:Int):Bool {
+        var player = players.get(id);
+        if (player != null) {
+            f(player);
+            return true;                    
+        }
+        return false;
+    }
+
+    /**
+     * Function used to allocate new player IDs.
+     * There are several ways of doing this, this is the more obvious one.
+     */
+    private function takeUnique(taken:Iterator<Int>):Int {
+        var last:Int = -1;
+        for (id in taken) 
+            last = id;
+        return last + 1;
+    }
+
+    /*************************************************************************/
     /* simulation
     /*************************************************************************/
 
-    public function acceptEvent(id:Int, event:Event):Void {
-        
+    private function mutateByEvent(player:Player, event:Event):Player {
+        switch (event) {
+            case CharKey(key, state): {
+                if (state) {
+                    trace(key);
+                }
+            }
+        }
+        return player;
     }
-    
+
+    public function handle(id:Int, event:Event):Void {
+        function mutate(player) {
+            return mutateByEvent(player, event);
+        }
+
+        if (! doForPlayer(mutate, id)) 
+            trace('no such player ' + id + ' to accept event!');
+    }
+
     public function tick(delta:Float):Array<String> {
         for (player in players.iterator()) {
             player.tick();
         }
+        return [];
     }
 
     public function listPlayers():Array<String> {
@@ -49,6 +95,7 @@ class Vanilla {
         }
         return names;
     }
+
     public function hasEnded():Bool {
         return false;
     }
@@ -63,7 +110,9 @@ class Vanilla {
     /* discrete networking
     /*************************************************************************/
 
-    public function join(name:String):Int;
+    public function join(name:String):Int {
+
+    }
     public function quit(id:Int):Void;
 
     /*************************************************************************/
