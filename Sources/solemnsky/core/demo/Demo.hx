@@ -136,12 +136,7 @@ class Demo implements Core {
         var scene = new Scene();
         scene.children = [playerSprite];
         scene.prims = 
-            [ SetFont(
-                Loader.the.loadFont(
-                    "Arial"
-                    , new FontStyle(false, false, false)
-                    , 14)
-                )
+            [ SetFont("Arial", 14)
             , SetColor(0, 255, 0, 255)
             , DrawText(new FastVector2(0, 20), CenterText, "player") ];
         scene.trans = FastMatrix3.identity()
@@ -158,7 +153,6 @@ class Demo implements Core {
 
         return scene;
     }
-
 
     /*************************************************************************/
     /* discrete networking

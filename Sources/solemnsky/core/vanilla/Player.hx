@@ -65,7 +65,9 @@ class Player {
     public function new(parent:Vanilla, name:String, position:Vector2):Void {
         this.parent = parent;
         this.name = name;
-        this.body = new Body(BodyType.DYNAMIC, position);
+
+        body = new Body(BodyType.DYNAMIC, position);
+        body.addShape(Circle(Tuning.playerRadius));
     }
 
     /*************************************************************************/
@@ -103,8 +105,6 @@ class Player {
     }
 
     public function tick():Void {
-        // stub
+        // stub 
     }
-
-
 }

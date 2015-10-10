@@ -15,7 +15,7 @@ enum TextAlign { CenterText; LeftText; RightText; }
 enum DrawPrim {
     // setting state
     SetColor   (r:Int, g:Int, b:Int, a:Int);
-    SetFont    (font:Font);
+    SetFont    (name:String, size:Int);
 
     // drawing primitives
     DrawCircle (pos:FastVector2, radius:Int);

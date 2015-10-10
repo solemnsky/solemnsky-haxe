@@ -1,6 +1,8 @@
 package solemnsky.kha;
 
 import kha.Color;
+import kha.FontStyle;
+import kha.Loader;
 import kha.graphics2.Graphics;
 import kha.math.FastMatrix3;
 import solemnsky.control.Scene;
@@ -21,8 +23,9 @@ class Render {
                 gr.color = Color.fromBytes(r, g, b, a);
             }
 
-            case SetFont(font): {
-                gr.font = font;
+            case SetFont(name, size): {
+                gr.font = Loader.the.loadFont(
+                    name, new FontStyle(false, false, false), size);
             }
 
             // drawing primitives

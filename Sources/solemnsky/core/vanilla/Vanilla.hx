@@ -109,16 +109,29 @@ class Vanilla {
     /* rendering
     /*************************************************************************/
     
-    public function render(delta:Float):Scene;
+    public function render(delta:Float):Scene {
+        var scene = new Scene();
+        scene.prims = [
+            SetFont("Arial", 12)
+            , DrawText(new kha.math.FastVector2(0, 0), CenterText
+                "I need to implement this ._.")
+        ] 
+        return scene;
+    }
 
     /*************************************************************************/
     /* discrete networking
     /*************************************************************************/
 
     public function join(name:String):Int {
-
+        var newId = takeUnique(players.keys());
+        players.set(newId, Player(this, name, new Vector2(0, 0)));
+        return newId;
     }
-    public function quit(id:Int):Void;
+
+    public function quit(id:Int):Void {
+        players.remove(id);
+    }
 
     /*************************************************************************/
     /* continuous networking
