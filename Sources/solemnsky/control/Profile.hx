@@ -48,23 +48,30 @@ class Profile {
                        ,primCount:Array<Int>
                        ,tickOn:Array<Int>
                        ,tickOff:Array<Int>):Void {
+        this.bufferOn  = dataFromArray(bufferOn);
         this.renderOn  = dataFromArray(renderOn); 
         this.renderOff = dataFromArray(renderOff);
+        this.primCount = dataFromArray(primCount);
         this.tickOn    = dataFromArray(tickOn); 
         this.tickOff   = dataFromArray(tickOff);
     }
 
     private static function printInterval(i:SampleData):String {
-        return i.min + 'ms - ' + i.max + 'ms ~ ' + i.average + 'ms';
+        return i.min + 'ms-' + i.max + 'ms~' + i.average + 'ms';
+    }
+
+    private static function printValue(i:SampleData):String {
+        return i.min + '-'  + i.max + '~' + i.average;
     }
 
     public function print():String {
         return ''
-            + 'buffer/render/sleep/prims;tick/sleep' 
+            + 'buffer/render/sleep/prims:'
             + printInterval(bufferOn) + '/'
             + printInterval(renderOn) + '/'
             + printInterval(renderOff) + '/'
-            + printInterval(primCount) + ';'
+            + printValue(primCount) + ';'
+            + 'tick/sleep:'
             + printInterval(tickOn) + '/'
             + printInterval(tickOff) + '/';
     }

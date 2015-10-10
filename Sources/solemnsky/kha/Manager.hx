@@ -179,6 +179,14 @@ class Manager extends Game {
         } 
     }
 
+    private function 
+        pushProfileValue(point:Int, profile:Array<Int>):Void {
+        profile.push(point);
+        if (profile.length > profileWindow) {
+            profile.shift(); 
+        } 
+    }
+
     /*************************************************************************/
     /* per-operation logic
     /*************************************************************************/
@@ -198,17 +206,17 @@ class Manager extends Game {
      */ 
     private function controlRender(frame: Framebuffer, deltaRaw:Float):Void {
         bufferStart = Timer.stamp(); // BEGIN BUFFER
+        var delta = deltaRaw * 1000;
         var buffer = ctrl.render(delta);
-        now = Timer.stamp();
+        var now = Timer.stamp();
         pushProfile(now - bufferStart, bufferOn); // END BUFFER
 
-        renderStart = now // BEGIN RENDER
-        var delta = deltaRaw * 1000;
+        renderStart = now; // BEGIN RENDER
         var prims = Render.render(g, buffer); // render to backbuffer
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
         endRender(frame);
         pushProfile(Timer.stamp() - renderStart, renderOn); // END RENDER
-        pushProfile(prims, primCount)
+        pushProfileValue(prims, primCount);
     }
 }

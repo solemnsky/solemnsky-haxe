@@ -44,7 +44,9 @@ class Render {
     public static function renderNoInit(pTrans:FastMatrix3 // parent
                                        ,pOpacity:Float // parent
                                        ,g:Graphics
-                                       ,scene:Scene) {
+                                       ,scene:Scene):Int {
+        var prims = scene.prims.length;
+
         var resultTrans = pTrans.multmat(scene.trans);
         var resultOpacity = pOpacity * scene.alpha;
 
@@ -54,13 +56,16 @@ class Render {
             renderPrim(g, prim);
         }
         for (child in scene.children){
-            renderNoInit(resultTrans, resultOpacity, g, child);
+            prims += renderNoInit(resultTrans, resultOpacity, g, child);
         }
+        
+        return prims;
     }
 
-    public static function render(g:Graphics, scene:Scene) {
+    public static function render(g:Graphics, scene:Scene):Int {
         g.begin(true, 0xff0000);
-        renderNoInit(FastMatrix3.identity(), 1, g, scene);
+        var prims = renderNoInit(FastMatrix3.identity(), 1, g, scene);
         g.end();
+        return prims;
     }
 }
