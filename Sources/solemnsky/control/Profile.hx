@@ -7,7 +7,7 @@ package solemnsky.control;
  */
 
 /**
- * Describes a series of intervals recorded during the execution
+ * Describes a series of integers recorded during the execution
  * of an application.
  */
 typedef SampleData = {

@@ -5,6 +5,22 @@
 		"width": 1600,
 		"height": 900
 	},
-	"assets": [],
-	"rooms": []
+	"assets": [
+		{
+			"type": "font",
+			"file": "arial.ttf",
+			"size": 14,
+			"name": "Arial"
+		}
+	],
+	"rooms": [
+		{
+			"name": "level1",
+			"parent": null,
+			"neighbours": [],
+			"assets": [
+				"Arial14.kravur"
+			]
+		}
+	]
 }

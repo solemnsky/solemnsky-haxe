@@ -131,14 +131,14 @@ class Demo implements Core {
         var pos = player.position;
         var scene = new Scene();
         scene.children = [playerSprite];
-        scene.prims = [];
-            // [ SetFont(
-            //     Loader.the.loadFont(
-            //         "Arial"
-            //         , new FontStyle(false, false, false)
-            //         , 14)
-            //     )
-            // , DrawText(new FastVector2(20, 0), LeftText, "player") ];
+        scene.prims = 
+            [ SetFont(
+                Loader.the.loadFont(
+                    "Arial"
+                    , new FontStyle(false, false, false)
+                    , 14)
+                )
+            , DrawText(new FastVector2(20, 0), LeftText, "player") ];
         scene.trans = FastMatrix3.identity()
             .multmat(FastMatrix3.translation(pos.x, pos.y));
         return scene;            
