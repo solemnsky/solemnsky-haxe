@@ -66,13 +66,18 @@ class Profile {
 
     public function print():String {
         return ''
-            + 'buffer/render/sleep/prims:'
+            + 'buff:'
             + printInterval(bufferOn) + '/'
+            + 'rndr:'
             + printInterval(renderOn) + '/'
+            + 'rslp:'
             + printInterval(renderOff) + '/'
-            + printValue(primCount) + ';'
-            + 'tick/sleep:'
+            + '\n'
+            + 'prim:'
+            + printValue(primCount) + '/'
+            + 'tick:'
             + printInterval(tickOn) + '/'
+            + 'tslp:'
             + printInterval(tickOff) + '/';
     }
 
