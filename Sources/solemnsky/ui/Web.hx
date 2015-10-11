@@ -7,12 +7,12 @@ import solemnsky.control.Profile;
 import solemnsky.core.Core;
 
 /**
- * solemnsky.ui.OfflineClient: 
- * Transforms a Core object into a Control object, implementing only offline 
- * functionalities (runs an offline demo).
+ * solemnsky.ui.Web: 
+ * Web client; implements the Control spec when constructed with a Core.
+ * Uses the web js API.
  */
 
-class OfflineClient implements Control {
+class Web implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];

@@ -1,12 +1,14 @@
 package;
 
-import kha.Starter;
 import kha.Game;
+import kha.Starter;
 import solemnsky.control.Control;
-import solemnsky.core.demo.Demo;
 import solemnsky.core.Core;
-import solemnsky.ui.OfflineClient;
+import solemnsky.core.demo.Demo;
 import solemnsky.kha.Manager;
+import solemnsky.ui.Web;
+import solemnsky.ui.Server;
+import solemnsky.ui.Native;
 
 /**
  * solemnsky.Main: 
@@ -16,21 +18,23 @@ import solemnsky.kha.Manager;
 
 class Main {
   public static function main() {
-    // STEP ONE: form a control object
 
-        // our Core object is a Demo
     var core:Core = new Demo(); 
-        // we're running the Core object with
-        // the OfflineClient interface, to produce
-        // a Control object
-    var control:Control = new OfflineClient(core);
 
-    // STEP TWO: run the Control object
-
+    // run web client iff on the web platform
+    var control:Control = new Web(core);
     var starter = new Starter(); 
-        // Manager turns the control object into a Game
     var manager:Game = new Manager(control, 60); 
+    starter.start(manager); 
 
-    starter.start(manager); // this runs all that shit
+    // run native client iff on the native platform
+    var control:Control = new Native(core);
+    var starter = new Starter(); 
+    var manager:Game = new Manager(control, 60); 
+    starter.start(manager); 
+
+    // run server iff on the node platform
+    var server = new Server();
+
   }
 }
