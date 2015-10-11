@@ -19,6 +19,7 @@ enum DrawPrim {
 
     // drawing primitives
     DrawCircle (pos:FastVector2, radius:Int);
+    DrawRect   (topLeft:FastVector2, bottomRight:FastVector2);
     DrawText   (pos:FastVector2, align:TextAlign, text:String);
 
     // images

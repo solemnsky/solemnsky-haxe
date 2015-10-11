@@ -33,6 +33,15 @@ class Render {
                 gr.fillCircle(pos.x, pos.y, radius);
             }
 
+            case DrawRect(topLeft, bottomRight): {
+                var width  = bottomRight.x - topLeft.x; 
+                var height = bottomRight.y - topLeft.y;
+                // var center = 
+                //     { x: (bottomRight.x + topLeft.x) / 2
+                //     , y: (bottomRight.y + topLeft.y) / 2 }
+                gr.fillRect(topLeft.x, topLeft.y, width, height);
+            }
+
             case DrawText(pos, align, text): {
                 var xPos:Float = pos.x;
                 var textWidth:Float;
@@ -79,7 +88,7 @@ class Render {
     }
 
     public static function render(g:Graphics, scene:Scene):Int {
-        g.begin(true, 0x000000);
+        g.begin(true, 0xffffff);
         var prims = renderNoInit(FastMatrix3.identity(), 1, g, scene);
         g.end();
         return prims;

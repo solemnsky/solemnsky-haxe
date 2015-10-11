@@ -147,6 +147,10 @@ class Demo implements Core {
     public function render(delta:Float):Scene {
         var scene = new Scene();
 
+        scene.prims = 
+            [ SetColor(0, 0, 0, 255)
+            , DrawRect(new FastVector2(0, 0), new FastVector2(1600, 900)) ];
+
         for (player in players.iterator()) {
             scene.children.push(renderPlayer(player));
         }

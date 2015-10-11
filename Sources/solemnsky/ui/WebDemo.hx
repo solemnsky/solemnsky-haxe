@@ -14,7 +14,7 @@ import kha.Loader;
  * Uses the web js API.
  */
 
-class WebGame implements Control {
+class WebDemo implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
@@ -55,7 +55,7 @@ class WebGame implements Control {
     }
 }
 
-class WebDemo implements Control {
+class WebTest implements Control {
     public function new(core:Core) {
     }
 
