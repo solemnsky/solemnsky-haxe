@@ -12,7 +12,7 @@ import solemnsky.core.Core;
  * Uses the web js API.
  */
 
-class Web implements Control {
+class WebGame implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
@@ -50,5 +50,31 @@ class Web implements Control {
 
     public function hasEnded():Bool {
         return core.hasEnded();
+    }
+}
+
+class Web implements Control {
+    public function new(core:Core) {
+    }
+
+    /*************************************************************************/
+    /* Control interface
+    /*************************************************************************/
+
+    public function tick(delta:Float):Void {
+    }
+
+    public function render(delta:Float):Scene {
+        return new Scene();
+    }
+
+    public function profiling(profile:Profile):Void {
+    }
+
+    public function handle(e:Event):Void {
+    }
+
+    public function hasEnded():Bool {
+        return false;
     }
 }
