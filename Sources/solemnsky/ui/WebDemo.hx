@@ -5,9 +5,11 @@ import solemnsky.control.Event;
 import solemnsky.control.Scene;
 import solemnsky.control.Profile;
 import solemnsky.core.Core;
+import kha.math.FastVector2;
+import kha.Loader;
 
 /**
- * solemnsky.ui.Web: 
+ * solemnsky.ui.WebDemo: 
  * Web client; implements the Control spec when constructed with a Core.
  * Uses the web js API.
  */
@@ -53,7 +55,7 @@ class WebGame implements Control {
     }
 }
 
-class Web implements Control {
+class WebDemo implements Control {
     public function new(core:Core) {
     }
 
@@ -65,7 +67,12 @@ class Web implements Control {
     }
 
     public function render(delta:Float):Scene {
-        return new Scene();
+        var scene = new Scene();
+        var image = Loader.the.getImage("title");
+        scene.prims = [
+            DrawImage(new FastVector2(0, 0), image)
+        ];
+        return scene;
     }
 
     public function profiling(profile:Profile):Void {

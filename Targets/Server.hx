@@ -1,7 +1,7 @@
 package;
 
 import solemnsky.core.demo.Demo;
-import solemnsky.ui.Server;
+import solemnsky.ui.NodeServer;
 
 /**
  * Native
@@ -11,6 +11,6 @@ import solemnsky.ui.Server;
 class Main {
   public static function main() {
     var core:Core = new Demo(); 
-    var server = new Server(core);
+    var server = new NodeServer(core);
   }
 }

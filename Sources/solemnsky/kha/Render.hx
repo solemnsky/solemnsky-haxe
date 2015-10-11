@@ -79,7 +79,7 @@ class Render {
     }
 
     public static function render(g:Graphics, scene:Scene):Int {
-        g.begin(true, 0xff0000);
+        g.begin(true, 0x000000);
         var prims = renderNoInit(FastMatrix3.identity(), 1, g, scene);
         g.end();
         return prims;

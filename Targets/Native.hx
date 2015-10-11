@@ -6,7 +6,7 @@ import solemnsky.control.Control;
 import solemnsky.core.Core;
 import solemnsky.core.demo.Demo;
 import solemnsky.kha.Manager;
-import solemnsky.ui.Native;
+import solemnsky.ui.NativeClient;
 
 /**
  * Native
@@ -16,7 +16,7 @@ import solemnsky.ui.Native;
 class Main {
   public static function main() {
     var core:Core = new Demo(); 
-    var control:Control = new Native(core);
+    var control:Control = new NativeClient(core);
     var starter = new Starter(); 
     var manager:Game = new Manager(control, 60); 
     starter.start(manager); 

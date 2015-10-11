@@ -13,6 +13,11 @@
 			"size": 14,
 			"name": "Arial"
 		}
+		,{
+			"type": "image",
+			"file": "title.png",
+			"name": "title"
+		}
 	],
 	"rooms": [
 		{
@@ -20,7 +25,8 @@
 			"parent": null,
 			"neighbours": [],
 			"assets": [
-				"Arial14.kravur"
+				"Arial14.kravur",
+				"title"
 			]
 		}
 	],

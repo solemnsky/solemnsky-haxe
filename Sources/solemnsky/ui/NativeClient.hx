@@ -7,12 +7,12 @@ import solemnsky.control.Profile;
 import solemnsky.core.Core;
 
 /**
- * solemnsky.ui.Native: 
+ * solemnsky.ui.NativeClient: 
  * Native client; implements the Control spec when constructed with a Core.
  * Uses the native cpp API.
  */
 
-class Native implements Control {
+class NativeClient implements Control {
     private var core:Core;
     private var notes:Array<String> = [];
     private var myId:Int = 0;
