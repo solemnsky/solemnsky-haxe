@@ -1,4 +1,5 @@
-
+*.swp
+*.swo
 /build
 /korefile.js
 /project.kha
