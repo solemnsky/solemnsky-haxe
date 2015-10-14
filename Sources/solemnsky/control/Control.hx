@@ -106,7 +106,7 @@ class DemoControl implements Control {
         return scene;
     }
 
-    public function render(delta:Float):Scene {
+    public function renderFront(delta:Float):Scene {
         var scene = new Scene();
 
         var offset  = new FastVector2(40, -40);
@@ -136,10 +136,29 @@ class DemoControl implements Control {
             pos = pos.sub(offset);
         }
 
+        scene.prims = [
+            SetColor(0, 0, 0, 255)
+            , DrawRect(new FastVector2(0, 0), new FastVector2(1600, 900))
+            , DrawRect(new FastVector2(0, 0), new FastVector2(-1600, -900))
+        ];
+
         scene.trans = FastMatrix3.identity()
             .multmat(FastMatrix3.translation(x, y))
             .multmat(FastMatrix3.rotation(-time / 1200))
             ;
+        return scene;
+    }
+
+    public function render(delta:Float):Scene {
+        var scene = new Scene();
+
+        scene.children = [renderFront(delta)];
+
+        scene.prims = [
+            SetColor(0, 0, 255, 255)
+            , DrawRect(new FastVector2(0, 0), new FastVector2(1600, 900))
+        ];
+
         return scene;
     }
 

@@ -35,6 +35,9 @@ class Manager extends Game {
     private var backbuffer:Image;
     private var g:Graphics;
 
+    private var realHeight:Float;
+    private var realWidth:Float;
+
     /**
      * profiling settings
      */ 
@@ -93,6 +96,19 @@ class Manager extends Game {
         
         lastTick = now; 
         lastRender = now; 
+
+        // html5 behaving properly
+        #if js
+        // remove those mesky margins
+        var doc = js.Browser.document;
+        doc.body.style.margin = "0px";
+        doc.getElementsByTagName("p").item(0).style.margin = "0px";
+
+        // resize
+        resize(100, 100);
+
+        // set resize callback
+        #end
    }
 
     /*************************************************************************/
@@ -241,4 +257,18 @@ class Manager extends Game {
         pushProfile(Timer.stamp() - renderStart, renderOn); // END RENDER
         pushProfileValue(prims, primCount);
     }
+
+    /*************************************************************************/
+    /* resizing
+    /*************************************************************************/
+
+    #if js
+    private function resize(w:Float, h:Float):Void {
+        trace('resizing to '+w+' '+h);       
+
+        this.realWidth  = w;
+        this.realHeight = h;
+    }
+    #end
+
 }

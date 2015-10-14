@@ -15,8 +15,8 @@ import solemnsky.ui.WebDemo;
 
 class Main {
   public static function main() {
-    var core:Core = new Demo(); 
-    var control:Control = new WebDemo(core);
+    // var core:Core = new Demo(); 
+    var control:Control = new DemoControl(); // new WebDemo(core);
     var starter = new Starter(); 
     var manager:Game = new Manager(control, 60); 
     starter.start(manager); 
