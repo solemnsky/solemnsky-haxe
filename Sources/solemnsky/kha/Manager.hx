@@ -102,12 +102,12 @@ class Manager extends Game {
         // remove those mesky margins
         var doc = js.Browser.document;
         doc.body.style.margin = "0px";
+        doc.body.style.overflow = "hidden";
         doc.getElementsByTagName("p").item(0).style.margin = "0px";
 
-        // resize
-        resize(100, 100);
-
         // set resize callback
+        resize();
+        js.Browser.window.onresize = resize;
         #end
    }
 
@@ -182,7 +182,21 @@ class Manager extends Game {
     }
 
     override public function mouseMove(x:Int, y:Int):Void {
-        var event:Event = MouseMove(x, y);
+        var event:Event;
+        if (realWidth/realHeight > 16/9) {
+            trace(x,y);
+            var factor = 900 / realHeight;
+            event = MouseMove(
+                x * factor + (1600 - realWidth * factor) / 2
+                , y * factor
+            );
+        } else {
+            var factor = 1600 / realWidth;
+            event = MouseMove(
+                x * factor
+                , y * factor + (900 - realHeight * factor) / 2
+            );
+        }
         ctrl.handle(event);
     }
 
@@ -263,11 +277,16 @@ class Manager extends Game {
     /*************************************************************************/
 
     #if js
-    private function resize(w:Float, h:Float):Void {
-        trace('resizing to '+w+' '+h);       
+    private function resize():Void {
+        var win = js.Browser.window;
+        var canvas = 
+            js.Browser.document.getElementsByTagName("canvas").item(0);
 
-        this.realWidth  = w;
-        this.realHeight = h;
+        var w = win.innerWidth; var h = win.innerHeight;
+        canvas.outerHTML = 
+            '<canvas id="khanvas" height="'+h+'" width="'+w+'"></canvas>';
+
+        this.realWidth = w; this.realHeight = h;
     }
     #end
 

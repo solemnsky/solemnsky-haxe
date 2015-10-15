@@ -80,8 +80,8 @@ class EmptyControl implements Control {
  */
 class DemoControl implements Control {
     private var time:Float = 0;
-    private var x = 0;
-    private var y = 0;
+    private var x:Float = 0;
+    private var y:Float = 0;
 
     public function new():Void {}
 

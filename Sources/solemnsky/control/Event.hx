@@ -8,7 +8,7 @@ import kha.Key;
  */
 
 enum Event {
-    MouseMove(x:Int, y:Int);
+    MouseMove(x:Float, y:Float);
     CharKey(char:String, state:Bool);
     SpecialKey(key:Key, state:Bool);
 }
