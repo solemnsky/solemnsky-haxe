@@ -3,7 +3,7 @@
 
 all: native-build web-build server-build clean-targets
 
-clean-build:
+clean: clean-targets
 	# clean build results
 	rm -rf ./build
 	rm -f ./korefile.js

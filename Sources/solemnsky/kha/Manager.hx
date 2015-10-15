@@ -184,7 +184,6 @@ class Manager extends Game {
     override public function mouseMove(x:Int, y:Int):Void {
         var event:Event;
         if (realWidth/realHeight > 16/9) {
-            trace(x,y);
             var factor = 900 / realHeight;
             event = MouseMove(
                 x * factor + (1600 - realWidth * factor) / 2
