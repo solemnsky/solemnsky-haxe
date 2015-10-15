@@ -283,8 +283,8 @@ class Manager extends Game {
             js.Browser.document.getElementsByTagName("canvas").item(0);
 
         var w = win.innerWidth; var h = win.innerHeight;
-        canvas.outerHTML = 
-            '<canvas id="khanvas" height="'+h+'" width="'+w+'"></canvas>';
+        canvas.setAttribute('width', w+'');
+        canvas.setAttribute('height', h+'');
 
         this.realWidth = w; this.realHeight = h;
     }
