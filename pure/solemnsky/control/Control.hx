@@ -1,10 +1,6 @@
 package solemnsky.control;
 
-import kha.Framebuffer;
-import kha.graphics2.Graphics;
-
-import kha.math.FastVector2;
-import kha.math.FastMatrix3;
+import math.Vector;
 
 /**
  * solemnsky.control.Control:
@@ -89,10 +85,10 @@ class DemoControl implements Control {
         time += delta;
     }
 
-    private function renderElem(centerPos:FastVector2):Scene {
+    private function renderElem(centerPos:Vector):Scene {
         var scene = new Scene();
-        var pos = new FastVector2(0, 0);
-        var offset = new FastVector2(27, 0);
+        var pos = new Vector(0, 0);
+        var offset = new Vector(27, 0);
 
         scene.prims = 
             [ SetColor(0, 255, 0, 255)
@@ -109,28 +105,28 @@ class DemoControl implements Control {
     public function renderFront(delta:Float):Scene {
         var scene = new Scene();
 
-        var offset  = new FastVector2(40, -40);
-        var offset2 = new FastVector2(40, 40);
+        var offset  = new Vector(40, -40);
+        var offset2 = new Vector(40, 40);
 
-        var pos = new FastVector2(0, 0);
+        var pos = new Vector(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.add(offset);
         }
 
-        pos = new FastVector2(0, 0);
+        pos = new Vector(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.add(offset2);
         }
 
-        pos = new FastVector2(0, 0);
+        pos = new Vector(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.sub(offset2);
         }
 
-        pos = new FastVector2(0, 0);
+        pos = new Vector(0, 0);
         for (i in 1 ... 20) {
             scene.children.push(renderElem(pos));
             pos = pos.sub(offset);
@@ -138,8 +134,8 @@ class DemoControl implements Control {
 
         scene.prims = [
             SetColor(0, 0, 0, 255)
-            , DrawRect(new FastVector2(0, 0), new FastVector2(1600, 900))
-            , DrawRect(new FastVector2(0, 0), new FastVector2(-1600, -900))
+            , DrawRect(new Vector(0, 0), new Vector(1600, 900))
+            , DrawRect(new Vector(0, 0), new Vector(-1600, -900))
         ];
 
         scene.trans = FastMatrix3.identity()
@@ -156,7 +152,7 @@ class DemoControl implements Control {
 
         scene.prims = [
             SetColor(0, 0, 255, 255)
-            , DrawRect(new FastVector2(0, 0), new FastVector2(1600, 900))
+            , DrawRect(new Vector(0, 0), new Vector(1600, 900))
         ];
 
         return scene;

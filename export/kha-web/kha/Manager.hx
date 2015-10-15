@@ -35,8 +35,10 @@ class Manager extends Game {
     private var backbuffer:Image;
     private var g:Graphics;
 
+    #if js
     private var realHeight:Float;
     private var realWidth:Float;
+    #end
 
     /**
      * profiling settings
@@ -182,6 +184,7 @@ class Manager extends Game {
     }
 
     override public function mouseMove(x:Int, y:Int):Void {
+        #if js
         var event:Event;
         if (realWidth/realHeight > 16/9) {
             var factor = 900 / realHeight;
@@ -197,6 +200,7 @@ class Manager extends Game {
             );
         }
         ctrl.handle(event);
+        #end
     }
 
     override public function keyDown(key, char):Void {

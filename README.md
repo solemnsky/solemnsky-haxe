@@ -22,11 +22,25 @@ Inside the development environment:
 
 ## project structure
 
-solemnsky.control contains a small API of sorts to wrap the program control (control.Control), an event datatype (control.Event), and a scenegraph system (control.Scene), which are implemented through kha in solemnsky.kha, exporting a top-level interface in solemnsky.kha.Manager. This is the extent of the low-ish level boilerplate in the project.
+### /dock
 
-solemnsky.core defines a Core interface representing the logic our game can define (multiplayer interaction, event handling, player listing etc) and definitions of inter-dependant classes that implement it. To turn a Core into a client through the Control system or a standalone server, an interface from solemnsky.ui is used.
+Docker container(s) for predictable development on linux. build.sh builds the container (called solemnsky/kha) and run.sh runs it with the project files in scope.
 
-The top-level haxe classes behind the three releases (native, web, and server-side) can be found in the Targets/ directory.
+### /export
+
+Various top-level systems to deploy the code in /pure out into the world.
+
+### /media
+
+Media of all types, with original artifacts.
+
+### /pure
+
+Minimal-dependency haxe code; extremely portable. Deals with the world through an interface (solemnsky.control) which is implemented in the various top-levels in /export
+
+### /util
+
+Helper scripts and such.
 
 ## contact 
 
