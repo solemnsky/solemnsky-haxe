@@ -22,6 +22,10 @@ Inside the development environment:
 
 ## project structure
 
+### /dist
+
+Compiled distributions.
+
 ### /dock
 
 Docker container(s) for predictable development on linux. build.sh builds the container (called solemnsky/kha) and run.sh runs it with the project files in scope.

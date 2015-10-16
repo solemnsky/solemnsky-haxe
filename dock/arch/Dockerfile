@@ -10,3 +10,5 @@ RUN pacman -S --noconfirm nodejs base-devel
 
 # install dependencies
 RUN pacman -S --noconfirm alsa-lib freeglut
+
+

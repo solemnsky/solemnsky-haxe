@@ -4,7 +4,7 @@ package math;
  * math.Vector
  * Vector class, representing a 2d vector.
  */
-
+ 
 class Vector {
     public var x:Float;
     public var y:Float;

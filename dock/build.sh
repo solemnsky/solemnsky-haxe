@@ -1,2 +1,2 @@
 # builds the solemnsky/kha docker container
-docker build --tag="solemnsky/kha" ./docker/arch
+docker build --tag="solemnsky/kha" ./dock/arch

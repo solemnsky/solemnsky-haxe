@@ -7,13 +7,19 @@ import solemnsky.control.Profile;
 import solemnsky.core.Core;
 
 /**
- * solemnsky.ui.NativeClient: 
- * Native client; implements the Control spec when constructed with a Core.
- * Uses the native cpp API.
+ * solemnsky.ui.Web: 
+ * Web.ctrl() returns a control object for the web (html5) distribution.
  */
 
-class NativeClient implements Control {
+class Web {
+    public static function ctrl():Control {
+        return new DemoControl();
+    }
+} 
+
+class WebDemo implements Control {
     private var core:Core;
+    private var profileString:String;
     private var notes:Array<String> = [];
     private var myId:Int = 0;
 
