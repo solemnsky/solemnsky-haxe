@@ -59,6 +59,456 @@
 			<Add library="asound" />
 			<Add library="dl" />
 		</Linker>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Date.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Lambda.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/List.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Manager.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Reflect.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Render.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Std.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/StringBuf.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/StringTools.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/Type.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/ValueType.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/__boot__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/__files__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/__lib__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/__resources__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/_List/ListIterator.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/cpp/Lib.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/cpp/vm/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/IMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/Log.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/Serializer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/Timer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/Unserializer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/Utf8.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/ds/IntMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/ds/ObjectMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/ds/StringMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/format/JsonParser.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/io/Bytes.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/io/Eof.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/haxe/io/Error.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/AlignedQuad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/BakedChar.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Blob.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Button.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Canvas.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Configuration.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Cursor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/EmptyScreen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Font.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/FontStyle.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/FrameTask.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Framebuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Game.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/HighscoreList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Key.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Kravur.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Loader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/LoadingScreen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Music.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Rectangle.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Resource.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Scaler.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Scheduler.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Score.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/ScreenCanvas.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/ScreenRotation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Starter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/StorageFile.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Sys.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/TargetRectangle.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/TimeTask.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/Video.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/_Color/Color_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/_SuperString/SuperString_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/arrays/Float32Array.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio1/MusicChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio1/SoundChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio2/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio2/Audio1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio2/Buffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio2/MusicChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/audio2/SoundChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics1/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics2/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics2/Graphics1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics2/GraphicsExtension.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/BlendingOperation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/ColoredShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/CompareMode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/ConstantLocation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/CubeMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/CullMode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/FragmentShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/Graphics2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/ImageShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/IndexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/MipMapFilter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/Program.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/StencilAction.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TexDir.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TextShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TextureAddressing.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TextureFilter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TextureFormat.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/TextureUnit.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/Usage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/VertexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/VertexData.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/VertexElement.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/VertexShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/graphics4/VertexStructure.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/Sensor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/SensorType.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/input/Surface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/Loader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/Music.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/Video.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/graphics4/ConstantLocation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/graphics4/Graphics2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/kore/graphics4/TextureUnit.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/loader/Room.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/FastMatrix3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/FastVector2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Matrix3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Matrix4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Quaternion.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Vector2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Vector3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/math/Vector4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/network/Controller.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/Pose.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/PoseState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/SensorState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/TimeWarpImage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/TimeWarpParms.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/kha/vr/VrInterfaceEmulated.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/math/Transform.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/math/Vector.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/Control.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/DemoControl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/DrawPrim.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/EmptyControl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/Event.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/Profile.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/Scene.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/solemnsky/control/TextAlign.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/build/linux-build/Sources/src/sys/io/File.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/jsmn.cpp">
 			<Option compilerVar="CC" />
 		</Unit>

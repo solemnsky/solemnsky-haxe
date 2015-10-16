@@ -13,7 +13,7 @@ class Vector {
         this.x = x; this.y = y;
     }
 
-    public inline function clone():Void {
+    public inline function clone():Vector {
         return new Vector(x,y);
     }
 
@@ -21,15 +21,15 @@ class Vector {
         this.x = x; this.y = y;
     }
 
-    public inline function dot(v:Vector):Vector {
+    public inline function dot(v:Vector):Float {
         return x * v.x + y * v.y;
     }
 
-    public inline function cross(v:Vector):Vector {
+    public inline function cross(v:Vector):Float {
         return x * v.y - y * v.x;
     }
 
-    public inline function plus(v:Vector):Vector {
+    public inline function add(v:Vector):Vector {
         return new Vector(x + v.x, y + v.y);
     }
 

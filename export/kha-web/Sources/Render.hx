@@ -4,8 +4,9 @@ import kha.Color;
 import kha.FontStyle;
 import kha.Loader;
 import kha.graphics2.Graphics;
-import kha.math.FastMatrix3;
 import solemnsky.control.Scene;
+import math.Transform;
+import math.Vector;
 
 using kha.graphics2.GraphicsExtension;
 
@@ -60,12 +61,13 @@ class Render {
 
             // images
             case DrawImage(pos, image): {
-                gr.drawImage(image, pos.x, pos.y);
+                throw('TODO');
+                // gr.drawImage(image, pos.x, pos.y);
             }
         }
     }
 
-    public static function renderNoInit(pTrans:FastMatrix3 // parent
+    public static function renderNoInit(pTrans:Transform // parent
                                        ,pOpacity:Float // parent
                                        ,g:Graphics
                                        ,scene:Scene):Int {
@@ -74,7 +76,7 @@ class Render {
         var resultTrans = pTrans.multmat(scene.trans);
         var resultOpacity = pOpacity * scene.alpha;
 
-        g.transformation = resultTrans;
+        g.transformation = matrixFromTrans(resultTrans);
         g.opacity = (resultOpacity);
         for (prim in scene.prims){
             renderPrim(g, prim);
@@ -88,8 +90,17 @@ class Render {
 
     public static function render(g:Graphics, scene:Scene):Int {
         g.begin(true, 0xffffff);
-        var prims = renderNoInit(FastMatrix3.identity(), 1, g, scene);
+        var prims = renderNoInit(Transform.identity(), 1, g, scene);
         g.end();
         return prims;
+    }
+
+    private static function matrixFromTrans(trans:Transform
+    ):kha.math.FastMatrix3 {
+        return new kha.math.FastMatrix3(
+              trans._00, trans._01, trans._02
+            , trans._10, trans._11, trans._12
+            , trans._20, trans._21, trans._22
+        );
     }
 }
