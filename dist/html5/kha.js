@@ -12215,7 +12215,7 @@ var solemnsky_ui_WebDemo = function(core) {
 	this.myId = 0;
 	this.notes = [];
 	this.core = core;
-	core.init();
+	core.init(null);
 	this.myId = core.join("offline player");
 };
 $hxClasses["solemnsky.ui.WebDemo"] = solemnsky_ui_WebDemo;

@@ -56,8 +56,8 @@ Helper scripts and such.
 
 ## credits
 
-This project shamelessly steals code from https://github.com/ncannasse/physaxe for physics.
+The Nape physics engine is sourced in pure/, licensed under BSD.
 
-It uses Kha for html5 / webGL backend.
+I'm using Kha for the html5 / webGL backend.
 
 The logical core of the project is written in the Haxe language.

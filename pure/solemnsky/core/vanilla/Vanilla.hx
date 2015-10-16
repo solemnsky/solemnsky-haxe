@@ -17,7 +17,7 @@ class Vanilla {
     /* initialisation and modeId
     /*************************************************************************/
 
-    public function init():Void {
+    public function init(initData:InitData):Void {
         world = new phx.World();
     }
 

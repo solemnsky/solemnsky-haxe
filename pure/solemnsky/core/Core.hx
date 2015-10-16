@@ -13,36 +13,45 @@ import solemnsky.control.Scene;
 interface Core {
     /*************************************************************************/
     /* initialisation and modeId
+    /*   These functions are only called once.
     /*************************************************************************/
 
-    public function init():Void;
+    public function init(initData:Dynamic):Void;
     public var modeId:String;
 
     /*************************************************************************/
     /* simulation
+    /*   These functions are called a whole lot, but don't generally give
+    /*   the user much information.
     /*************************************************************************/
 
     public function handle(id:Int, event:Event):Void; 
     public function tick(delta:Float):Array<String>;
 
-    public function listPlayers():Array<String>;
     public function hasEnded():Bool;
 
     /*************************************************************************/
     /* rendering
+    /*   The purpose of these functions is to give the user information.
     /*************************************************************************/
     
     public function render(delta:Float):Scene;
+    public function listPlayers():Array<String>;
 
     /*************************************************************************/
     /* discrete networking
+    /*   Networking functions, only called now and then (when players join
+    /*   and quit for example).
     /*************************************************************************/
 
     public function join(name:String):Int;
     public function quit(id:Int):Void;
+    public function getInitData():Dynamic;
 
     /*************************************************************************/
     /* continuous networking
+    /*   Networking functions, called all the time to synchronize state and
+    /*   user input.
     /*************************************************************************/
 
     public function clientAssert(id:Int):Dynamic; // assert as a client
@@ -55,6 +64,8 @@ interface Core {
 
     /*************************************************************************/
     /* network compression
+    /*   Used to compress and decompress data as it goes over a 
+    /*   bandwidth-limited network.
     /*************************************************************************/
 
     public function serialiseSnap(snap:Dynamic):Bytes;

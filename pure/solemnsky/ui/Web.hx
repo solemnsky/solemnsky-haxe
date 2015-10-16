@@ -25,7 +25,7 @@ class WebDemo implements Control {
 
     public function new(core:Core) {
         this.core = core;
-        core.init();
+        core.init(null);
         myId = core.join('offline player');
     }
 
