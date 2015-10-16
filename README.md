@@ -36,7 +36,9 @@ Media of all types, with original artifacts.
 
 ### /pure
 
-Minimal-dependency haxe code; extremely portable. Deals with the world through an interface (solemnsky.control) which is implemented in the various top-levels in /export
+Minimal-dependency haxe code; *extremely* portable. Deals with the world through an interface (solemnsky.control) which is implemented in the top-levels in /export.
+
+Haxe is just about the most portable language I could find, I don't think it's really possible to complain about my choice of language to write the codebase.
 
 ### /util
 

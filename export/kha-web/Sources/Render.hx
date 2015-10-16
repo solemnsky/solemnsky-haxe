@@ -61,8 +61,8 @@ class Render {
 
             // images
             case DrawImage(pos, image): {
-                throw('TODO');
-                // gr.drawImage(image, pos.x, pos.y);
+                var image = Loader.the.getImage(image);
+                gr.drawImage(image, pos.x, pos.y);
             }
         }
     }

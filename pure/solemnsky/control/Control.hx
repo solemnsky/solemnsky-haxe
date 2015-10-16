@@ -138,9 +138,12 @@ class DemoControl implements Control {
         }
 
         scene.prims = [
-            SetColor(0, 0, 0, 255)
+            SetColor(0, 0, 0, 100)
             , DrawRect(new Vector(0, 0), new Vector(1600, 900))
             , DrawRect(new Vector(0, 0), new Vector(-1600, -900))
+            , SetColor(0, 0, 0, 200)
+            , DrawRect(new Vector(0, 0), new Vector(-1600, 900))
+            , DrawRect(new Vector(0, 0), new Vector(1600, -900))
         ];
 
         scene.trans = Transform.identity()
@@ -157,7 +160,8 @@ class DemoControl implements Control {
 
         scene.prims = [
             SetColor(0, 0, 255, 255)
-            , DrawRect(new Vector(0, 0), new Vector(1600, 900))
+            , DrawImage(new Vector(0, 0), "title")
+            // , DrawRect(new Vector(0, 0), new Vector(1600, 900))
         ];
 
         return scene;
@@ -173,9 +177,6 @@ class DemoControl implements Control {
     }
 
     public function profiling(data:Profile):Void {
-        // trace(
-        //     'logic / render / logic sleep / render sleep: '
-        //     +l+' / '+r+' / '+ls+' / '+rs);
         trace(data.print());
     }
 

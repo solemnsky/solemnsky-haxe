@@ -4,7 +4,7 @@
 		"name": "solemnsky",
 		"width": 1600,
 		"height": 900,
-		"antiAliasingSamples": 1
+		"antiAliasingSamples": 3
 	},
 	"assets": [
 		{
