@@ -1,12 +1,17 @@
 package solemnsky.control;
 
 import math.Vector;
+import math.Transform;
 
 /**
  * solemnsky.control.Control:
- * Interface that lets an object do realtime logic, accept events,
- * draw to the screen, and potentially quit. One level above whatever API /
- * toolchains we're using.
+ * Interface to the world; represents an application, abstracted from its
+ * implemtnation. Features:
+ * - Realtime logic
+ * - Rendering 
+ * - Handling profiling data
+ * - Handling user events
+ * - Quitting
  */
 
 /*****************************************************************************/
@@ -72,7 +77,7 @@ class EmptyControl implements Control {
 }
 
 /**
- * Makes a circle move around the screen, prints profiling information.
+ * A small graphics test.
  */
 class DemoControl implements Control {
     private var time:Float = 0;
@@ -95,9 +100,9 @@ class DemoControl implements Control {
             , DrawCircle(pos, 20)
             , DrawCircle(pos.add(offset), 7)
             ];
-        scene.trans = FastMatrix3.identity()
-            .multmat(FastMatrix3.translation(centerPos.x, centerPos.y))
-            .multmat(FastMatrix3.rotation(time / 1000))
+        scene.trans = Transform.identity()
+            .multmat(Transform.translation(centerPos.x, centerPos.y))
+            .multmat(Transform.rotation(time / 1000))
             ;
         return scene;
     }
@@ -138,9 +143,9 @@ class DemoControl implements Control {
             , DrawRect(new Vector(0, 0), new Vector(-1600, -900))
         ];
 
-        scene.trans = FastMatrix3.identity()
-            .multmat(FastMatrix3.translation(x, y))
-            .multmat(FastMatrix3.rotation(-time / 1200))
+        scene.trans = Transform.identity()
+            .multmat(Transform.translation(x, y))
+            .multmat(Transform.rotation(-time / 1200))
             ;
         return scene;
     }

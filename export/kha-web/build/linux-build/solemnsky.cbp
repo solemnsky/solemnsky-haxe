@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="solemnsky" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/solemnsky" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/tmp/haxe/export/kha-web/build/linux" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/solemnsky" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/tmp/haxe/export/kha-web/build/linux" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DSYS_LINUX" />
+			<Add option="-DKORE_MULTITHREADED_AUDIO" />
+			<Add option="-DHX_LINUX" />
+			<Add option="-DHXCPP_API_LEVEL=321" />
+			<Add option="-DSTATIC_LINK" />
+			<Add option="-DPCRE_STATIC" />
+			<Add option="-DHXCPP_SET_PROP" />
+			<Add option="-DHXCPP_VISIT_ALLOCS" />
+			<Add option="-DKORE" />
+			<Add option="-DROTATE90" />
+			<Add option="-DOPENGL" />
+			<Add option="-DSYS_UNIXOID" />
+			<Add directory="/tmp/haxe/export/kha-web/build/linux-build/Sources/include" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/include" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/nekoapi" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Kore/Sources" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources" />
+			<Add directory="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources" />
+		</Compiler>
+		<Linker>
+			<Add option="-pthread" />
+			<Add library="GL" />
+			<Add library="X11" />
+			<Add library="asound" />
+			<Add library="dl" />
+		</Linker>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/jsmn.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/common/sha1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/common/socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/regexp/RegExp.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/File.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Init.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Interface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Misc.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Process.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/String.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Sys.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/libs/std/Xml.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_get.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_info.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_maketables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_ord2utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_refcount.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_try_flipped.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_ucd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_valid_utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcre_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-7.8/pcreposix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/Array.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/Dynamic.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/Enum.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/Math.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/String.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Anon.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Boot.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/CFFI.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Class.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Date.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Debug.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/GC.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/GCInternal.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Hash.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Interface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Lib.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Object.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/RunLibs.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/StdLibs.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Backends/Kore/khacpp/src/hx/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources/Kore/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources/Kore/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources/Kore/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/Linux/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/GL/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/IndexBufferImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/OpenGL.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/ProgramImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/RenderTargetImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/ShaderImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/TextureImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Backends/OpenGL2/Sources/Kore/VertexBufferImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Application.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/CodeStyle.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Error.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Log.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Audio/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Audio/Mixer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Audio/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Audio/SoundStream.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Audio/stb_vorbis.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Graphics/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Graphics/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Graphics/stb_image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/IO/FileReader.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/IO/FileWriter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/IO/Reader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/IO/Writer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Input/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Input/Sensor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Input/Surface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Math/Core.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Math/Quaternion.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Math/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Network/Http.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/tmp/haxe/export/kha-web/Kha/Kore/Sources/Kore/Network/Socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

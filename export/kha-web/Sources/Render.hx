@@ -1,4 +1,4 @@
-package solemnsky.kha;
+package;
 
 import kha.Color;
 import kha.FontStyle;
@@ -10,8 +10,7 @@ import solemnsky.control.Scene;
 using kha.graphics2.GraphicsExtension;
 
 /**
- * solemnsky.kha.Render:
- * Renders scene graphs to a kha graphics object.
+ * Scene implementation for the kha web export.
  */
 
 class Render {

@@ -1,9 +1,7 @@
 package solemnsky.control;
 
-import kha.Font;
-import kha.Image;
-import kha.math.FastMatrix3;
-import kha.math.FastVector2;
+import math.Transform;
+import math.Vector;
 
 /**
  * solemnsky.control.Scene: 
@@ -18,12 +16,12 @@ enum DrawPrim {
     SetFont    (name:String, size:Int);
 
     // drawing primitives
-    DrawCircle (pos:FastVector2, radius:Int);
-    DrawRect   (topLeft:FastVector2, bottomRight:FastVector2);
-    DrawText   (pos:FastVector2, align:TextAlign, text:String);
+    DrawCircle (pos:Vector, radius:Float);
+    DrawRect   (topLeft:Vector, bottomRight:Vector);
+    DrawText   (pos:Vector, align:TextAlign, text:String);
 
     // images
-    DrawImage  (pos:FastVector2, image:Image);
+    DrawImage  (pos:Vector, image:String);
 }
 
 /**
@@ -38,7 +36,7 @@ class Scene {
 
     public var prims:Array<DrawPrim> = [];
     public var children:Array<Scene> = [];
-    public var trans:FastMatrix3 = FastMatrix3.identity();
+    public var trans:Transform = Transform.identity();
     public var alpha:Float = 1;
 
     /*************************************************************************/

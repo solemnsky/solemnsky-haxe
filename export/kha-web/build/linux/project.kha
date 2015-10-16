@@ -1,0 +1,90 @@
+{
+	"format": 3,
+	"game": {
+		"name": "solemnsky",
+		"width": 1600,
+		"height": 900,
+		"antiAliasingSamples": 1
+	},
+	"assets": [
+		{
+			"type": "blob",
+			"size": 14,
+			"name": "Arial14.kravur",
+			"files": [
+				"Arial14.kravur"
+			]
+		},
+		{
+			"type": "image",
+			"name": "title",
+			"files": [
+				"title.png"
+			]
+		}
+	],
+	"rooms": [
+		{
+			"name": "main",
+			"parent": null,
+			"neighbours": [],
+			"assets": [
+				"Arial14.kravur",
+				"title"
+			]
+		}
+	],
+	"libraries": [
+		"nape"
+	],
+	"shaders": [
+		{
+			"files": [
+				"painter-colored.frag.essl"
+			],
+			"name": "painter-colored.frag"
+		},
+		{
+			"files": [
+				"painter-colored.vert.essl"
+			],
+			"name": "painter-colored.vert"
+		},
+		{
+			"files": [
+				"painter-image.frag.essl"
+			],
+			"name": "painter-image.frag"
+		},
+		{
+			"files": [
+				"painter-image.vert.essl"
+			],
+			"name": "painter-image.vert"
+		},
+		{
+			"files": [
+				"painter-text.frag.essl"
+			],
+			"name": "painter-text.frag"
+		},
+		{
+			"files": [
+				"painter-text.vert.essl"
+			],
+			"name": "painter-text.vert"
+		},
+		{
+			"files": [
+				"painter-video.frag.essl"
+			],
+			"name": "painter-video.frag"
+		},
+		{
+			"files": [
+				"painter-video.vert.essl"
+			],
+			"name": "painter-video.vert"
+		}
+	]
+}

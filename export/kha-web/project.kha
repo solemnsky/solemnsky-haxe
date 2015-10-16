@@ -1,0 +1,36 @@
+{
+	"format": 3,
+	"game": {
+		"name": "solemnsky",
+		"width": 1600,
+		"height": 900,
+		"antiAliasingSamples": 1
+	},
+	"assets": [
+		{
+			"type": "font",
+			"file": "arial.ttf",
+			"size": 14,
+			"name": "Arial"
+		}
+		,{
+			"type": "image",
+			"file": "title.png",
+			"name": "title"
+		}
+	],
+	"rooms": [
+		{
+			"name": "main",
+			"parent": null,
+			"neighbours": [],
+			"assets": [
+				"Arial14.kravur",
+				"title"
+			]
+		}
+	],
+	"libraries": [
+		"nape"
+	]
+}

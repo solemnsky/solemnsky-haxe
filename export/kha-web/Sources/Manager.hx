@@ -1,4 +1,4 @@
-package solemnsky.kha;
+package;
 
 import haxe.Timer;
 import kha.Configuration;
@@ -17,8 +17,7 @@ import solemnsky.control.Profile;
 using kha.graphics2.GraphicsExtension;
 
 /**
- * solemnsky.kha.Manager: 
- * This is the interface between a Control object and a kha Game object.
+ * Control implementation for the kha web export.
  */
 
 class Manager extends Game {
