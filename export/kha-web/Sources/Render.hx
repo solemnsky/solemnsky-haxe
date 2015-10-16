@@ -98,9 +98,9 @@ class Render {
     private static function matrixFromTrans(trans:Transform
     ):kha.math.FastMatrix3 {
         return new kha.math.FastMatrix3(
-              trans._00, trans._01, trans._02
-            , trans._10, trans._11, trans._12
-            , trans._20, trans._21, trans._22
+              trans._00, trans._10, trans._20
+            , trans._01, trans._11, trans._21
+            , trans._02, trans._12, trans._22
         );
     }
 }
