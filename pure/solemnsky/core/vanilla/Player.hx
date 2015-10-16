@@ -1,10 +1,5 @@
 package solemnsky.core.vanilla;
 
-import nape.nape.Space;
-import nape.geom.Vector2;
-import nape.phys.Body;
-import nape.phys.BodyType;
-
 /**
  * solemnsky.core.vanilla.Player:
  * Player object, with physics wrapper methods and flight mechanics.

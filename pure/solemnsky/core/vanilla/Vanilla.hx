@@ -1,8 +1,5 @@
 package solemnsky.core.vanilla;
 
-import nape.space.Space;
-import nape.geom.Vector2;
-
 /**
  * solemnsky.core.vanilla.Vanilla:
  * The vanilla core game logic for our multiplayer plane game.
@@ -14,16 +11,14 @@ class Vanilla {
     /*************************************************************************/
 
     private var players:Map<Int, Player>;
-    private var space:Space;
-
+    private var world:phx.World;
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
 
     public function init():Void {
-        space = new Space();
-        space.gravity = new Vector2
+        world = new phx.World();
     }
 
     public var modeId:String;
@@ -61,8 +56,8 @@ class Vanilla {
     /* simulation
     /*************************************************************************/
 
-    private function mutateByEvent(player:Player, event:Event):Player {
-        switch (event) {
+    private function mutateByEvent(player:Player, event:Event):Void {
+        control:ControlEvent = switch (event) {
             case CharKey(char, state): {
                 switch (char){
                     case 'i': ControlUp(state);
@@ -74,7 +69,7 @@ class Vanilla {
             }
             default: {}
         }
-        return player;
+        player.handle(control);
     }
 
     public function handle(id:Int, event:Event):Void {
