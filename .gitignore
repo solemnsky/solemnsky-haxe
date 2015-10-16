@@ -1,7 +1,4 @@
 *.swp
 *.swo
-/build
-/korefile.js
-/project.kha
-/Sources/Main.hx
-/result
+build
+korefile.js

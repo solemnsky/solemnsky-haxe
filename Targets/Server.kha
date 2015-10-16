@@ -1,7 +1,0 @@
-{
-	"format": 3,
-	"game": { "name": "solemnsky" },
-	"libraries": [
-		"nape"
-	]
-}

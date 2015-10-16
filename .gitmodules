@@ -5,3 +5,6 @@
 [submodule "Libraries/nape"]
 	path = Libraries/nape
 	url = https://github.com/deltaluca/nape
+[submodule "export/kha-web/Kha"]
+	path = export/kha-web/Kha
+	url = https://github.com/KTXSoftware/Kha
