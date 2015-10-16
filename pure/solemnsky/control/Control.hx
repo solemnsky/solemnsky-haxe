@@ -139,11 +139,11 @@ class DemoControl implements Control {
 
         scene.prims = [
             SetColor(0, 0, 0, 100)
-            , DrawRect(new Vector(0, 0), new Vector(1600, 900))
-            , DrawRect(new Vector(0, 0), new Vector(-1600, -900))
+            , DrawRect(new Vector(0, 0), new Vector(200, 200))
+            , DrawRect(new Vector(0, 0), new Vector(-200, -200))
             , SetColor(0, 0, 0, 200)
-            , DrawRect(new Vector(0, 0), new Vector(-1600, 900))
-            , DrawRect(new Vector(0, 0), new Vector(1600, -900))
+            , DrawRect(new Vector(0, 0), new Vector(200, -200))
+            , DrawRect(new Vector(0, 0), new Vector(-200, 200))
         ];
 
         scene.trans = Transform.identity()
@@ -161,6 +161,9 @@ class DemoControl implements Control {
         scene.prims = [
             SetColor(0, 0, 255, 255)
             , DrawImage(new Vector(0, 0), "title")
+            , SetColor(0, 0, 0, 255)
+            , SetFont("Arial", 14)
+            , DrawText(new Vector(500, 500), LeftText, "this text isn't part of the image")
             // , DrawRect(new Vector(0, 0), new Vector(1600, 900))
         ];
 
