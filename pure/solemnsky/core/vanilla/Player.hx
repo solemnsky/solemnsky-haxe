@@ -1,6 +1,10 @@
 package solemnsky.core.vanilla;
 
 import nape.phys.Body;
+import nape.phys.BodyType;
+import nape.shape.Circle;
+import solemnsky.Util;
+import math.Vector;
 import solemnsky.Util;
 
 /**
@@ -17,34 +21,34 @@ enum ControlEvent {
 }
 
 typedef Movement = {
-    right:Bool; left:Bool;
-    up:Bool; down:Bool;
+    right:Bool, left:Bool
+    , up:Bool, down:Bool
 }
 
 /**
  * Non-derived, serialisable state for a player.
  */
 class PlayerState {
-    private var name:String;
-    private var movement:Movement = 
+    public var name:String;
+    public var movement:Movement = 
         {right:false, left:false, up:false, down:false};
 
     // physics
-    private var pos:Vector;
-    private var rot:Float;
-    private var vel:Vector;
+    public var pos:Vector;
+    public var rot:Float;
+    public var vel:Vector;
 
     // flight mechanics
-    private var stalled:Bool;
-    private var leftoverVel:Vector = new Vector(0, 0);
-    private var speed:Float = 1;
-    private var throttle:Float = 1;
-    private var afterburner = false;
+    public var stalled:Bool;
+    public var leftoverVel:Vector = new Vector(0, 0);
+    public var speed:Float = 1;
+    public var throttle:Float = 1;
+    public var afterburner = false;
 
     public function new(
         name:String, pos:Vector
         , rot:Float = 0
-        , vel:Vector = new Vector(0, 0)
+        , vel:Vector = null // TODO: constant zero vector
     ):Void {
         this.name = name;
         this.pos = pos;
@@ -52,7 +56,6 @@ class PlayerState {
         this.vel = vel;
     }
 }
-
 
 class Player {
     /*************************************************************************/
@@ -69,27 +72,18 @@ class Player {
     /*************************************************************************/
 
     public function new(parent:Vanilla, name:String, pos:Vector):Void {
+        // parent
         this.parent = parent;
-        this.name = name;
+
+        // state
         this.state = new PlayerState(name, pos);
 
-        body = new Body(BodyType.DYNAMIC, position);
-        body.addShape(Circle(Tuning.playerRadius));
+        // body
+        body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
+        body.shapes.add(new Circle(Tuning.playerRadius));
+
+        writeToBody();
     }
-
-    /*************************************************************************/
-    /* external accessors
-    /*************************************************************************/
-
-    public function getTangible():TangiblePlayer {
-        return {
-            name: state.name
-            , position: state.position;
-            , afterburner: state.afterburner;
-            , rotation: state.rotation;
-        }
-    }
-
 
     /*************************************************************************/
     /* physics interface
@@ -168,13 +162,15 @@ class Player {
             // apply damping when over playerMaxVelocityStalled
             var excessVel = speed - Tuning.playerMaxVelocityStalled;
             var dampingFactor = 
-                gameplay.playerMaxVelocityStalled / speed
+                gameplay.playerMaxVelocityStalled / speed;
             if (excessVel > 0)
                 state.vel.y =
                    state.vel.y * dampingFactor 
                         * Math.pow(
                             gameplay.playerStallDamping
-                            , delta / 1000)
+                            , delta / 1000);
+
+        // motion when not stalled                        
         } else {
             // modify throttle and afterburner according to controls
             if (state.movement.forward && state.throttle < 1)
@@ -194,32 +190,31 @@ class Player {
             state.leftoverVel.y = state.leftoverVel.y 
                 * Math.pow(Tuning.playerLeftoverVelDamping, delta / 1000);
 
-
             // speed modifiers
             if (state.speed > state.throttle * Tuning.speedThrrotleInfluence) {
                 if (state.throttle < Tuning.speedThrottleInfluence) {
                     state.speed -= 
-                        Tuning.speedThrottleDeaccForce * (delta / 1000)
+                        Tuning.speedThrottleDeaccForce * (delta / 1000);
                 } else {
                     state.speed -= 
-                        Tuning.speedThrottleForce * (delta / 1000)
+                        Tuning.speedThrottleForce * (delta / 1000);
                 }
             }
             state.speed += 
-                Math.sin(state.rot) * Tuning.speedGravityForce * (delta / 1000)
+                Math.sin(state.rot) 
+                    * Tuning.speedGravityForce * (delta / 1000);
             if (state.afterburner) 
-                state.speed += Tuning.speedAfterburnForce * (delta / 1000)
-            state.speed = Math.min(state.speed, 1)
-            state.speed = Math.max(state.speed, 0)
+                state.speed += Tuning.speedAfterburnForce * (delta / 1000);
+            state.speed = Math.min(state.speed, 1);
+            state.speed = Math.max(state.speed, 0);
 
-            var targetSpeed = this.speed * gameplay.playerMaxSpeed
+            var targetSpeed = this.speed * gameplay.playerMaxSpeed;
 
             // set velocity, according to target speed, rotation, 
             // and leftoverVel
             state.velocity = Vector.fromAngle(state.rot)
                 .mult(targetSpeed)
                 .add(state.leftoverVel);
-            }
-
         }
+    }
 }

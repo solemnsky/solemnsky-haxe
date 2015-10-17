@@ -1,6 +1,6 @@
 package solemnsky;
 
-import solemnsky.math.Vector;
+import math.Vector;
 import nape.geom.Vec2;
 
 /**

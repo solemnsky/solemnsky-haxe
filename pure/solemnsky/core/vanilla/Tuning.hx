@@ -22,16 +22,16 @@ class Tuning {
     static inline var playerExitStallThreshold:Float = 130;
 
     // not stalled
-    static inline var = playerMaxRotation:Float = Math.PI * 1.2;
-    static inline var = playerMaxSpeed:Float = 300;
-    static inline var = speedThrottleInfluence:Float = 0.7 ;
+    static inline var playerMaxRotation:Float = Math.PI * 1.2;
+    static inline var playerMaxSpeed:Float = 300;
+    static inline var speedThrottleInfluence:Float = 0.7 ;
         // max speed achievable with throttle
-    static inline var = speedThrottleForce:Float = 0.3;
+    static inline var speedThrottleForce:Float = 0.3;
         // speed per second that throttle can influence
-    static inline var = speedThrottleDeaccForce:Float = 1.1;
+    static inline var speedThrottleDeaccForce:Float = 1.1;
         // speed per second that the throttle can take away
         // when the speed is higher than the throttle
-    static inline var = speedGravityForce:Float = 0.5;
+    static inline var speedGravityForce:Float = 0.5;
             // speed per second that gravity can influence
     static inline var speedAfterburnForce:Float = 0.6;
     static inline var playerEnterStallThreshold:Float = 100;

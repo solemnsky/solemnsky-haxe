@@ -54,6 +54,8 @@ class Vector {
     }
 
     public static function fromAngle(angle:Float):Vector {
-        return new Vector(cos(angle), sin(angle));
+        return new Vector(Math.cos(angle), Math.sin(angle));
     }
+
+    public static var zero = new Vector(0, 0);
 }

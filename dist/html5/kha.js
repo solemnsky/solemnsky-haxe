@@ -270,6 +270,7 @@ var Manager = function(ctrl,tps) {
 	this.tps = tps;
 	this.tickLength = 1 / tps;
 	this.ctrl = ctrl;
+	ctrl.init(null);
 	var now = haxe_Timer.stamp();
 	this.bufferStart = now;
 	this.renderStart = now;
@@ -11993,6 +11994,9 @@ var math_Vector = function(x,y) {
 };
 $hxClasses["math.Vector"] = math_Vector;
 math_Vector.__name__ = ["math","Vector"];
+math_Vector.fromAngle = function(angle) {
+	return new math_Vector(Math.cos(angle),Math.sin(angle));
+};
 math_Vector.prototype = {
 	clone: function() {
 		return new math_Vector(this.x,this.y);
@@ -12016,6 +12020,9 @@ math_Vector.prototype = {
 	,mult: function(s) {
 		return new math_Vector(this.x * s,this.y * s);
 	}
+	,angle: function() {
+		return Math.atan2(this.y,this.x);
+	}
 	,length: function() {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
@@ -12036,7 +12043,9 @@ $hxClasses["solemnsky.control.EmptyControl"] = solemnsky_control_EmptyControl;
 solemnsky_control_EmptyControl.__name__ = ["solemnsky","control","EmptyControl"];
 solemnsky_control_EmptyControl.__interfaces__ = [solemnsky_control_Control];
 solemnsky_control_EmptyControl.prototype = {
-	tick: function(delta) {
+	init: function(_) {
+	}
+	,tick: function(delta) {
 	}
 	,render: function(delta) {
 		return new solemnsky_control_Scene();
@@ -12059,7 +12068,9 @@ $hxClasses["solemnsky.control.DemoControl"] = solemnsky_control_DemoControl;
 solemnsky_control_DemoControl.__name__ = ["solemnsky","control","DemoControl"];
 solemnsky_control_DemoControl.__interfaces__ = [solemnsky_control_Control];
 solemnsky_control_DemoControl.prototype = {
-	tick: function(delta) {
+	init: function(_) {
+	}
+	,tick: function(delta) {
 		this.time += delta;
 	}
 	,renderElem: function(centerPos) {
@@ -12124,7 +12135,7 @@ solemnsky_control_DemoControl.prototype = {
 		}
 	}
 	,profiling: function(data) {
-		haxe_Log.trace(data.print(),{ fileName : "Control.hx", lineNumber : 183, className : "solemnsky.control.DemoControl", methodName : "profiling"});
+		haxe_Log.trace(data.print(),{ fileName : "Control.hx", lineNumber : 190, className : "solemnsky.control.DemoControl", methodName : "profiling"});
 	}
 	,hasEnded: function() {
 		return false;
@@ -12135,6 +12146,9 @@ var solemnsky_control_Event = $hxClasses["solemnsky.control.Event"] = { __ename_
 solemnsky_control_Event.MouseMove = function(x,y) { var $x = ["MouseMove",0,x,y]; $x.__enum__ = solemnsky_control_Event; $x.toString = $estr; return $x; };
 solemnsky_control_Event.CharKey = function($char,state) { var $x = ["CharKey",1,$char,state]; $x.__enum__ = solemnsky_control_Event; $x.toString = $estr; return $x; };
 solemnsky_control_Event.SpecialKey = function(key,state) { var $x = ["SpecialKey",2,key,state]; $x.__enum__ = solemnsky_control_Event; $x.toString = $estr; return $x; };
+var solemnsky_control_Network = function() { };
+$hxClasses["solemnsky.control.Network"] = solemnsky_control_Network;
+solemnsky_control_Network.__name__ = ["solemnsky","control","Network"];
 var solemnsky_control_Profile = function(bufferOn,renderOn,renderOff,primCount,tickOn,tickOff) {
 	this.bufferOn = solemnsky_control_Profile.dataFromArray(bufferOn);
 	this.renderOn = solemnsky_control_Profile.dataFromArray(renderOn);
@@ -12222,13 +12236,15 @@ $hxClasses["solemnsky.ui.WebDemo"] = solemnsky_ui_WebDemo;
 solemnsky_ui_WebDemo.__name__ = ["solemnsky","ui","WebDemo"];
 solemnsky_ui_WebDemo.__interfaces__ = [solemnsky_control_Control];
 solemnsky_ui_WebDemo.prototype = {
-	tick: function(delta) {
+	init: function(_) {
+	}
+	,tick: function(delta) {
 		var newNotes = this.core.tick(delta);
 		var _g = 0;
 		while(_g < newNotes.length) {
 			var note = newNotes[_g];
 			++_g;
-			haxe_Log.trace(note,{ fileName : "Web.hx", lineNumber : 39, className : "solemnsky.ui.WebDemo", methodName : "tick"});
+			haxe_Log.trace(note,{ fileName : "Web.hx", lineNumber : 43, className : "solemnsky.ui.WebDemo", methodName : "tick"});
 		}
 		this.notes = this.notes.concat(newNotes);
 	}
@@ -12236,7 +12252,7 @@ solemnsky_ui_WebDemo.prototype = {
 		return this.core.render(delta);
 	}
 	,profiling: function(profile) {
-		haxe_Log.trace(profile.print(),{ fileName : "Web.hx", lineNumber : 49, className : "solemnsky.ui.WebDemo", methodName : "profiling"});
+		haxe_Log.trace(profile.print(),{ fileName : "Web.hx", lineNumber : 53, className : "solemnsky.ui.WebDemo", methodName : "profiling"});
 	}
 	,handle: function(e) {
 		this.core.handle(this.myId,e);

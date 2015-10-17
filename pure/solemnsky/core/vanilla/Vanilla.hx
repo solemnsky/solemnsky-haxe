@@ -1,9 +1,13 @@
 package solemnsky.core.vanilla;
 
 import nape.space.Space;
+import solemnsky.control.Event;
+import solemnsky.control.Scene;
+import nape.phys.Body;
 import nape.phys.Body;
 import nape.space.Broadphase;
 import nape.geom.Vec2;
+import haxe.io.Bytes;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -15,7 +19,7 @@ class Vanilla {
     /* variables
     /*************************************************************************/
 
-    private var players:IntMap<Player>;
+    private var players:Map<Int, Player>;
     private var space:Space;
 
     /*************************************************************************/
@@ -63,7 +67,7 @@ class Vanilla {
     /*************************************************************************/
 
     private function mutateByEvent(player:Player, event:Event):Void {
-        control:ControlEvent = switch (event) {
+        var control:ControlEvent = switch (event) {
             case CharKey(char, state): {
                 switch (char){
                     case 'i': ControlUp(state);
@@ -120,8 +124,8 @@ class Vanilla {
         scene.prims = [
             SetFont("Arial", 12)
             , DrawText(new kha.math.FastVector2(0, 0), CenterText
-                "I need to implement this ._.")
-        ] 
+                , "I need to implement this ._.")
+        ];
         return scene;
     }
 

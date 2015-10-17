@@ -8,9 +8,13 @@ import solemnsky.control.Scene;
  */
 
 class Render {
-    static function renderPlayer(player:TangiblePlayer):Scene {
+    static function renderPlayer(player:Player):Scene {
+        var state = player.state;
+
         var scene = new Scene();
 
-        var
+        // stub
+
+        return scene;
     }
 } 

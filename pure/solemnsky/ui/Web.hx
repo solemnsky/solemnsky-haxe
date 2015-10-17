@@ -5,19 +5,14 @@ import solemnsky.control.Event;
 import solemnsky.control.Scene;
 import solemnsky.control.Profile;
 import solemnsky.core.Core;
+import solemnsky.core.vanilla.Vanilla;
 
 /**
  * solemnsky.ui.Web: 
  * Web.ctrl() returns a control object for the web (html5) distribution.
  */
 
-class Web {
-    public static function ctrl():Control {
-        return new DemoControl();
-    }
-} 
-
-class WebDemo implements Control {
+class WebFromCore implements Control {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
@@ -61,3 +56,11 @@ class WebDemo implements Control {
         return core.hasEnded();
     }
 }
+
+class Web {
+    public static function ctrl():Control {
+        // return new DemoControl();
+        var core = new Vanilla();
+        return new WebFromCore(core);
+    }
+} 
