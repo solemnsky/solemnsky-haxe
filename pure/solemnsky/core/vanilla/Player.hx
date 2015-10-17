@@ -22,7 +22,7 @@ enum ControlEvent {
 
 typedef Movement = {
     right:Bool, left:Bool
-    , up:Bool, down:Bool
+    , forward:Bool, backward:Bool
 }
 
 /**
@@ -31,7 +31,7 @@ typedef Movement = {
 class PlayerState {
     public var name:String;
     public var movement:Movement = 
-        {right:false, left:false, up:false, down:false};
+        {right:false, left:false, forward:false, backward:false};
 
     // physics
     public var pos:Vector;
@@ -64,25 +64,26 @@ class Player {
     /*************************************************************************/
 
     public var state:PlayerState;
-
     private var parent:Vanilla;
+    private var tuning:Tuning;
+
     private var body:Body;
 
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
 
-    public function new(parent:Vanilla, name:String, pos:Vector):Void {
-        // parent
-        this.parent = parent;
-
-        // state
+    public function new(
+        tuning:Tuning, parent:Vanilla
+        , name:String, pos:Vector
+    ):Void {
         this.state = new PlayerState(name, pos);
+        this.parent = parent;
+        this.tuning = tuning;
 
-        // body
+        // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
-        body.shapes.add(new Circle(Tuning.playerRadius));
-
+        body.shapes.add(new Circle(tuning.playerRadius));
         writeToBody();
     }
 
@@ -117,10 +118,10 @@ class Player {
                 this.state.movement.left = state;
             }
             case ControlUp(state): {
-                this.state.movement.up = state;
+                this.state.movement.forward = state;
             }
             case ControlDown(state): {
-                this.state.movement.down = state;
+                this.state.movement.backward = state;
             }
         }
     }
@@ -133,20 +134,20 @@ class Player {
      */
     public function tick(delta:Float):Void {
         // synonyms
-        var forwardVel = 
-            state.vel.length * Math.cos(state.rot - state.vel.angle);
-        var speed = state.vel.length;
+        var forwardVel:Float = 
+            state.vel.length() * Math.cos(state.rot - state.vel.angle());
+        var speed = state.vel.length();
 
         // rotation
         var maxRotation = 
-            if (state.stalled) Tuning.playerMaxRotationStalled 
-                else Tuning.playerMaxRotation;
-        var targetRotVel = 0;
-        if (state.movement.left) targetRotvel = -maxRotation;
-        if (state.movement.right) targetRotvel += maxRotation;
+            if (state.stalled) tuning.playerMaxRotationStalled 
+                else tuning.playerMaxRotation;
+        var targetRotVel:Float = 0;
+        if (state.movement.left) targetRotVel = -maxRotation;
+        if (state.movement.right) targetRotVel += maxRotation;
 
         state.rotvel +=
-            (targetRotVel - state.rotvel) / Math.pow(Tuning.playerAngularDamping, delta);
+            (targetRotVel - state.rotvel) / Math.pow(tuning.playerAngularDamping, delta);
 
         state.afterburner = false;            
 
@@ -156,64 +157,64 @@ class Player {
             state.afterburner = true;
             state.vel = Vector.fromAngle(state.rot)
                 .mult(
-                    delta / 1000 * gameplay.playerAfterburnerStalled
+                    delta / 1000 * tuning.playerAfterburnerStalled
                 )
                 .add(state.vel);
 
             // apply damping when over playerMaxVelocityStalled
-            var excessVel = speed - Tuning.playerMaxVelocityStalled;
+            var excessVel = speed - tuning.playerMaxVelocityStalled;
             var dampingFactor = 
-                gameplay.playerMaxVelocityStalled / speed;
+                tuning.playerMaxVelocityStalled / speed;
             if (excessVel > 0)
                 state.vel.y =
                    state.vel.y * dampingFactor 
                         * Math.pow(
-                            gameplay.playerStallDamping
+                            tuning.playerStallDamping
                             , delta / 1000);
 
         // motion when not stalled                        
         } else {
             // modify throttle and afterburner according to controls
             if (state.movement.forward && state.throttle < 1)
-                state.throttle += Tuning.playerThrottleSpeed *
+                state.throttle += tuning.playerThrottleSpeed *
                     (delta / 1000);
             if (state.movement.backward && state.throttle > 0)
-                state.throttle -= Tuning.playerThrottleSpeed *
+                state.throttle -= tuning.playerThrottleSpeed *
                     (delta / 1000);
             state.throttle = Math.min(state.throttle, 1);
             state.throttle = Math.max(state.throttle, 0);
             state.afterburner = 
-                this.movement.forward && state.throttle == 1;
+                state.movement.forward && state.throttle == 1;
 
             // pick away at leftover velocity
             state.leftoverVel.x = state.leftoverVel.x 
-                * Math.pow(Tuning.playerLeftoverVelDamping, delta / 1000);
+                * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
             state.leftoverVel.y = state.leftoverVel.y 
-                * Math.pow(Tuning.playerLeftoverVelDamping, delta / 1000);
+                * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
 
             // speed modifiers
-            if (state.speed > state.throttle * Tuning.speedThrrotleInfluence) {
-                if (state.throttle < Tuning.speedThrottleInfluence) {
+            if (state.speed > state.throttle * tuning.speedThrottleInfluence) {
+                if (state.throttle < tuning.speedThrottleInfluence) {
                     state.speed -= 
-                        Tuning.speedThrottleDeaccForce * (delta / 1000);
+                        tuning.speedThrottleDeaccForce * (delta / 1000);
                 } else {
                     state.speed -= 
-                        Tuning.speedThrottleForce * (delta / 1000);
+                        tuning.speedThrottleForce * (delta / 1000);
                 }
             }
             state.speed += 
                 Math.sin(state.rot) 
-                    * Tuning.speedGravityForce * (delta / 1000);
+                    * tuning.speedGravityForce * (delta / 1000);
             if (state.afterburner) 
-                state.speed += Tuning.speedAfterburnForce * (delta / 1000);
+                state.speed += tuning.speedAfterburnForce * (delta / 1000);
             state.speed = Math.min(state.speed, 1);
             state.speed = Math.max(state.speed, 0);
 
-            var targetSpeed = this.speed * gameplay.playerMaxSpeed;
+            var targetSpeed = state.speed * tuning.playerMaxSpeed;
 
             // set velocity, according to target speed, rotation, 
             // and leftoverVel
-            state.velocity = Vector.fromAngle(state.rot)
+            state.vel = Vector.fromAngle(state.rot)
                 .mult(targetSpeed)
                 .add(state.leftoverVel);
         }

@@ -60,7 +60,7 @@ class WebFromCore implements Control {
 class Web {
     public static function ctrl():Control {
         // return new DemoControl();
-        var core = new Vanilla();
+        var core:Core = new Vanilla();
         return new WebFromCore(core);
     }
 } 

@@ -13,17 +13,22 @@ import solemnsky.control.Scene;
  * The vanilla core game logic for our multiplayer plane game.
  */
 
-class Vanilla {
+class Vanilla implements Core {
     /*************************************************************************/
     /* variables
     /*************************************************************************/
 
     private var players:Map<Int, Player>;
     private var space:Space;
+    private var tuning:Tuning;
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
+
+    public function new() {
+        tuning = new Tuning();
+    }    
 
     public function init(initData:InitData):Void {
         var broad = Broadphase.DYNAMIC_AABB_TREE;
@@ -33,7 +38,7 @@ class Vanilla {
     public var modeId:String;
 
     /*************************************************************************/
-    /* managing players
+    /* INTERNAL: managing players
     /*************************************************************************/
 
     /**
@@ -41,7 +46,7 @@ class Vanilla {
      * the transformation on the player with that id, potentially
      * failing and returning false.
      */
-    private function doForPlayer(f:Player->Player, id:Int):Bool {
+    private function doForPlayer(f:Player->Void, id:Int):Bool {
         var player = players.get(id);
         if (player != null) {
             f(player);
@@ -73,17 +78,18 @@ class Vanilla {
                     case 'j': ControlLeft(state);
                     case 'l': ControlRight(state);
                     case 'k': ControlDown(state);
-                    default: {}
+                    default: {null;}
                 }
             }
-            default: {}
+            default: {null;}
         }
-        player.handle(control);
+        if (control != null)
+            player.handle(control);
     }
 
     public function handle(id:Int, event:Event):Void {
-        function mutate(player) {
-            return mutateByEvent(player, event);
+        function mutate(player:Player):Void {
+            mutateByEvent(player, event);
         }
 
         if (! doForPlayer(mutate, id)) 
@@ -100,14 +106,6 @@ class Vanilla {
             player.tick(delta);
         }
         return [];
-    }
-
-    public function listPlayers():Array<String> {
-        var names = [];
-        for (player in players.iterator()) {
-            names.push(player.getTangible().name);
-        }
-        return names;
     }
 
     public function hasEnded():Bool {
@@ -128,13 +126,22 @@ class Vanilla {
         return scene;
     }
 
+    public function listPlayers():Array<String> {
+        var names = [];
+        for (player in players.iterator()) {
+            names.push(player.state.name);
+        }
+        return names;
+    }
+
+
     /*************************************************************************/
     /* discrete networking
     /*************************************************************************/
 
     public function join(name:String):Int {
         var newId = takeUnique(players.keys());
-        players.set(newId, Player(this, name, new Vector(0, 0)));
+        players.set(newId, new Player(tuning, this, name, new Vector(0, 0)));
         return newId;
     }
 
@@ -142,22 +149,38 @@ class Vanilla {
         players.remove(id);
     }
 
+    public function getInitData():Dynamic {
+        // TODO
+    }
+
     /*************************************************************************/
     /* continuous networking
+    /* this is completely unimplemented for the moment
     /*************************************************************************/
 
-    public function clientAssert(id:Int):Dynamic; // assert as a client
-    public function serverAssert():Dynamic; // assert as a server
+    public function clientAssert(id:Int):Dynamic {
+        return null; 
+    }
+    public function serverAssert():Dynamic {
+        return null;
+    }
 
-    public function clientMerge(id:Int, snap:Dynamic):Void; 
-                                                    // merge as a client
-    public function serverMerge(id:Int, snap:Dynamic):Void;
-                           // merge as a server, recieving from a client
+    public function clientMerge(id:Int, snap:Dynamic):Void {
+
+    }
+    public function serverMerge(id:Int, snap:Dynamic):Void {
+
+    }
 
     /*************************************************************************/
     /* network compression
     /*************************************************************************/
 
-    public function serialiseSnap(snap:Dynamic):Bytes;
-    public function readSnap(bytes:Bytes):Dynamic;
+    public function serialiseSnap(snap:Dynamic):Bytes {
+        return null;
+    }
+
+    public function readSnap(bytes:Bytes):Dynamic {
+        return null;
+    }
 }
