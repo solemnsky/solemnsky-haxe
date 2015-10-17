@@ -150,7 +150,7 @@ class Vanilla implements Core {
     }
 
     public function getInitData():Dynamic {
-        // TODO
+        return null;
     }
 
     /*************************************************************************/
