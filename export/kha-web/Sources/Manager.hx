@@ -84,6 +84,8 @@ class Manager extends Game {
         this.tickLength = 1 / tps;
         this.ctrl = ctrl;      
 
+        ctrl.init(null); // no network;
+
         // initialise timings
         var now = Timer.stamp();
         bufferStart = now;

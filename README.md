@@ -14,11 +14,8 @@ To build the project:
 
 Inside the development environment:
 
-    make web             # to compile the html5 release 
-    make native          # to compile the native linux release
-    make server          # to compile the node.js server
-    make                 # to compile all three
-    make clean-build     # delete all build results
+    make web             # to compile the html5 release to dist/html5
+    make clean           # delete all build results
 
 ## project structure
 

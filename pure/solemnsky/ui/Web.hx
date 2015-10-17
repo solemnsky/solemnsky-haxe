@@ -29,6 +29,10 @@ class WebDemo implements Control {
         myId = core.join('offline player');
     }
 
+    public function init(_) {
+        // network for the html5 target is null, javascript has no UDP
+    }
+
     /*************************************************************************/
     /* Control interface
     /*************************************************************************/

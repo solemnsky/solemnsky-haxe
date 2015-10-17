@@ -7,6 +7,7 @@ import math.Transform;
  * solemnsky.control.Control:
  * Interface to the world; represents an application, abstracted from its
  * implemtnation. Features:
+ * - Networking
  * - Realtime logic
  * - Rendering 
  * - Handling profiling data
@@ -19,6 +20,8 @@ import math.Transform;
 /*****************************************************************************/
 
 interface Control {
+    public function init(network:Network):Void;
+
     /**
      * Tick internal simulation forward, given a delta; this ticks
      * at a fixed step, irregardless of the rate at rendering happens.
@@ -61,6 +64,8 @@ interface Control {
 class EmptyControl implements Control {
     public function new():Void {}
 
+    public function init(_):Void {}
+
     public function tick(delta:Float):Void {}
 
     public function render(delta:Float):Scene {
@@ -85,6 +90,8 @@ class DemoControl implements Control {
     private var y:Float = 0;
 
     public function new():Void {}
+
+    public function init(_):Void {}
 
     public function tick(delta:Float):Void {
         time += delta;
