@@ -1,5 +1,10 @@
 package solemnsky.core.vanilla;
 
+import nape.space.Space;
+import nape.phys.Body;
+import nape.space.Broadphase;
+import nape.geom.Vec2;
+
 /**
  * solemnsky.core.vanilla.Vanilla:
  * The vanilla core game logic for our multiplayer plane game.
@@ -10,21 +15,22 @@ class Vanilla {
     /* variables
     /*************************************************************************/
 
-    private var players:Map<Int, Player>;
-    private var world:phx.World;
+    private var players:IntMap<Player>;
+    private var space:Space;
 
     /*************************************************************************/
     /* initialisation and modeId
     /*************************************************************************/
 
     public function init(initData:InitData):Void {
-        world = new phx.World();
+        var broad = Broadphase.DYNAMIC_AABB_TREE;
+        space = new Space(new Vec2(0, 0), broad);
     }
 
     public var modeId:String;
 
     /*************************************************************************/
-    /* top-level helper functions
+    /* managing players
     /*************************************************************************/
 
     /**
@@ -83,7 +89,12 @@ class Vanilla {
 
     public function tick(delta:Float):Array<String> {
         for (player in players.iterator()) {
-            player.tick();
+            player.writeToBody();
+        }
+        space.step(delta);
+        for (player in players.iterator()) {
+            player.readFromBody();
+            player.tick(delta);
         }
         return [];
     }

@@ -8,8 +8,8 @@ At the moment I'm designing the infrastructure to make a basic multiplayer plane
 
 To build the project:
     
-    ./Docker/build.sh    # to build the archlinux based development environment
-    ./Docker/run.sh      # to run a console with everything needed to build
+    ./dock/build.sh    # to build the archlinux based development environment
+    ./dock/run.sh      # to run a console with everything needed to build
                          # the project
 
 Inside the development environment:

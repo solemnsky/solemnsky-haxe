@@ -4,4 +4,7 @@
  * Contains maps, player lists, etc.
  */
 
- 
+typedef InitData = {
+    players:IntMap<Player>;
+    map:String; 
+}

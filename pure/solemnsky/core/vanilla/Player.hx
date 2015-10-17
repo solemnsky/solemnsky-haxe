@@ -1,5 +1,7 @@
 package solemnsky.core.vanilla;
 
+import nape.phys.Body;
+
 /**
  * solemnsky.core.vanilla.Player:
  * Player object, with physics wrapper methods and flight mechanics.
@@ -19,11 +21,37 @@ typedef Movement = {
 }
 
 /**
- * Object with the tangible aspects of a player.
+ * Non-derived, serialisable state for a player.
  */
-typedef TangiblePlayer = {
-    name:String; position:Vector2; afterburner:Bool; rotation:Float;
+class PlayerState {
+    private var name:String;
+    private var movement:Movement = 
+        {right:false, left:false, up:false, down:false};
+
+    // physics
+    private var pos:Vector;
+    private var rot:Float;
+    private var vel:Vector;
+
+    // flight mechanics
+    private var stalled:Bool;
+    private var leftoverVel:Vector = new Vector(0, 0);
+    private var speed:Float = 1;
+    private var throttle:Float = 1;
+    private var afterburner = false;
+
+    public function new(
+        name:String, pos:Vector
+        , rot:Float = 0
+        , vel:Vector = new Vector(0, 0)
+    ):Void {
+        this.name = name;
+        this.pos = pos;
+        this.rot = rot;
+        this.vel = vel;
+    }
 }
+
 
 class Player {
     /*************************************************************************/
@@ -31,35 +59,17 @@ class Player {
     /*************************************************************************/
 
     private var parent:Vanilla;
-    private var name:String;
-    private var movement:Movement = 
-        {right:false, left:false, up:false, down:false};
-
-    // flight mechanics
-    private var stalled:Bool;
-    private var leftoverVel:Vector2 = new Vector2(0, 0);
-    private var speed = 1;
-    private var throttle = 1;
-    private var afterburner = false;
-
-    // game mechanics
-    private var health:Float = 1;
-    private var energy:Float = 1;
-
-    // spawn mechanics
-    private var spawnpoint:Vector2;
-    private var respawning:Bool = false;
-
-    // nape block
+    private var state:PlayerState;
     private var body:Body;
 
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
 
-    public function new(parent:Vanilla, name:String, position:Vector2):Void {
+    public function new(parent:Vanilla, name:String, pos:Vector):Void {
         this.parent = parent;
         this.name = name;
+        this.state = new PlayerState(name, pos);
 
         body = new Body(BodyType.DYNAMIC, position);
         body.addShape(Circle(Tuning.playerRadius));
@@ -76,6 +86,19 @@ class Player {
             , afterburner: afterburner;
             , rotation: body.rotation;
         }
+    }
+
+
+    /*************************************************************************/
+    /* physics interface
+    /*************************************************************************/
+
+    public function writeToBody():Void {
+        // todo
+    }
+
+    public function readFromBody():Void {
+        // todo
     }
 
     /*************************************************************************/
