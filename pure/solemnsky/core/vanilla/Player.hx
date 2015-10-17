@@ -37,6 +37,7 @@ class PlayerState {
     public var pos:Vector;
     public var rot:Float;
     public var vel:Vector;
+    public var rotvel:Float;
 
     // flight mechanics
     public var stalled:Bool;
@@ -110,16 +111,16 @@ class Player {
     public function handle(event:ControlEvent):Void {
         switch (event){
             case ControlRight(state): {
-                state.movement.right = state;
+                this.state.movement.right = state;
             }
             case ControlLeft(state): {
-                state.movement.left = state;
+                this.state.movement.left = state;
             }
             case ControlUp(state): {
-                movement.up = state;
+                this.state.movement.up = state;
             }
             case ControlDown(state): {
-                movement.down = state;
+                this.state.movement.down = state;
             }
         }
     }
@@ -130,7 +131,7 @@ class Player {
      * player.writeToBody and player.readFromBody, to define
      * the overall flight / collision dynamics of the game.
      */
-    public function tick():Void {
+    public function tick(delta:Float):Void {
         // synonyms
         var forwardVel = 
             state.vel.length * Math.cos(state.rot - state.vel.angle);

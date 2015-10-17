@@ -1,13 +1,12 @@
 package solemnsky.core.vanilla;
 
+import haxe.io.Bytes;
+import math.Vector;
+import nape.geom.Vec2;
+import nape.space.Broadphase;
 import nape.space.Space;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
-import nape.phys.Body;
-import nape.phys.Body;
-import nape.space.Broadphase;
-import nape.geom.Vec2;
-import haxe.io.Bytes;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -67,7 +66,7 @@ class Vanilla {
     /*************************************************************************/
 
     private function mutateByEvent(player:Player, event:Event):Void {
-        var control:ControlEvent = switch (event) {
+        var control:Player.ControlEvent = switch (event) {
             case CharKey(char, state): {
                 switch (char){
                     case 'i': ControlUp(state);
@@ -123,7 +122,7 @@ class Vanilla {
         var scene = new Scene();
         scene.prims = [
             SetFont("Arial", 12)
-            , DrawText(new kha.math.FastVector2(0, 0), CenterText
+            , DrawText(new Vector(0, 0), CenterText
                 , "I need to implement this ._.")
         ];
         return scene;
@@ -135,7 +134,7 @@ class Vanilla {
 
     public function join(name:String):Int {
         var newId = takeUnique(players.keys());
-        players.set(newId, Player(this, name, new Vector2(0, 0)));
+        players.set(newId, Player(this, name, new Vector(0, 0)));
         return newId;
     }
 
