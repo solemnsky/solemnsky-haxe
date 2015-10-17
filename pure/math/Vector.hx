@@ -41,11 +41,19 @@ class Vector {
         return new Vector(x * s, y * s);
     }
 
+    public inline function angle():Float {
+        return Math.atan2(y, x);
+    }
+
     public inline function length():Float {
         return Math.sqrt(x * x + y * y);
     }
 
     public function toString():String {
         return '('+(Math.round(x*100)/100)+','+(Math.round(y*100)/100)+')';
+    }
+
+    public static function fromAngle(angle:Float):Vector {
+        return new Vector(cos(angle), sin(angle));
     }
 }

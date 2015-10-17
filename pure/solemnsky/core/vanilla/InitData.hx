@@ -5,6 +5,6 @@
  */
 
 typedef InitData = {
-    players:IntMap<Player>;
+    players:IntMap<PlayerState>;
     map:String; 
 }

@@ -1,6 +1,7 @@
 package solemnsky.core.vanilla;
 
 import nape.phys.Body;
+import solemnsky.Util;
 
 /**
  * solemnsky.core.vanilla.Player:
@@ -58,8 +59,9 @@ class Player {
     /* private state variables
     /*************************************************************************/
 
+    public var state:PlayerState;
+
     private var parent:Vanilla;
-    private var state:PlayerState;
     private var body:Body;
 
     /*************************************************************************/
@@ -81,10 +83,10 @@ class Player {
 
     public function getTangible():TangiblePlayer {
         return {
-            name: name
-            , position: body.position;
-            , afterburner: afterburner;
-            , rotation: body.rotation;
+            name: state.name
+            , position: state.position;
+            , afterburner: state.afterburner;
+            , rotation: state.rotation;
         }
     }
 
@@ -94,11 +96,17 @@ class Player {
     /*************************************************************************/
 
     public function writeToBody():Void {
-        // todo
+        body.position = Util.napeFromVector(state.pos);
+        body.rotation = state.rot;
+        body.angularVel = state.rotvel;
+        body.velocity = Util.napeFromVector(state.vel);
     }
 
     public function readFromBody():Void {
-        // todo
+        state.pos = Util.vectorFromNape(body.position);
+        state.rot = body.rotation;
+        state.rotvel = body.angularVel;
+        state.vel = Util.vectorFromNape(body.velocity);
     }
 
     /*************************************************************************/
@@ -108,10 +116,10 @@ class Player {
     public function handle(event:ControlEvent):Void {
         switch (event){
             case ControlRight(state): {
-                movement.right = state;
+                state.movement.right = state;
             }
             case ControlLeft(state): {
-                movement.left = state;
+                state.movement.left = state;
             }
             case ControlUp(state): {
                 movement.up = state;
@@ -122,7 +130,55 @@ class Player {
         }
     }
 
+    /**
+     * Mutate the player's state value; this works hand in hand
+     * with the physics simulation, interfaced with calls to 
+     * player.writeToBody and player.readFromBody, to define
+     * the overall flight / collision dynamics of the game.
+     */
     public function tick():Void {
-        // stub 
-    }
+        // synonyms
+        var forwardVel = 
+            state.vel.length * Math.cos(state.rot - state.vel.angle);
+        var speed = state.vel.length;
+
+        // rotation
+        var maxRotation = 
+            if (state.stalled) Tuning.playerMaxRotationStalled 
+                else Tuning.playerMaxRotation;
+        var targetRotVel = 0;
+        if (state.movement.left) targetRotvel = -maxRotation;
+        if (state.movement.right) targetRotvel += maxRotation;
+
+        state.rotvel +=
+            (targetRotVel - state.rotvel) / Math.pow(Tuning.playerAngularDamping, delta);
+
+        state.afterburner = false;            
+
+        // motion when stalled
+        if (state.stalled) {
+            // add basic thrust
+            state.afterburner = true;
+            state.vel = Vector.fromAngle(state.rot)
+                .mult(
+                    delta / 1000 * gameplay.playerAfterburnerStalled
+                )
+                .add(state.vel);
+
+            // apply damping when over playerMaxVelocityStalled
+            var excessVel = speed - Tuning.playerMaxVelocityStalled;
+            var dampingFactor = 
+                gameplay.playerMaxVelocityStalled / speed
+            if (excessVel > 0)
+                state.vel.y =
+                   state.vel.y * dampingFactor 
+                        * Math.pow(
+                            gameplay.playerStallDamping
+                            , delta / 1000)
+        } else {
+            // motion when not stalled
+            // TODO
+        }
+
+        }
 }
