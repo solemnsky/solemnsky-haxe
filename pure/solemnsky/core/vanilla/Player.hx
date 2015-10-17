@@ -176,9 +176,50 @@ class Player {
                             gameplay.playerStallDamping
                             , delta / 1000)
         } else {
-            // motion when not stalled
-            // TODO
-        }
+            // modify throttle and afterburner according to controls
+            if (state.movement.forward && state.throttle < 1)
+                state.throttle += Tuning.playerThrottleSpeed *
+                    (delta / 1000);
+            if (state.movement.backward && state.throttle > 0)
+                state.throttle -= Tuning.playerThrottleSpeed *
+                    (delta / 1000);
+            state.throttle = Math.min(state.throttle, 1);
+            state.throttle = Math.max(state.throttle, 0);
+            state.afterburner = 
+                this.movement.forward && state.throttle == 1;
+
+            // pick away at leftover velocity
+            state.leftoverVel.x = state.leftoverVel.x 
+                * Math.pow(Tuning.playerLeftoverVelDamping, delta / 1000);
+            state.leftoverVel.y = state.leftoverVel.y 
+                * Math.pow(Tuning.playerLeftoverVelDamping, delta / 1000);
+
+
+            // speed modifiers
+            if (state.speed > state.throttle * Tuning.speedThrrotleInfluence) {
+                if (state.throttle < Tuning.speedThrottleInfluence) {
+                    state.speed -= 
+                        Tuning.speedThrottleDeaccForce * (delta / 1000)
+                } else {
+                    state.speed -= 
+                        Tuning.speedThrottleForce * (delta / 1000)
+                }
+            }
+            state.speed += 
+                Math.sin(state.rot) * Tuning.speedGravityForce * (delta / 1000)
+            if (state.afterburner) 
+                state.speed += Tuning.speedAfterburnForce * (delta / 1000)
+            state.speed = Math.min(state.speed, 1)
+            state.speed = Math.max(state.speed, 0)
+
+            var targetSpeed = this.speed * gameplay.playerMaxSpeed
+
+            // set velocity, according to target speed, rotation, 
+            // and leftoverVel
+            state.velocity = Vector.fromAngle(state.rot)
+                .mult(targetSpeed)
+                .add(state.leftoverVel);
+            }
 
         }
 }
