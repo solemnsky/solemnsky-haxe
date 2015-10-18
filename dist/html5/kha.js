@@ -28164,6 +28164,7 @@ solemnsky_core_vanilla_Render.renderPlayer = function(player) {
 	var state = player.state;
 	var scene = new solemnsky_control_Scene();
 	scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.DrawCircle(state.pos,20)];
+	haxe_Log.trace(state.pos,{ fileName : "Render.hx", lineNumber : 23, className : "solemnsky.core.vanilla.Render", methodName : "renderPlayer"});
 	return scene;
 };
 var solemnsky_core_vanilla_Tuning = function() {
@@ -28216,7 +28217,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 			zpp_$nape_util_ZPP_$Flags.internal = false;
 		}
 		broad = zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE;
-		this.space = new nape_space_Space(new nape_geom_Vec2(0,10),broad);
+		this.space = new nape_space_Space(new nape_geom_Vec2(0,0.1),broad);
 	}
 	,doForPlayer: function(f,id) {
 		var player = this.players.h[id];
@@ -28275,7 +28276,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 			var player = $it0.next();
 			player.writeToBody();
 		}
-		this.space.step(delta);
+		this.space.step(delta / 1000);
 		var $it1 = this.players.iterator();
 		while( $it1.hasNext() ) {
 			var player1 = $it1.next();

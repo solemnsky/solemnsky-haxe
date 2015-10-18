@@ -20,6 +20,8 @@ class Render {
             , DrawCircle(state.pos, 20)
         ];
 
+        trace(state.pos);
+
         return scene;
     }
 } 

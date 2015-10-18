@@ -36,7 +36,7 @@ class Vanilla implements Core {
 
         // initialise actually mutable objects
         var broad = Broadphase.DYNAMIC_AABB_TREE;
-        space = new Space(new Vec2(0, 10), broad);
+        space = new Space(new Vec2(0, 0.1), broad);
     }
 
     public var modeId:String;
@@ -104,7 +104,7 @@ class Vanilla implements Core {
         for (player in players.iterator()) {
             player.writeToBody();
         }
-        space.step(delta);
+        space.step(delta /1000);
         for (player in players.iterator()) {
             player.readFromBody();
             player.tick(delta);
