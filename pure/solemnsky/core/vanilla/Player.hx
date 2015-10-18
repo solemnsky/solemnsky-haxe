@@ -30,8 +30,7 @@ typedef Movement = {
  */
 class PlayerState {
     public var name:String;
-    public var movement:Movement = 
-        {right:false, left:false, forward:false, backward:false};
+    public var movement:Movement;
 
     // physics
     public var pos:Vector;
@@ -41,20 +40,30 @@ class PlayerState {
 
     // flight mechanics
     public var stalled:Bool;
-    public var leftoverVel:Vector = new Vector(0, 0);
-    public var speed:Float = 1;
-    public var throttle:Float = 1;
-    public var afterburner = false;
+    public var leftoverVel:Vector;
+    public var speed:Float;
+    public var throttle:Float;
+    public var afterburner:Bool;
 
     public function new(
-        name:String, pos:Vector
-        , rot:Float = 0
-        , vel:Vector = null // TODO: constant zero vector
+        name:String, pos:Vector, rot:Float
     ):Void {
         this.name = name;
+        this.movement = 
+            {right:false, left:false, forward:false, backward:false};
+
+        // physics 
         this.pos = pos;
-        this.rot = rot;
-        this.vel = vel;
+        this.rot = rot; 
+        this.vel = new Vector(0, 0);
+        this.rotvel = 0;
+
+        // flight mechanics
+        this.stalled = true;
+        this.leftoverVel = new Vector(0, 0);
+        this.speed = 0;
+        this.throttle = 0;
+        this.afterburner = false;
     }
 }
 
@@ -75,11 +84,13 @@ class Player {
 
     public function new(
         tuning:Tuning, parent:Vanilla
-        , name:String, pos:Vector
+        , name:String, pos:Vector, rot:Float
     ):Void {
-        this.state = new PlayerState(name, pos);
+        this.state = new PlayerState(name, pos, rot);
         this.parent = parent;
         this.tuning = tuning;
+
+        trace('initialising player');
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));

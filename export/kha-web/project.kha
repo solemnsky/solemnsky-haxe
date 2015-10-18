@@ -29,8 +29,5 @@
 				"title"
 			]
 		}
-	],
-	"libraries": [
-		"nape"
 	]
 }

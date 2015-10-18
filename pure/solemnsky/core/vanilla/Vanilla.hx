@@ -2,6 +2,7 @@ package solemnsky.core.vanilla;
 
 import haxe.io.Bytes;
 import math.Vector;
+import math.Transform;
 import nape.geom.Vec2;
 import nape.space.Broadphase;
 import nape.space.Space;
@@ -31,6 +32,9 @@ class Vanilla implements Core {
     }    
 
     public function init(initData:InitData):Void {
+        players = new Map();
+
+        // initialise actually mutable objects
         var broad = Broadphase.DYNAMIC_AABB_TREE;
         space = new Space(new Vec2(0, 0), broad);
     }
@@ -119,10 +123,12 @@ class Vanilla implements Core {
     public function render(delta:Float):Scene {
         var scene = new Scene();
         scene.prims = [
-            SetFont("Arial", 12)
-            , DrawText(new Vector(0, 0), CenterText
-                , "I need to implement this ._.")
+            SetColor(0, 0, 0, 255)
+            , SetFont("Arial", 14)
+            , DrawText(new Vector(0, 0), LeftText
+                , "Graphics go here!")
         ];
+        scene.trans = Transform.scale(5, 5);
         return scene;
     }
 
@@ -141,7 +147,14 @@ class Vanilla implements Core {
 
     public function join(name:String):Int {
         var newId = takeUnique(players.keys());
-        players.set(newId, new Player(tuning, this, name, new Vector(0, 0)));
+        players.set(
+            newId, new Player(
+                tuning
+                , this
+                , name
+                , new Vector(0, 0)
+                , 0)
+        );
         return newId;
     }
 

@@ -28050,27 +28050,29 @@ solemnsky_core_vanilla_ControlEvent.ControlRight = function(state) { var $x = ["
 solemnsky_core_vanilla_ControlEvent.ControlLeft = function(state) { var $x = ["ControlLeft",1,state]; $x.__enum__ = solemnsky_core_vanilla_ControlEvent; $x.toString = $estr; return $x; };
 solemnsky_core_vanilla_ControlEvent.ControlUp = function(state) { var $x = ["ControlUp",2,state]; $x.__enum__ = solemnsky_core_vanilla_ControlEvent; $x.toString = $estr; return $x; };
 solemnsky_core_vanilla_ControlEvent.ControlDown = function(state) { var $x = ["ControlDown",3,state]; $x.__enum__ = solemnsky_core_vanilla_ControlEvent; $x.toString = $estr; return $x; };
-var solemnsky_core_vanilla_PlayerState = function(name,pos,rot,vel) {
-	if(rot == null) rot = 0;
-	this.afterburner = false;
-	this.throttle = 1;
-	this.speed = 1;
-	this.leftoverVel = new math_Vector(0,0);
-	this.movement = { right : false, left : false, forward : false, backward : false};
+var solemnsky_core_vanilla_PlayerState = function(name,pos,rot) {
 	this.name = name;
+	this.movement = { right : false, left : false, forward : false, backward : false};
 	this.pos = pos;
 	this.rot = rot;
-	this.vel = vel;
+	this.vel = new math_Vector(0,0);
+	this.rotvel = 0;
+	this.stalled = true;
+	this.leftoverVel = new math_Vector(0,0);
+	this.speed = 0;
+	this.throttle = 0;
+	this.afterburner = false;
 };
 $hxClasses["solemnsky.core.vanilla.PlayerState"] = solemnsky_core_vanilla_PlayerState;
 solemnsky_core_vanilla_PlayerState.__name__ = ["solemnsky","core","vanilla","PlayerState"];
 solemnsky_core_vanilla_PlayerState.prototype = {
 	__class__: solemnsky_core_vanilla_PlayerState
 };
-var solemnsky_core_vanilla_Player = function(tuning,parent,name,pos) {
-	this.state = new solemnsky_core_vanilla_PlayerState(name,pos);
+var solemnsky_core_vanilla_Player = function(tuning,parent,name,pos,rot) {
+	this.state = new solemnsky_core_vanilla_PlayerState(name,pos,rot);
 	this.parent = parent;
 	this.tuning = tuning;
+	haxe_Log.trace("initialising player",{ fileName : "Player.hx", lineNumber : 93, className : "solemnsky.core.vanilla.Player", methodName : "new"});
 	this.body = new nape_phys_Body((function($this) {
 		var $r;
 		if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
@@ -28198,6 +28200,7 @@ solemnsky_core_vanilla_Vanilla.__name__ = ["solemnsky","core","vanilla","Vanilla
 solemnsky_core_vanilla_Vanilla.__interfaces__ = [solemnsky_core_Core];
 solemnsky_core_vanilla_Vanilla.prototype = {
 	init: function(initData) {
+		this.players = new haxe_ds_IntMap();
 		var broad;
 		if(zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE == null) {
 			zpp_$nape_util_ZPP_$Flags.internal = true;
@@ -28256,7 +28259,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 		var mutate = function(player) {
 			_g.mutateByEvent(player,event);
 		};
-		if(!this.doForPlayer(mutate,id)) haxe_Log.trace("no such player " + id + " to accept event!",{ fileName : "Vanilla.hx", lineNumber : 96, className : "solemnsky.core.vanilla.Vanilla", methodName : "handle"});
+		if(!this.doForPlayer(mutate,id)) haxe_Log.trace("no such player " + id + " to accept event!",{ fileName : "Vanilla.hx", lineNumber : 100, className : "solemnsky.core.vanilla.Vanilla", methodName : "handle"});
 	}
 	,tick: function(delta) {
 		var $it0 = this.players.iterator();
@@ -28278,7 +28281,8 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 	}
 	,render: function(delta) {
 		var scene = new solemnsky_control_Scene();
-		scene.prims = [solemnsky_control_DrawPrim.SetFont("Arial",12),solemnsky_control_DrawPrim.DrawText(new math_Vector(0,0),solemnsky_control_TextAlign.CenterText,"I need to implement this ._.")];
+		scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.SetFont("Arial",14),solemnsky_control_DrawPrim.DrawText(new math_Vector(0,0),solemnsky_control_TextAlign.LeftText,"Graphics go here!")];
+		scene.trans = new math_Transform(5,0,0,0,5,0,0,0,1);
 		return scene;
 	}
 	,listPlayers: function() {
@@ -28292,7 +28296,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 	}
 	,join: function(name) {
 		var newId = this.takeUnique(this.players.keys());
-		var value = new solemnsky_core_vanilla_Player(this.tuning,this,name,new math_Vector(0,0));
+		var value = new solemnsky_core_vanilla_Player(this.tuning,this,name,new math_Vector(0,0),0);
 		this.players.h[newId] = value;
 		return newId;
 	}
