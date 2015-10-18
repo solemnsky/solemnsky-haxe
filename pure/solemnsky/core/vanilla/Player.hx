@@ -93,6 +93,7 @@ class Player {
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
         body.shapes.add(new Circle(tuning.playerRadius));
+        body.setShapeMaterials(nape.phys.Material.rubber());
         writeToBody();
     }
 
@@ -142,90 +143,90 @@ class Player {
      * the overall flight / collision dynamics of the game.
      */
     public function tick(delta:Float):Void {
-        // synonyms
-        var forwardVel:Float = 
-            state.vel.length() * Math.cos(state.rot - state.vel.angle());
-        var speed = state.vel.length();
+        // // synonyms
+        // var forwardVel:Float = 
+        //     state.vel.length() * Math.cos(state.rot - state.vel.angle());
+        // var speed = state.vel.length();
 
-        // rotation
-        var maxRotation = 
-            if (state.stalled) tuning.playerMaxRotationStalled 
-                else tuning.playerMaxRotation;
-        var targetRotVel:Float = 0;
-        if (state.movement.left) targetRotVel = -maxRotation;
-        if (state.movement.right) targetRotVel += maxRotation;
+        // // rotation
+        // var maxRotation = 
+        //     if (state.stalled) tuning.playerMaxRotationStalled 
+        //         else tuning.playerMaxRotation;
+        // var targetRotVel:Float = 0;
+        // if (state.movement.left) targetRotVel = -maxRotation;
+        // if (state.movement.right) targetRotVel += maxRotation;
 
-        state.rotvel +=
-            (targetRotVel - state.rotvel) / Math.pow(tuning.playerAngularDamping, delta);
+        // state.rotvel +=
+        //     (targetRotVel - state.rotvel) / Math.pow(tuning.playerAngularDamping, delta);
 
-        state.afterburner = false;            
+        // state.afterburner = false;            
 
-        // motion when stalled
-        if (state.stalled) {
-            // add basic thrust
-            state.afterburner = true;
-            state.vel = Vector.fromAngle(state.rot)
-                .mult(
-                    delta / 1000 * tuning.playerAfterburnerStalled
-                )
-                .add(state.vel);
+        // // motion when stalled
+        // if (state.stalled) {
+        //     // add basic thrust
+        //     state.afterburner = true;
+        //     state.vel = Vector.fromAngle(state.rot)
+        //         .mult(
+        //             delta / 1000 * tuning.playerAfterburnerStalled
+        //         )
+        //         .add(state.vel);
 
-            // apply damping when over playerMaxVelocityStalled
-            var excessVel = speed - tuning.playerMaxVelocityStalled;
-            var dampingFactor = 
-                tuning.playerMaxVelocityStalled / speed;
-            if (excessVel > 0)
-                state.vel.y =
-                   state.vel.y * dampingFactor 
-                        * Math.pow(
-                            tuning.playerStallDamping
-                            , delta / 1000);
+        //     // apply damping when over playerMaxVelocityStalled
+        //     var excessVel = speed - tuning.playerMaxVelocityStalled;
+        //     var dampingFactor = 
+        //         tuning.playerMaxVelocityStalled / speed;
+        //     if (excessVel > 0)
+        //         state.vel.y =
+        //            state.vel.y * dampingFactor 
+        //                 * Math.pow(
+        //                     tuning.playerStallDamping
+        //                     , delta / 1000);
 
-        // motion when not stalled                        
-        } else {
-            // modify throttle and afterburner according to controls
-            if (state.movement.forward && state.throttle < 1)
-                state.throttle += tuning.playerThrottleSpeed *
-                    (delta / 1000);
-            if (state.movement.backward && state.throttle > 0)
-                state.throttle -= tuning.playerThrottleSpeed *
-                    (delta / 1000);
-            state.throttle = Math.min(state.throttle, 1);
-            state.throttle = Math.max(state.throttle, 0);
-            state.afterburner = 
-                state.movement.forward && state.throttle == 1;
+        // // motion when not stalled                        
+        // } else {
+        //     // modify throttle and afterburner according to controls
+        //     if (state.movement.forward && state.throttle < 1)
+        //         state.throttle += tuning.playerThrottleSpeed *
+        //             (delta / 1000);
+        //     if (state.movement.backward && state.throttle > 0)
+        //         state.throttle -= tuning.playerThrottleSpeed *
+        //             (delta / 1000);
+        //     state.throttle = Math.min(state.throttle, 1);
+        //     state.throttle = Math.max(state.throttle, 0);
+        //     state.afterburner = 
+        //         state.movement.forward && state.throttle == 1;
 
-            // pick away at leftover velocity
-            state.leftoverVel.x = state.leftoverVel.x 
-                * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
-            state.leftoverVel.y = state.leftoverVel.y 
-                * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
+        //     // pick away at leftover velocity
+        //     state.leftoverVel.x = state.leftoverVel.x 
+        //         * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
+        //     state.leftoverVel.y = state.leftoverVel.y 
+        //         * Math.pow(tuning.playerLeftoverVelDamping, delta / 1000);
 
-            // speed modifiers
-            if (state.speed > state.throttle * tuning.speedThrottleInfluence) {
-                if (state.throttle < tuning.speedThrottleInfluence) {
-                    state.speed -= 
-                        tuning.speedThrottleDeaccForce * (delta / 1000);
-                } else {
-                    state.speed -= 
-                        tuning.speedThrottleForce * (delta / 1000);
-                }
-            }
-            state.speed += 
-                Math.sin(state.rot) 
-                    * tuning.speedGravityForce * (delta / 1000);
-            if (state.afterburner) 
-                state.speed += tuning.speedAfterburnForce * (delta / 1000);
-            state.speed = Math.min(state.speed, 1);
-            state.speed = Math.max(state.speed, 0);
+        //     // speed modifiers
+        //     if (state.speed > state.throttle * tuning.speedThrottleInfluence) {
+        //         if (state.throttle < tuning.speedThrottleInfluence) {
+        //             state.speed -= 
+        //                 tuning.speedThrottleDeaccForce * (delta / 1000);
+        //         } else {
+        //             state.speed -= 
+        //                 tuning.speedThrottleForce * (delta / 1000);
+        //         }
+        //     }
+        //     state.speed += 
+        //         Math.sin(state.rot) 
+        //             * tuning.speedGravityForce * (delta / 1000);
+        //     if (state.afterburner) 
+        //         state.speed += tuning.speedAfterburnForce * (delta / 1000);
+        //     state.speed = Math.min(state.speed, 1);
+        //     state.speed = Math.max(state.speed, 0);
 
-            var targetSpeed = state.speed * tuning.playerMaxSpeed;
+        //     var targetSpeed = state.speed * tuning.playerMaxSpeed;
 
-            // set velocity, according to target speed, rotation, 
-            // and leftoverVel
-            state.vel = Vector.fromAngle(state.rot)
-                .mult(targetSpeed)
-                .add(state.leftoverVel);
-        }
+        //     // set velocity, according to target speed, rotation, 
+        //     // and leftoverVel
+        //     state.vel = Vector.fromAngle(state.rot)
+        //         .mult(targetSpeed)
+        //         .add(state.leftoverVel);
+        // }
     }
 }

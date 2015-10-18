@@ -28083,6 +28083,7 @@ var solemnsky_core_vanilla_Player = function(tuning,parent,name,pos,rot) {
 		return $r;
 	}(this)),solemnsky_Util.napeFromVector(pos));
 	this.body.zpp_inner.wrap_shapes.add(new nape_shape_Circle(tuning.playerRadius));
+	this.body.setShapeMaterials(nape_phys_Material.rubber());
 	this.writeToBody();
 };
 $hxClasses["solemnsky.core.vanilla.Player"] = solemnsky_core_vanilla_Player;
@@ -28121,39 +28122,6 @@ solemnsky_core_vanilla_Player.prototype = {
 		}
 	}
 	,tick: function(delta) {
-		var forwardVel = this.state.vel.length() * Math.cos(this.state.rot - this.state.vel.angle());
-		var speed = this.state.vel.length();
-		var maxRotation;
-		if(this.state.stalled) maxRotation = this.tuning.playerMaxRotationStalled; else maxRotation = this.tuning.playerMaxRotation;
-		var targetRotVel = 0;
-		if(this.state.movement.left) targetRotVel = -maxRotation;
-		if(this.state.movement.right) targetRotVel += maxRotation;
-		this.state.rotvel += (targetRotVel - this.state.rotvel) / Math.pow(this.tuning.playerAngularDamping,delta);
-		this.state.afterburner = false;
-		if(this.state.stalled) {
-			this.state.afterburner = true;
-			this.state.vel = math_Vector.fromAngle(this.state.rot).mult(delta / 1000 * this.tuning.playerAfterburnerStalled).add(this.state.vel);
-			var excessVel = speed - this.tuning.playerMaxVelocityStalled;
-			var dampingFactor = this.tuning.playerMaxVelocityStalled / speed;
-			if(excessVel > 0) this.state.vel.y = this.state.vel.y * dampingFactor * Math.pow(this.tuning.playerStallDamping,delta / 1000);
-		} else {
-			if(this.state.movement.forward && this.state.throttle < 1) this.state.throttle += this.tuning.playerThrottleSpeed * (delta / 1000);
-			if(this.state.movement.backward && this.state.throttle > 0) this.state.throttle -= this.tuning.playerThrottleSpeed * (delta / 1000);
-			this.state.throttle = Math.min(this.state.throttle,1);
-			this.state.throttle = Math.max(this.state.throttle,0);
-			this.state.afterburner = this.state.movement.forward && this.state.throttle == 1;
-			this.state.leftoverVel.x = this.state.leftoverVel.x * Math.pow(this.tuning.playerLeftoverVelDamping,delta / 1000);
-			this.state.leftoverVel.y = this.state.leftoverVel.y * Math.pow(this.tuning.playerLeftoverVelDamping,delta / 1000);
-			if(this.state.speed > this.state.throttle * this.tuning.speedThrottleInfluence) {
-				if(this.state.throttle < this.tuning.speedThrottleInfluence) this.state.speed -= this.tuning.speedThrottleDeaccForce * (delta / 1000); else this.state.speed -= this.tuning.speedThrottleForce * (delta / 1000);
-			}
-			this.state.speed += Math.sin(this.state.rot) * this.tuning.speedGravityForce * (delta / 1000);
-			if(this.state.afterburner) this.state.speed += this.tuning.speedAfterburnForce * (delta / 1000);
-			this.state.speed = Math.min(this.state.speed,1);
-			this.state.speed = Math.max(this.state.speed,0);
-			var targetSpeed = this.state.speed * this.tuning.playerMaxSpeed;
-			this.state.vel = math_Vector.fromAngle(this.state.rot).mult(targetSpeed).add(this.state.leftoverVel);
-		}
 	}
 	,__class__: solemnsky_core_vanilla_Player
 };
@@ -28164,7 +28132,6 @@ solemnsky_core_vanilla_Render.renderPlayer = function(player) {
 	var state = player.state;
 	var scene = new solemnsky_control_Scene();
 	scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.DrawCircle(state.pos,20)];
-	haxe_Log.trace(state.pos,{ fileName : "Render.hx", lineNumber : 23, className : "solemnsky.core.vanilla.Render", methodName : "renderPlayer"});
 	return scene;
 };
 var solemnsky_core_vanilla_Tuning = function() {
@@ -28210,14 +28177,20 @@ solemnsky_core_vanilla_Vanilla.__interfaces__ = [solemnsky_core_Core];
 solemnsky_core_vanilla_Vanilla.prototype = {
 	init: function(initData) {
 		this.players = new haxe_ds_IntMap();
-		var broad;
-		if(zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE == null) {
-			zpp_$nape_util_ZPP_$Flags.internal = true;
-			zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE = new nape_space_Broadphase();
-			zpp_$nape_util_ZPP_$Flags.internal = false;
-		}
-		broad = zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE;
-		this.space = new nape_space_Space(new nape_geom_Vec2(0,0.1),broad);
+		this.space = new nape_space_Space(new nape_geom_Vec2(0,1));
+		var floor = new nape_phys_Body((function($this) {
+			var $r;
+			if(zpp_$nape_util_ZPP_$Flags.BodyType_STATIC == null) {
+				zpp_$nape_util_ZPP_$Flags.internal = true;
+				zpp_$nape_util_ZPP_$Flags.BodyType_STATIC = new nape_phys_BodyType();
+				zpp_$nape_util_ZPP_$Flags.internal = false;
+			}
+			$r = zpp_$nape_util_ZPP_$Flags.BodyType_STATIC;
+			return $r;
+		}(this)));
+		floor.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.rect(50,850,1500,1)));
+		floor.set_space(this.space);
+		floor.setShapeMaterials(nape_phys_Material.rubber());
 	}
 	,doForPlayer: function(f,id) {
 		var player = this.players.h[id];
@@ -28268,7 +28241,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 		var mutate = function(player) {
 			_g.mutateByEvent(player,event);
 		};
-		if(!this.doForPlayer(mutate,id)) haxe_Log.trace("no such player " + id + " to accept event!",{ fileName : "Vanilla.hx", lineNumber : 100, className : "solemnsky.core.vanilla.Vanilla", methodName : "handle"});
+		if(!this.doForPlayer(mutate,id)) haxe_Log.trace("no such player " + id + " to accept event!",{ fileName : "Vanilla.hx", lineNumber : 108, className : "solemnsky.core.vanilla.Vanilla", methodName : "handle"});
 	}
 	,tick: function(delta) {
 		var $it0 = this.players.iterator();
@@ -28276,7 +28249,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 			var player = $it0.next();
 			player.writeToBody();
 		}
-		this.space.step(delta / 1000);
+		this.space.step(delta / 100);
 		var $it1 = this.players.iterator();
 		while( $it1.hasNext() ) {
 			var player1 = $it1.next();
@@ -28317,7 +28290,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 		var newId = this.takeUnique(this.players.keys());
 		var newPlayer = new solemnsky_core_vanilla_Player(this.tuning,this,name,new math_Vector(500,500),0);
 		this.players.h[newId] = newPlayer;
-		this.space.zpp_inner.wrap_bodies.add(newPlayer.body);
+		newPlayer.body.set_space(this.space);
 		return newId;
 	}
 	,quit: function(id) {

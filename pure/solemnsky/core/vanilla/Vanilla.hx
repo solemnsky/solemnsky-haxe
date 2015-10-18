@@ -6,6 +6,9 @@ import math.Transform;
 import nape.geom.Vec2;
 import nape.space.Broadphase;
 import nape.space.Space;
+import nape.shape.Polygon;
+import nape.phys.Body;
+import nape.phys.BodyType;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
 
@@ -34,9 +37,14 @@ class Vanilla implements Core {
     public function init(initData:InitData):Void {
         players = new Map();
 
-        // initialise actually mutable objects
-        var broad = Broadphase.DYNAMIC_AABB_TREE;
-        space = new Space(new Vec2(0, 0.1), broad);
+        space = new Space(new Vec2(0, 1));
+
+        var floor = new Body(BodyType.STATIC);
+        floor.shapes.add(
+            new Polygon(Polygon.rect(50, (900 - 50), (1600 - 100), 1))
+        );
+        floor.space = space;
+        floor.setShapeMaterials(nape.phys.Material.rubber());
     }
 
     public var modeId:String;
@@ -104,7 +112,7 @@ class Vanilla implements Core {
         for (player in players.iterator()) {
             player.writeToBody();
         }
-        space.step(delta /1000);
+        space.step(delta / 100); // centiseconds wtf
         for (player in players.iterator()) {
             player.readFromBody();
             player.tick(delta);
@@ -157,7 +165,6 @@ class Vanilla implements Core {
         return names;
     }
 
-
     /*************************************************************************/
     /* discrete networking
     /*************************************************************************/
@@ -173,7 +180,7 @@ class Vanilla implements Core {
         );
 
         players.set(newId, newPlayer);
-        space.bodies.add(newPlayer.body);
+        newPlayer.body.space = space;
         return newId;
     }
 
