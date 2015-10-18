@@ -90,8 +90,6 @@ class Player {
         this.parent = parent;
         this.tuning = tuning;
 
-        trace('initialising player');
-
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
         body.shapes.add(new Circle(tuning.playerRadius));

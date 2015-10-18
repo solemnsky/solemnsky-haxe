@@ -1,6 +1,8 @@
 package solemnsky.core.vanilla;
 
 import solemnsky.control.Scene;
+import math.Vector;
+import math.Transform;
 
 /**
  * solemnsky.core.vanilla.Render:
@@ -8,12 +10,15 @@ import solemnsky.control.Scene;
  */
 
 class Render {
-    static function renderPlayer(player:Player):Scene {
+    public static function renderPlayer(player:Player):Scene {
         var state = player.state;
 
         var scene = new Scene();
 
-        // stub
+        scene.prims = [
+            SetColor(0, 0, 0, 255)
+            , DrawCircle(state.pos, 20)
+        ];
 
         return scene;
     }

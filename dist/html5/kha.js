@@ -28072,7 +28072,6 @@ var solemnsky_core_vanilla_Player = function(tuning,parent,name,pos,rot) {
 	this.state = new solemnsky_core_vanilla_PlayerState(name,pos,rot);
 	this.parent = parent;
 	this.tuning = tuning;
-	haxe_Log.trace("initialising player",{ fileName : "Player.hx", lineNumber : 93, className : "solemnsky.core.vanilla.Player", methodName : "new"});
 	this.body = new nape_phys_Body((function($this) {
 		var $r;
 		if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
@@ -28157,6 +28156,15 @@ solemnsky_core_vanilla_Player.prototype = {
 		}
 	}
 	,__class__: solemnsky_core_vanilla_Player
+};
+var solemnsky_core_vanilla_Render = function() { };
+$hxClasses["solemnsky.core.vanilla.Render"] = solemnsky_core_vanilla_Render;
+solemnsky_core_vanilla_Render.__name__ = ["solemnsky","core","vanilla","Render"];
+solemnsky_core_vanilla_Render.renderPlayer = function(player) {
+	var state = player.state;
+	var scene = new solemnsky_control_Scene();
+	scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.DrawCircle(new math_Vector(500,500),20)];
+	return scene;
 };
 var solemnsky_core_vanilla_Tuning = function() {
 	this.graphicsNameClear = 35;
@@ -28279,10 +28287,20 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 	,hasEnded: function() {
 		return false;
 	}
+	,renderOverlay: function() {
+		var scene = new solemnsky_control_Scene();
+		scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.SetFont("Arial",14),solemnsky_control_DrawPrim.DrawText(new math_Vector(0,0),solemnsky_control_TextAlign.CenterText,"Development demo: enjoy at your own risk.")];
+		scene.trans = new math_Transform(1,0,800,0,1,5,0,0,1).multmat(new math_Transform(3,0,0,0,3,0,0,0,1));
+		return scene;
+	}
 	,render: function(delta) {
 		var scene = new solemnsky_control_Scene();
-		scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.SetFont("Arial",14),solemnsky_control_DrawPrim.DrawText(new math_Vector(0,0),solemnsky_control_TextAlign.LeftText,"Graphics go here!")];
-		scene.trans = new math_Transform(5,0,0,0,5,0,0,0,1);
+		scene.children = [this.renderOverlay()];
+		var $it0 = this.players.iterator();
+		while( $it0.hasNext() ) {
+			var player = $it0.next();
+			scene.children.push(solemnsky_core_vanilla_Render.renderPlayer(player));
+		}
 		return scene;
 	}
 	,listPlayers: function() {
