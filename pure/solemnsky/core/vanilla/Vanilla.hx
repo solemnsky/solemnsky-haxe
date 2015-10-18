@@ -36,7 +36,7 @@ class Vanilla implements Core {
 
         // initialise actually mutable objects
         var broad = Broadphase.DYNAMIC_AABB_TREE;
-        space = new Space(new Vec2(0, 0), broad);
+        space = new Space(new Vec2(0, 10), broad);
     }
 
     public var modeId:String;
@@ -138,7 +138,7 @@ class Vanilla implements Core {
 
     public function render(delta:Float):Scene {
         var scene = new Scene();
-        
+
         scene.children = [
             renderOverlay()
         ];
@@ -164,14 +164,16 @@ class Vanilla implements Core {
 
     public function join(name:String):Int {
         var newId = takeUnique(players.keys());
-        players.set(
-            newId, new Player(
-                tuning
-                , this
-                , name
-                , new Vector(0, 0)
-                , 0)
+        var newPlayer = new Player(
+            tuning
+            , this
+            , name
+            , new Vector(500, 500)
+            , 0
         );
+
+        players.set(newId, newPlayer);
+        space.bodies.add(newPlayer.body);
         return newId;
     }
 

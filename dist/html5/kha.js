@@ -28163,7 +28163,7 @@ solemnsky_core_vanilla_Render.__name__ = ["solemnsky","core","vanilla","Render"]
 solemnsky_core_vanilla_Render.renderPlayer = function(player) {
 	var state = player.state;
 	var scene = new solemnsky_control_Scene();
-	scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.DrawCircle(new math_Vector(500,500),20)];
+	scene.prims = [solemnsky_control_DrawPrim.SetColor(0,0,0,255),solemnsky_control_DrawPrim.DrawCircle(state.pos,20)];
 	return scene;
 };
 var solemnsky_core_vanilla_Tuning = function() {
@@ -28216,7 +28216,7 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 			zpp_$nape_util_ZPP_$Flags.internal = false;
 		}
 		broad = zpp_$nape_util_ZPP_$Flags.Broadphase_DYNAMIC_AABB_TREE;
-		this.space = new nape_space_Space(new nape_geom_Vec2(0,0),broad);
+		this.space = new nape_space_Space(new nape_geom_Vec2(0,10),broad);
 	}
 	,doForPlayer: function(f,id) {
 		var player = this.players.h[id];
@@ -28314,8 +28314,9 @@ solemnsky_core_vanilla_Vanilla.prototype = {
 	}
 	,join: function(name) {
 		var newId = this.takeUnique(this.players.keys());
-		var value = new solemnsky_core_vanilla_Player(this.tuning,this,name,new math_Vector(0,0),0);
-		this.players.h[newId] = value;
+		var newPlayer = new solemnsky_core_vanilla_Player(this.tuning,this,name,new math_Vector(500,500),0);
+		this.players.h[newId] = newPlayer;
+		this.space.zpp_inner.wrap_bodies.add(newPlayer.body);
 		return newId;
 	}
 	,quit: function(id) {

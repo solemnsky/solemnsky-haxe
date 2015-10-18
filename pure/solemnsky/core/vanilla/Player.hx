@@ -72,11 +72,11 @@ class Player {
     /* private state variables
     /*************************************************************************/
 
-    public var state:PlayerState;
     private var parent:Vanilla;
     private var tuning:Tuning;
 
-    private var body:Body;
+    public var state:PlayerState;
+    public var body:Body;
 
     /*************************************************************************/
     /* constructor
