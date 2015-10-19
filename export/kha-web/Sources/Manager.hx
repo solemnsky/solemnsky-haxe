@@ -1,18 +1,18 @@
 package;
 
+import control.Control;
+import control.Event;
+import control.Profile;
 import haxe.Timer;
 import kha.Configuration;
-import kha.LoadingScreen;
 import kha.Framebuffer;
 import kha.Game;
 import kha.Image;
 import kha.Loader;
+import kha.LoadingScreen;
 import kha.Scaler;
 import kha.Sys;
 import kha.graphics2.Graphics;
-import solemnsky.control.Control;
-import solemnsky.control.Event;
-import solemnsky.control.Profile;
 
 using kha.graphics2.GraphicsExtension;
 

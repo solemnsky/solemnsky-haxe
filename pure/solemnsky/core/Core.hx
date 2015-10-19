@@ -1,8 +1,8 @@
 package solemnsky.core;
 
 import haxe.io.Bytes;
-import solemnsky.control.Event;
-import solemnsky.control.Scene;
+import control.Event;
+import control.Scene;
 
 /**
  * solemnsky.core.Core: 

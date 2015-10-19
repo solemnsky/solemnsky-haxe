@@ -1,4 +1,4 @@
-package solemnsky.control;
+package control;
 
 /**
  * solemnsky.control.Network:

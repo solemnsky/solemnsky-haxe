@@ -1,1 +1,1 @@
-echo '/pure/solemnsky:' $(cat $(find ./pure/solemnsky -name '*.hx') | wc -l) lines
+echo '/pure/:' $(cat $(find ./pure/ -name '*.hx') | wc -l) lines

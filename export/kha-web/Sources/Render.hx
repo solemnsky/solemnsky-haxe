@@ -1,12 +1,11 @@
 package;
 
+import control.Scene;
 import kha.Color;
 import kha.FontStyle;
 import kha.Loader;
 import kha.graphics2.Graphics;
-import solemnsky.control.Scene;
 import math.Transform;
-import math.Vector;
 
 using kha.graphics2.GraphicsExtension;
 

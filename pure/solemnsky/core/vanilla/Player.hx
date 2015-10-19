@@ -1,10 +1,9 @@
 package solemnsky.core.vanilla;
 
+import math.Vector;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Circle;
-import solemnsky.Util;
-import math.Vector;
 import solemnsky.Util;
 
 /**

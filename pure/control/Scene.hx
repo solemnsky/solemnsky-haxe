@@ -1,4 +1,4 @@
-package solemnsky.control;
+package control;
 
 import math.Transform;
 import math.Vector;

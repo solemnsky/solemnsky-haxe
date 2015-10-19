@@ -1,9 +1,9 @@
 package solemnsky.ui;
 
-import solemnsky.control.Control;
-import solemnsky.control.Event;
-import solemnsky.control.Scene;
-import solemnsky.control.Profile;
+import control.Control;
+import control.Event;
+import control.Profile;
+import control.Scene;
 import solemnsky.core.Core;
 import solemnsky.core.vanilla.Vanilla;
 

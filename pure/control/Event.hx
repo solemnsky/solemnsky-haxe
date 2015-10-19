@@ -1,4 +1,4 @@
-package solemnsky.control;
+package control;
 
 import kha.Key;
 

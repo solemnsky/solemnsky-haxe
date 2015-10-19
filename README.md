@@ -31,15 +31,17 @@ Docker container(s) for predictable development on linux. build.sh builds the co
 
 Various top-level systems to deploy the code in /pure out into the world.
 
+### /lib
+
+Haxe library code, used by /pure.
+
 ### /media
 
 Media of all types, with original artifacts.
 
 ### /pure
 
-Minimal-dependency haxe code; *extremely* portable. Deals with the world through an interface (solemnsky.control) which is implemented in the top-levels in /export.
-
-Haxe is just about the most portable language I could find, I don't think it's really possible to complain about my choice of language to write the codebase.
+Minimal-dependency solemnsky-related haxe code; very portable. Deals with the world through an interface (solemnsky.control) which is implemented in the top-levels in /export.
 
 ### /util
 

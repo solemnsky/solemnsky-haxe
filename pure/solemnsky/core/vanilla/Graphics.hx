@@ -1,15 +1,13 @@
 package solemnsky.core.vanilla;
 
-import solemnsky.control.Scene;
-import math.Vector;
-import math.Transform;
+import control.Scene;
 
 /**
  * solemnsky.core.vanilla.Render:
  * Render functions for the basic graphics.
  */
 
-class Render {
+class Graphics {
     public static function renderPlayer(player:Player):Scene {
         var state = player.state;
 

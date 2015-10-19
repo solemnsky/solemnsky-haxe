@@ -1,16 +1,16 @@
 package solemnsky.core.vanilla;
 
+import control.Event;
+import control.Scene;
+import flash.display.Graphics;
 import haxe.io.Bytes;
-import math.Vector;
 import math.Transform;
+import math.Vector;
 import nape.geom.Vec2;
-import nape.space.Broadphase;
-import nape.space.Space;
-import nape.shape.Polygon;
 import nape.phys.Body;
 import nape.phys.BodyType;
-import solemnsky.control.Event;
-import solemnsky.control.Scene;
+import nape.shape.Polygon;
+import nape.space.Space;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -151,7 +151,7 @@ class Vanilla implements Core {
             renderOverlay()
         ];
         for(player in players){
-            scene.children.push(Render.renderPlayer(player));
+            scene.children.push(Graphics.renderPlayer(player));
         }
 
         return scene;
