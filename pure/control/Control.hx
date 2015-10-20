@@ -68,7 +68,9 @@ class EmptyControl implements Control {
         return new Scene();
     }
 
-    public function profiling(data:Profile):Void {}
+    public function profiling(data:Profile):Void {
+        trace(data.print());
+    }
 
     public function handle(e:Event):Void {}
 

@@ -164,7 +164,7 @@ var Main = function() { };
 $hxClasses["Main"] = Main;
 Main.__name__ = ["Main"];
 Main.main = function() {
-	var control1 = new control_demo_GraphicsDemo();
+	var control1 = new control_demo_InputDemo();
 	var starter = new kha_Starter();
 	var manager = new Manager(control1,60);
 	starter.start(manager);
@@ -336,12 +336,6 @@ Manager.prototype = $extend(kha_Game.prototype,{
 			event = control_Event.MouseMove(x * factor1,y * factor1 + (900 - this.realHeight * factor1) / 2);
 		}
 		this.ctrl.handle(event);
-	}
-	,keyDown: function(key,$char) {
-		if($char != "") this.ctrl.handle(control_Event.CharKey($char,true)); else this.ctrl.handle(control_Event.SpecialKey(key,true));
-	}
-	,keyUp: function(key,$char) {
-		if($char != null) this.ctrl.handle(control_Event.CharKey($char,false)); else this.ctrl.handle(control_Event.SpecialKey(key,false));
 	}
 	,pushProfile: function(point,profile) {
 		profile.push(Math.round(point * 1000));
@@ -678,6 +672,7 @@ control_EmptyControl.prototype = {
 		return new control_Scene();
 	}
 	,profiling: function(data) {
+		haxe_Log.trace(data.print(),{ fileName : "Control.hx", lineNumber : 72, className : "control.EmptyControl", methodName : "profiling"});
 	}
 	,handle: function(e) {
 	}
@@ -757,68 +752,28 @@ control_Scene.__name__ = ["control","Scene"];
 control_Scene.prototype = {
 	__class__: control_Scene
 };
-var control_demo_GraphicsDemo = function() {
-	this.y = 0;
-	this.x = 0;
-	this.time = 0;
+var control_demo_InputDemo = function() {
+	control_EmptyControl.call(this);
+	this.pos = new math_Vector(0,0);
+	this.ball = new math_Vector(0,0);
+	this.movement = { left : false, right : false, down : false, up : false};
 };
-$hxClasses["control.demo.GraphicsDemo"] = control_demo_GraphicsDemo;
-control_demo_GraphicsDemo.__name__ = ["control","demo","GraphicsDemo"];
-control_demo_GraphicsDemo.__interfaces__ = [control_Control];
-control_demo_GraphicsDemo.prototype = {
-	init: function(_) {
-	}
-	,tick: function(delta) {
-		this.time += delta;
-	}
-	,renderElem: function(centerPos) {
-		var scene = new control_Scene();
-		var pos = new math_Vector(0,0);
-		var offset = new math_Vector(27,0);
-		scene.prims = [control_DrawPrim.SetColor(0,255,0,255),control_DrawPrim.DrawCircle(pos,20),control_DrawPrim.DrawCircle(new math_Vector(pos.x + offset.x,pos.y + offset.y),7)];
-		scene.trans = new math_Transform(1,0,0,0,1,0,0,0,1).multmat(new math_Transform(1,0,centerPos.x,0,1,centerPos.y,0,0,1)).multmat(math_Transform.rotation(this.time / 1000));
-		return scene;
-	}
-	,renderFront: function(delta) {
-		var scene = new control_Scene();
-		var offset = new math_Vector(40,-40);
-		var offset2 = new math_Vector(40,40);
-		var pos = new math_Vector(0,0);
-		var _g = 1;
-		while(_g < 20) {
-			var i = _g++;
-			scene.children.push(this.renderElem(pos));
-			pos = new math_Vector(pos.x + offset.x,pos.y + offset.y);
-		}
-		pos = new math_Vector(0,0);
-		var _g1 = 1;
-		while(_g1 < 20) {
-			var i1 = _g1++;
-			scene.children.push(this.renderElem(pos));
-			pos = new math_Vector(pos.x + offset2.x,pos.y + offset2.y);
-		}
-		pos = new math_Vector(0,0);
-		var _g2 = 1;
-		while(_g2 < 20) {
-			var i2 = _g2++;
-			scene.children.push(this.renderElem(pos));
-			pos = new math_Vector(pos.x - offset2.x,pos.y - offset2.y);
-		}
-		pos = new math_Vector(0,0);
-		var _g3 = 1;
-		while(_g3 < 20) {
-			var i3 = _g3++;
-			scene.children.push(this.renderElem(pos));
-			pos = new math_Vector(pos.x - offset.x,pos.y - offset.y);
-		}
-		scene.prims = [control_DrawPrim.SetColor(0,0,0,100),control_DrawPrim.DrawRect(new math_Vector(0,0),new math_Vector(200,200)),control_DrawPrim.DrawRect(new math_Vector(0,0),new math_Vector(-200,-200)),control_DrawPrim.SetColor(0,0,0,200),control_DrawPrim.DrawRect(new math_Vector(0,0),new math_Vector(200,-200)),control_DrawPrim.DrawRect(new math_Vector(0,0),new math_Vector(-200,200))];
-		scene.trans = new math_Transform(1,0,0,0,1,0,0,0,1).multmat(new math_Transform(1,0,this.x,0,1,this.y,0,0,1)).multmat(math_Transform.rotation(-this.time / 1200));
-		return scene;
+$hxClasses["control.demo.InputDemo"] = control_demo_InputDemo;
+control_demo_InputDemo.__name__ = ["control","demo","InputDemo"];
+control_demo_InputDemo.__super__ = control_EmptyControl;
+control_demo_InputDemo.prototype = $extend(control_EmptyControl.prototype,{
+	tick: function(delta) {
+		var factor = Math.pow(0.8,delta);
+		this.ball = this.ball.add(this.pos.sub(this.ball).mult(factor));
+		var moveScale = delta;
+		if(this.movement.up) this.ball = this.ball.add(new math_Vector(0,-1).mult(moveScale));
+		if(this.movement.down) this.ball = this.ball.add(new math_Vector(0,1).mult(moveScale));
+		if(this.movement.right) this.ball = this.ball.add(new math_Vector(1,0).mult(moveScale));
+		if(this.movement.left) this.ball = this.ball.add(new math_Vector(-1,0).mult(moveScale));
 	}
 	,render: function(delta) {
 		var scene = new control_Scene();
-		scene.children = [this.renderFront(delta)];
-		scene.prims = [control_DrawPrim.SetColor(0,0,255,255),control_DrawPrim.DrawImage(new math_Vector(0,0),"title"),control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new math_Vector(500,500),control_TextAlign.LeftText,"this text isn't part of the image")];
+		scene.prims = [control_DrawPrim.SetColor(0,255,0,255),control_DrawPrim.DrawCircle(this.ball,50),control_DrawPrim.SetColor(255,0,0,127),control_DrawPrim.DrawCircle(this.pos,50)];
 		return scene;
 	}
 	,handle: function(e) {
@@ -826,20 +781,14 @@ control_demo_GraphicsDemo.prototype = {
 		case 0:
 			var y = e[3];
 			var x = e[2];
-			this.x = x;
-			this.y = y;
+			this.pos.x = x;
+			this.pos.y = y;
 			break;
 		default:
 		}
 	}
-	,profiling: function(data) {
-		haxe_Log.trace(data.print(),{ fileName : "GraphicsDemo.hx", lineNumber : 116, className : "control.demo.GraphicsDemo", methodName : "profiling"});
-	}
-	,hasEnded: function() {
-		return false;
-	}
-	,__class__: control_demo_GraphicsDemo
-};
+	,__class__: control_demo_InputDemo
+});
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
 haxe_IMap.__name__ = ["haxe","IMap"];
