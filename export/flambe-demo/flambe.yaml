@@ -1,37 +1,40 @@
 # Basic information about the game.
-name: SolemnSky
-description: solemnsky rolling development
+name: Shmup Demo
+description: A short one-line description.
 
 # Information about the game developer.
 developer:
-  name: SolemnSky
-  url: http://solemnsky.com
+  name: Your Company Name
+  url: http://yourwebsite.com
 
 # The game's unique identifier.
-id: solemnsky
+id: flambe.shmup
 
 # The game's version string.
 version: 1.0.0
 
 # The main class name.
-main: urgame.Main
+main: shmup.Main
 
 # The platform to use when invoking `run` or `build` with no arguments.
-default_platform: html
+default_platform: flash
 
 # The initial orientation and fullscreen state on mobile devices.
-orientation: landscape
+orientation: portrait
 fullscreen: true
 
 # Additional flags to pass to the Haxe compiler.
-haxe_flags: -D NAPE_RELEASE_BUILD
+# haxe_flags: -lib nape -D foobar
+
+# Additional flags to pass to the Typescript compiler.
+# tsc_flags: --noImplicitAny
 
 # Additional paths to include in the build.
 # extra_paths:
 #   assets: dir1 dir2
 #   libs: dir1 dir2
 #   src: ../dir1 ../dir2
-#   web: ["dir1 with spaces", "dir2"]
+#   platform: ["dir1 with spaces", "dir2"]
 
 # Android-specific configuration.
 android:
@@ -40,8 +43,6 @@ android:
     <manifest android:installLocation="auto">
       <uses-permission android:name="android.permission.INTERNET" />
     </manifest>
-  # The signing password for certs/android.p12
-  password: password
 
 # iOS-specific configuration.
 ios:
@@ -54,8 +55,6 @@ ios:
     </array>
     <key>UIPrerenderedIcon</key>
     <true/>
-  # The signing password for certs/ios-development.p12
-  password: password
 
 # Firefox App-specific configuration.
 firefox:

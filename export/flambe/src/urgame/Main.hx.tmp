@@ -28,7 +28,8 @@ class Main
 
         // Add a plane that moves along the screen
         var plane = new ImageSprite(pack.getTexture("plane"));
-        plane.x.animateTo(1000, 6);
+        plane.x
+        plane.x.animateTo(1000, 0);
         plane.y.animateTo(200, 6);
         System.root.addChild(new Entity().add(plane));
     }

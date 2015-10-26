@@ -3,9 +3,15 @@ all: web
 clean:
 	rm -rf ./dist/*
 
-web:
-	# build compiled web export
-	cd export/kha-web && \
-	node Kha/make html5 
-	cp -r export/kha-web/build/html5 ./dist/
+html:
+	# pure html5 release courtesy of Flambe
+	cd export/flambe && \
+	flambe build html
+	cp -r export/flambe/build/web ./dist/
+
+native:
+	# fast native release courtesy of Kha
+	echo "TODO lol" 
+	false
+
 
