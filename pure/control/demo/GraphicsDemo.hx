@@ -7,9 +7,10 @@ import math.Vector;
 import math.Transform;
 
 /**
- * Text, transparent rectangles and a bunch of circles following the
- * mouse.
+ * solemnsky.control.demo.GraphicsDemo:
+ * Demo control object demonstrating graphics.
  */
+
 class GraphicsDemo implements Control {
     private var time:Float = 0;
     private var x:Float = 0;

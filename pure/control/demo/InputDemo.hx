@@ -6,6 +6,11 @@ import control.Scene;
 import math.Vector;
 import math.Transform;
 
+/**
+ * solemnsky.control.demo.InputDemo:
+ * Demo control object demonstrating input.
+ */
+
 typedef Movement = {
     left:Bool, right:Bool, down:Bool, up:Bool
 }
