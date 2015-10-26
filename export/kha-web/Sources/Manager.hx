@@ -80,13 +80,16 @@ class Manager extends Game {
         super("solemnsky", false); // initialise our game, I think kha does
                                    // a whole bunch of stuff here
 
+        /***********************************************/
+        /* this state
+        /***********************************************/
         this.tps = tps; // set settings
         this.tickLength = 1 / tps;
         this.ctrl = ctrl;      
 
-        ctrl.init(null); // no network;
-
-        // initialise timings
+        /***********************************************/
+        /* timers
+        /***********************************************/
         var now = Timer.stamp();
         bufferStart = now;
         renderStart = now; 
@@ -98,18 +101,15 @@ class Manager extends Game {
         lastTick = now; 
         lastRender = now; 
 
-        // html5 behaving properly
-        #if js
-        // remove those mesky margins
+        /***********************************************/
+        /* resizing on html5
+        /***********************************************/
         var doc = js.Browser.document;
         doc.body.style.margin = "0px";
         doc.body.style.overflow = "hidden";
         doc.getElementsByTagName("p").item(0).style.margin = "0px";
-
-        // set resize callback
         resize();
         js.Browser.window.onresize = resize;
-        #end
    }
 
     /*************************************************************************/
@@ -119,14 +119,17 @@ class Manager extends Game {
     override public function init():Void {
         super.init();
 
+        /***********************************************/
+        /* initialise graphics, networking
+        /***********************************************/
         backbuffer = Image.createRenderTarget(1600, 900);
         g = backbuffer.g2;
-
         Configuration.setScreen(new LoadingScreen());
         Loader.the.loadRoom("main", 
             function(){Configuration.setScreen(this);});
-    }
 
+        ctrl.init(null); // null network
+    }
 
     /**
      * called on frame render
@@ -259,7 +262,7 @@ class Manager extends Game {
     private function controlRender(frame: Framebuffer, deltaRaw:Float):Void {
         bufferStart = Timer.stamp(); // BEGIN BUFFER
         var delta = deltaRaw * 1000;
-        var buffer = ctrl.render(delta);
+        var buffer = ctrl.render(delta); // buffer == scene graph
         var now = Timer.stamp();
         pushProfile(now - bufferStart, bufferOn); // END BUFFER
 
@@ -268,8 +271,8 @@ class Manager extends Game {
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
         endRender(frame);
-        pushProfile(Timer.stamp() - renderStart, renderOn); // END RENDER
-        pushProfileValue(prims, primCount);
+        pushProfile(Timer.stamp() - renderStart, renderOn); 
+        pushProfileValue(prims, primCount); // END RENDER
     }
 
     /*************************************************************************/

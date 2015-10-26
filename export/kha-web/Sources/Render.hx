@@ -14,8 +14,10 @@ using kha.graphics2.GraphicsExtension;
  */
 
 class Render {
-    private static function renderPrim(gr:Graphics
-                                      ,prim:DrawPrim) {
+    private static function renderPrim(
+        gr:Graphics
+        ,prim:DrawPrim
+    ){
         switch (prim) {
             // setting state
             case SetColor(r, g, b, a): {
@@ -66,10 +68,12 @@ class Render {
         }
     }
 
-    public static function renderNoInit(pTrans:Transform // parent
-                                       ,pOpacity:Float // parent
-                                       ,g:Graphics
-                                       ,scene:Scene):Int {
+    public static function renderNoInit(
+        pTrans:Transform // parent
+        ,pOpacity:Float // parent
+        ,g:Graphics
+        ,scene:Scene
+    ):Int {
         var prims = scene.prims.length;
 
         var resultTrans = pTrans.multmat(scene.trans);
