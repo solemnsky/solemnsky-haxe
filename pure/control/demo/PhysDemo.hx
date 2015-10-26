@@ -24,6 +24,7 @@ import nape.util.Debug;
 class PhysDemo extends EmptyControl {
     private var space:Space;
     private var ball:Body;
+    private var boxes:Array<Body>;
 
     public function new() {
         super();
@@ -40,8 +41,17 @@ class PhysDemo extends EmptyControl {
 
         var floor = new Body(BodyType.STATIC);
         floor.shapes.add(
-            new Polygon(Polygon.rect(50, (h - 50), (w - 100), 1)));
+            new Polygon(Polygon.rect(50, (h - 50), (w - 50), 1)));
         floor.space = space;
+
+        boxes = [];
+        for (i in 0...16) {
+            var box = new Body(BodyType.DYNAMIC);
+            box.shapes.add(new Polygon(Polygon.box(16, 32)));
+            box.position.setxy((w / 2), ((h - 50) - 32 * (i + 0.5)));
+            box.space = space;
+            boxes.push(box);
+        }
 
         ball = new Body(BodyType.DYNAMIC);
         ball.shapes.add(new Circle(50));
@@ -60,7 +70,14 @@ class PhysDemo extends EmptyControl {
         scene.prims = [
             SetColor(0, 0, 0, 255)
             , DrawCircle(Util.vectorFromNape(ball.position), 10)
+            , SetColor(0, 255, 0, 255)
         ];
+
+        for (box in boxes) {
+            scene.prims.push(
+                DrawCircle(Util.vectorFromNape(box.position), 10)
+            );
+        }
 
         return scene;
     }
