@@ -1,5 +1,4 @@
 *.swp
 *.swo
 build
-/dist/
 korefile.js

@@ -3,7 +3,7 @@ package;
 import kha.Game;
 import kha.Starter;
 import control.Control;
-import control.demo.InputDemo;
+import control.demo.PhysDemo;
 // import solemnsky.ui.Web;
 
 /**
@@ -13,7 +13,7 @@ import control.demo.InputDemo;
 class Main {
   public static function main() {
     // var control:Control = Web.ctrl();
-    var control:Control = new InputDemo();
+    var control:Control = new PhysDemo();
     var starter = new Starter(); 
     var manager:Game = new Manager(control, 60); 
     starter.start(manager); 
