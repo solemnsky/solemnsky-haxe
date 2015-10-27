@@ -932,8 +932,10 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 			this.cooldown.set(d,value);
 			if(this.movement.get(d)) {
 				this.ball.set_velocity(this.ball.get_velocity().add(solemnsky_Util.napeFromVector(this.vecFromDir(d).mult(delta))));
-				if(this.cooldown.get(d) > 300) {
+				if(this.cooldown.get(d) > 100) {
 					this.cooldown.set(d,0);
+					var pos = this.vecFromDir(d).mult(-50).add(solemnsky_Util.vectorFromNape(this.ball.get_position()));
+					var vel = this.vecFromDir(d).mult(5);
 					var box = new nape_phys_Body((function($this) {
 						var $r;
 						if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
@@ -945,13 +947,18 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 						return $r;
 					}(this)));
 					box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
-					var pos = this.vecFromDir(d).mult(-50).add(solemnsky_Util.vectorFromNape(this.ball.get_position()));
 					((function($this) {
 						var $r;
 						if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
 						$r = box.zpp_inner.wrap_pos;
 						return $r;
 					}(this))).setxy(pos.x,pos.y);
+					((function($this) {
+						var $r;
+						if(box.zpp_inner.wrap_vel == null) box.zpp_inner.setupVelocity();
+						$r = box.zpp_inner.wrap_vel;
+						return $r;
+					}(this))).setxy(vel.x,vel.y);
 					box.set_space(this.space);
 					this.boxes.push(box);
 				}
@@ -68741,7 +68748,7 @@ var Uint8Array = (Function("return typeof Uint8Array != 'undefined' ? Uint8Array
 kha_Game.FPS = 60;
 Manager.profileWindow = 50;
 Manager.profileUpdate = 100;
-control_demo_PhysDemo.maxCoolDown = 300;
+control_demo_PhysDemo.maxCoolDown = 100;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
 haxe_Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";

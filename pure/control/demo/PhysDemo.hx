@@ -36,7 +36,7 @@ class PhysDemo extends EmptyControl {
     /**
      * game state
      */
-    private static inline var maxCoolDown:Float = 300;
+    private static inline var maxCoolDown:Float = 100;
     private var cooldown: Map<Direction,Float>;
     private var movement: Map<Direction,Bool>;
 
@@ -138,12 +138,15 @@ class PhysDemo extends EmptyControl {
                 if (cooldown.get(d) > maxCoolDown) {
                     cooldown.set(d, 0);
 
-                    var box = new Body(BodyType.DYNAMIC);
-                    box.shapes.add(new Polygon(Polygon.box(24, 24)));
                     var pos = vecFromDir(d)
                         .mult(-50)
                         .add(Util.vectorFromNape(ball.position));
+                    var vel = vecFromDir(d).mult(5);
+
+                    var box = new Body(BodyType.DYNAMIC);
+                    box.shapes.add(new Polygon(Polygon.box(24, 24)));
                     box.position.setxy(pos.x, pos.y);
+                    box.velocity.setxy(vel.x, vel.y);
                     box.space = space;
                     boxes.push(box);
                 }
