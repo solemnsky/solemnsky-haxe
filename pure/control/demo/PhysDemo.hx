@@ -47,14 +47,14 @@ class PhysDemo extends EmptyControl {
         boxes = [];
         for (i in 0...16) {
             var box = new Body(BodyType.DYNAMIC);
-            box.shapes.add(new Polygon(Polygon.box(16, 32)));
-            box.position.setxy((w / 2), ((h - 50) - 32 * (i + 0.5)));
+            box.shapes.add(new Polygon(Polygon.box(24, 24)));
+            box.position.setxy((w / 2), ((h - 50) - 25 * (i + 0.5)));
             box.space = space;
             boxes.push(box);
         }
 
         ball = new Body(BodyType.DYNAMIC);
-        ball.shapes.add(new Circle(50));
+        ball.shapes.add(new Circle(40));
         ball.position.setxy(50, h / 2);
         ball.angularVel = 10;
         ball.space = space;
@@ -64,19 +64,38 @@ class PhysDemo extends EmptyControl {
         space.step(delta / 1000);
     }
 
+    /*************************************************************************/
+    /* render
+    /*************************************************************************/
+
+    private static inline function rotatedBox(
+        pos:Vector
+        , width:Float
+        , alpha:Float
+    ):Scene {
+        var scene = new Scene();
+        scene.prims = [
+            DrawRect(new Vector(-width, -width), new Vector(width, width))];
+        scene.trans = Transform.translation(pos.x, pos.y)
+            .multmat(Transform.rotation(alpha));
+        return scene;
+    }
+
     override function render(delta:Float):Scene {
         var scene = new Scene();
 
         scene.prims = [
             SetColor(0, 0, 0, 255)
-            , DrawCircle(Util.vectorFromNape(ball.position), 10)
+            , DrawCircle(Util.vectorFromNape(ball.position), 40)
             , SetColor(0, 255, 0, 255)
         ];
 
         for (box in boxes) {
-            scene.prims.push(
-                DrawCircle(Util.vectorFromNape(box.position), 10)
-            );
+            scene.children.push(rotatedBox(
+                Util.vectorFromNape(box.position)
+                , 12
+                , box.rotation
+            ));
         }
 
         return scene;

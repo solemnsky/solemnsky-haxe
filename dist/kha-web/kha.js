@@ -811,13 +811,13 @@ var control_demo_PhysDemo = function() {
 			$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
 			return $r;
 		}(this)));
-		box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(16,32)));
+		box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
 		((function($this) {
 			var $r;
 			if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
 			$r = box.zpp_inner.wrap_pos;
 			return $r;
-		}(this))).setxy(w / 2,h - 50 - 32 * (i + 0.5));
+		}(this))).setxy(w / 2,h - 50 - 25 * (i + 0.5));
 		box.set_space(this.space);
 		this.boxes.push(box);
 	}
@@ -831,13 +831,19 @@ var control_demo_PhysDemo = function() {
 		$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
 		return $r;
 	}(this)));
-	this.ball.zpp_inner.wrap_shapes.add(new nape_shape_Circle(50));
+	this.ball.zpp_inner.wrap_shapes.add(new nape_shape_Circle(40));
 	this.ball.get_position().setxy(50,h / 2);
 	this.ball.set_angularVel(10);
 	this.ball.set_space(this.space);
 };
 $hxClasses["control.demo.PhysDemo"] = control_demo_PhysDemo;
 control_demo_PhysDemo.__name__ = ["control","demo","PhysDemo"];
+control_demo_PhysDemo.rotatedBox = function(pos,width,alpha) {
+	var scene = new control_Scene();
+	scene.prims = [control_DrawPrim.DrawRect(new math_Vector(-width,-width),new math_Vector(width,width))];
+	scene.trans = new math_Transform(1,0,pos.x,0,1,pos.y,0,0,1).multmat(new math_Transform(Math.cos(alpha),-Math.sin(alpha),0,Math.sin(alpha),Math.cos(alpha),0,0,0,1));
+	return scene;
+};
 control_demo_PhysDemo.__super__ = control_EmptyControl;
 control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 	tick: function(delta) {
@@ -845,18 +851,18 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 	}
 	,render: function(delta) {
 		var scene = new control_Scene();
-		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),10),control_DrawPrim.SetColor(0,255,0,255)];
+		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),40),control_DrawPrim.SetColor(0,255,0,255)];
 		var _g = 0;
 		var _g1 = this.boxes;
 		while(_g < _g1.length) {
 			var box = _g1[_g];
 			++_g;
-			scene.prims.push(control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape((function($this) {
+			scene.children.push(control_demo_PhysDemo.rotatedBox(solemnsky_Util.vectorFromNape((function($this) {
 				var $r;
 				if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
 				$r = box.zpp_inner.wrap_pos;
 				return $r;
-			}(this))),10));
+			}(this))),12,box.zpp_inner.rot));
 		}
 		return scene;
 	}
