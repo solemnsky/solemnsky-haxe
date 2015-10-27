@@ -21,16 +21,47 @@ import nape.util.Debug;
  * Demo control object demonstrating physics through Nape.
  */
 
+/**
+ * We use directions a lot here, might as well take some redundancy
+ * away and parameterize them abstractly...
+ */
+enum Direction {
+    UpDir;
+    DownDir;
+    LeftDir;
+    RightDir;
+} 
+
 class PhysDemo extends EmptyControl {
+    /**
+     * game state
+     */
+    private var cooldown: Float;
+    private var movement: Map<Direction,Bool>;
+
+    /**
+     * physics
+     */
     private var space:Space;
     private var ball:Body;
     private var boxes:Array<Body>;
 
-    private var movement = 
-        {left: false, right: false, up: false, down: false};
+    /*********************************************************************/
+    /* constructor
+    /*********************************************************************/
 
     public function new() {
         super();
+
+        /*********************************************************************/
+        /* game state
+        /*********************************************************************/
+
+        cooldown = 0;        
+        movement = [
+            UpDir => false, DownDir => false
+            , LeftDir => false, RightDir => false ];
+        // yeah haxe lets you do this
 
         /*********************************************************************/
         /* set up nape space
@@ -63,23 +94,42 @@ class PhysDemo extends EmptyControl {
         ball.space = space;
     }   
 
+    /*********************************************************************/
+    /* movement utils
+    /*********************************************************************/
+
+    private function vecFromDir(m:Direction):Vector {
+        switch (m) {
+        case UpDir: return new Vector(0, -1);
+        case LeftDir: return new Vector(-1, 0);
+        case RightDir: return new Vector(1, 0);
+        case DownDir: return new Vector(0, 1);
+        }
+    }
+
+    private function dirFromKey(key:Key):Null<Direction> {
+        switch (key) {
+        case CharKey(char): {
+            if (char == 'i') return UpDir;
+            if (char == 'j') return LeftDir;
+            if (char == 'l') return RightDir;
+            if (char == 'k') return DownDir;
+            return null;
+        }
+        default: return null;
+        }
+    }
+
     override function tick(delta:Float):Void {
         space.step(delta / 1000);
-        if (movement.left) 
-            ball.velocity = ball.velocity.add(
-                Vec2.weak(-1 * delta, 0));
 
-        if (movement.right)
-            ball.velocity = ball.velocity.add(
-                Vec2.weak(1 * delta, 0));
-
-        if (movement.up) 
-            ball.velocity = ball.velocity.add(
-                Vec2.weak(0, -1 * delta));
-
-        if (movement.down) 
-            ball.velocity = ball.velocity.add(
-                Vec2.weak(0, -1 * delta));
+        for (d in movement.keys()) {
+            if (movement.get(d))
+                ball.velocity = 
+                    ball.velocity.add(Util.napeFromVector(
+                        vecFromDir(d).mult(delta)
+                    ));
+        }
     }
 
     /*************************************************************************/
@@ -99,6 +149,11 @@ class PhysDemo extends EmptyControl {
         return scene;
     }
 
+    private function controlling():Bool {
+        for (d in movement.keys()) 
+            if (movement.get(d)) return true;
+        return false;
+    }
     override function render(delta:Float):Scene {
         var scene = new Scene();
 
@@ -107,12 +162,9 @@ class PhysDemo extends EmptyControl {
             , SetColor(0, 255, 0, 255)
         ];
 
-        if (movement.left || movement.right 
-            || movement.up || movement.down) {
+        if (controlling())
             scene.prims.unshift(SetColor(50, 0, 0, 255));
-        } else {
-            scene.prims.unshift(SetColor(0, 0, 0, 255));
-        }
+        else scene.prims.unshift(SetColor(0, 0, 0, 255));
 
         for (box in boxes) {
             scene.children.push(rotatedBox(
@@ -125,15 +177,14 @@ class PhysDemo extends EmptyControl {
         return scene;
     }
 
+    /*************************************************************************/
+    /* user input 
+    /*************************************************************************/
+
     private function handleKb(key:Key, state):Void {
-        switch (key) {
-        case CharKey(char): { 
-            if (char == 'j') movement.left = state;
-            if (char == 'l') movement.right = state;
-            if (char == 'i') movement.up = state;
-            if (char == 'k') movement.down = state;
-        }
-        default: { }
+        var dir = dirFromKey(key);
+        if (dir != null) {
+            movement.set(dir, state);
         }
     }
 

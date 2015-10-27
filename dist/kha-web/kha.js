@@ -419,6 +419,12 @@ Reflect.fields = function(o) {
 Reflect.isFunction = function(f) {
 	return typeof(f) == "function" && !(f.__name__ || f.__ename__);
 };
+Reflect.compare = function(a,b) {
+	if(a == b) return 0; else if(a > b) return 1; else return -1;
+};
+Reflect.isEnumValue = function(v) {
+	return v != null && v.__enum__ != null;
+};
 Reflect.deleteField = function(o,field) {
 	if(!Object.prototype.hasOwnProperty.call(o,field)) return false;
 	delete(o[field]);
@@ -800,9 +806,28 @@ control_Scene.__name__ = ["control","Scene"];
 control_Scene.prototype = {
 	__class__: control_Scene
 };
+var control_demo_Direction = $hxClasses["control.demo.Direction"] = { __ename__ : ["control","demo","Direction"], __constructs__ : ["UpDir","DownDir","LeftDir","RightDir"] };
+control_demo_Direction.UpDir = ["UpDir",0];
+control_demo_Direction.UpDir.toString = $estr;
+control_demo_Direction.UpDir.__enum__ = control_demo_Direction;
+control_demo_Direction.DownDir = ["DownDir",1];
+control_demo_Direction.DownDir.toString = $estr;
+control_demo_Direction.DownDir.__enum__ = control_demo_Direction;
+control_demo_Direction.LeftDir = ["LeftDir",2];
+control_demo_Direction.LeftDir.toString = $estr;
+control_demo_Direction.LeftDir.__enum__ = control_demo_Direction;
+control_demo_Direction.RightDir = ["RightDir",3];
+control_demo_Direction.RightDir.toString = $estr;
+control_demo_Direction.RightDir.__enum__ = control_demo_Direction;
 var control_demo_PhysDemo = function() {
-	this.movement = { left : false, right : false, up : false, down : false};
 	control_EmptyControl.call(this);
+	this.cooldown = 0;
+	var _g = new haxe_ds_EnumValueMap();
+	_g.set(control_demo_Direction.UpDir,false);
+	_g.set(control_demo_Direction.DownDir,false);
+	_g.set(control_demo_Direction.LeftDir,false);
+	_g.set(control_demo_Direction.RightDir,false);
+	this.movement = _g;
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
 	var w = 1600;
@@ -820,9 +845,9 @@ var control_demo_PhysDemo = function() {
 	floor.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.rect(50,h - 50,w - 50,1)));
 	floor.set_space(this.space);
 	this.boxes = [];
-	var _g = 0;
-	while(_g < 16) {
-		var i = _g++;
+	var _g1 = 0;
+	while(_g1 < 16) {
+		var i = _g1++;
 		var box = new nape_phys_Body((function($this) {
 			var $r;
 			if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
@@ -868,17 +893,51 @@ control_demo_PhysDemo.rotatedBox = function(pos,width,alpha) {
 };
 control_demo_PhysDemo.__super__ = control_EmptyControl;
 control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
-	tick: function(delta) {
+	vecFromDir: function(m) {
+		switch(m[1]) {
+		case 0:
+			return new math_Vector(0,-1);
+		case 2:
+			return new math_Vector(-1,0);
+		case 3:
+			return new math_Vector(1,0);
+		case 1:
+			return new math_Vector(0,1);
+		}
+	}
+	,dirFromKey: function(key) {
+		switch(key[1]) {
+		case 0:
+			var $char = key[2];
+			if($char == "i") return control_demo_Direction.UpDir;
+			if($char == "j") return control_demo_Direction.LeftDir;
+			if($char == "l") return control_demo_Direction.RightDir;
+			if($char == "k") return control_demo_Direction.DownDir;
+			return null;
+		default:
+			return null;
+		}
+	}
+	,tick: function(delta) {
 		this.space.step(delta / 1000);
-		if(this.movement.left) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(-1 * delta,0,true)));
-		if(this.movement.right) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(delta,0,true)));
-		if(this.movement.up) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(0,-1 * delta,true)));
-		if(this.movement.down) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(0,-1 * delta,true)));
+		var $it0 = this.movement.keys();
+		while( $it0.hasNext() ) {
+			var d = $it0.next();
+			if(this.movement.get(d)) this.ball.set_velocity(this.ball.get_velocity().add(solemnsky_Util.napeFromVector(this.vecFromDir(d).mult(delta))));
+		}
+	}
+	,controlling: function() {
+		var $it0 = this.movement.keys();
+		while( $it0.hasNext() ) {
+			var d = $it0.next();
+			if(this.movement.get(d)) return true;
+		}
+		return false;
 	}
 	,render: function(delta) {
 		var scene = new control_Scene();
 		scene.prims = [control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),40),control_DrawPrim.SetColor(0,255,0,255)];
-		if(this.movement.left || this.movement.right || this.movement.up || this.movement.down) scene.prims.unshift(control_DrawPrim.SetColor(50,0,0,255)); else scene.prims.unshift(control_DrawPrim.SetColor(0,0,0,255));
+		if(this.controlling()) scene.prims.unshift(control_DrawPrim.SetColor(50,0,0,255)); else scene.prims.unshift(control_DrawPrim.SetColor(0,0,0,255));
 		var _g = 0;
 		var _g1 = this.boxes;
 		while(_g < _g1.length) {
@@ -894,16 +953,8 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		return scene;
 	}
 	,handleKb: function(key,state) {
-		switch(key[1]) {
-		case 0:
-			var $char = key[2];
-			if($char == "j") this.movement.left = state;
-			if($char == "l") this.movement.right = state;
-			if($char == "i") this.movement.up = state;
-			if($char == "k") this.movement.down = state;
-			break;
-		default:
-		}
+		var dir = this.dirFromKey(key);
+		if(dir != null) this.movement.set(dir,state);
 	}
 	,handle: function(e) {
 		switch(e[1]) {
@@ -1492,6 +1543,148 @@ haxe_Unserializer.prototype = {
 	}
 	,__class__: haxe_Unserializer
 };
+var haxe_ds_BalancedTree = function() {
+};
+$hxClasses["haxe.ds.BalancedTree"] = haxe_ds_BalancedTree;
+haxe_ds_BalancedTree.__name__ = ["haxe","ds","BalancedTree"];
+haxe_ds_BalancedTree.prototype = {
+	set: function(key,value) {
+		this.root = this.setLoop(key,value,this.root);
+	}
+	,get: function(key) {
+		var node = this.root;
+		while(node != null) {
+			var c = this.compare(key,node.key);
+			if(c == 0) return node.value;
+			if(c < 0) node = node.left; else node = node.right;
+		}
+		return null;
+	}
+	,keys: function() {
+		var ret = [];
+		this.keysLoop(this.root,ret);
+		return HxOverrides.iter(ret);
+	}
+	,setLoop: function(k,v,node) {
+		if(node == null) return new haxe_ds_TreeNode(null,k,v,null);
+		var c = this.compare(k,node.key);
+		if(c == 0) return new haxe_ds_TreeNode(node.left,k,v,node.right,node == null?0:node._height); else if(c < 0) {
+			var nl = this.setLoop(k,v,node.left);
+			return this.balance(nl,node.key,node.value,node.right);
+		} else {
+			var nr = this.setLoop(k,v,node.right);
+			return this.balance(node.left,node.key,node.value,nr);
+		}
+	}
+	,keysLoop: function(node,acc) {
+		if(node != null) {
+			this.keysLoop(node.left,acc);
+			acc.push(node.key);
+			this.keysLoop(node.right,acc);
+		}
+	}
+	,balance: function(l,k,v,r) {
+		var hl;
+		if(l == null) hl = 0; else hl = l._height;
+		var hr;
+		if(r == null) hr = 0; else hr = r._height;
+		if(hl > hr + 2) {
+			if((function($this) {
+				var $r;
+				var _this = l.left;
+				$r = _this == null?0:_this._height;
+				return $r;
+			}(this)) >= (function($this) {
+				var $r;
+				var _this1 = l.right;
+				$r = _this1 == null?0:_this1._height;
+				return $r;
+			}(this))) return new haxe_ds_TreeNode(l.left,l.key,l.value,new haxe_ds_TreeNode(l.right,k,v,r)); else return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l.left,l.key,l.value,l.right.left),l.right.key,l.right.value,new haxe_ds_TreeNode(l.right.right,k,v,r));
+		} else if(hr > hl + 2) {
+			if((function($this) {
+				var $r;
+				var _this2 = r.right;
+				$r = _this2 == null?0:_this2._height;
+				return $r;
+			}(this)) > (function($this) {
+				var $r;
+				var _this3 = r.left;
+				$r = _this3 == null?0:_this3._height;
+				return $r;
+			}(this))) return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left),r.key,r.value,r.right); else return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left.left),r.left.key,r.left.value,new haxe_ds_TreeNode(r.left.right,r.key,r.value,r.right));
+		} else return new haxe_ds_TreeNode(l,k,v,r,(hl > hr?hl:hr) + 1);
+	}
+	,compare: function(k1,k2) {
+		return Reflect.compare(k1,k2);
+	}
+	,__class__: haxe_ds_BalancedTree
+};
+var haxe_ds_TreeNode = function(l,k,v,r,h) {
+	if(h == null) h = -1;
+	this.left = l;
+	this.key = k;
+	this.value = v;
+	this.right = r;
+	if(h == -1) this._height = ((function($this) {
+		var $r;
+		var _this = $this.left;
+		$r = _this == null?0:_this._height;
+		return $r;
+	}(this)) > (function($this) {
+		var $r;
+		var _this1 = $this.right;
+		$r = _this1 == null?0:_this1._height;
+		return $r;
+	}(this))?(function($this) {
+		var $r;
+		var _this2 = $this.left;
+		$r = _this2 == null?0:_this2._height;
+		return $r;
+	}(this)):(function($this) {
+		var $r;
+		var _this3 = $this.right;
+		$r = _this3 == null?0:_this3._height;
+		return $r;
+	}(this))) + 1; else this._height = h;
+};
+$hxClasses["haxe.ds.TreeNode"] = haxe_ds_TreeNode;
+haxe_ds_TreeNode.__name__ = ["haxe","ds","TreeNode"];
+haxe_ds_TreeNode.prototype = {
+	__class__: haxe_ds_TreeNode
+};
+var haxe_ds_EnumValueMap = function() {
+	haxe_ds_BalancedTree.call(this);
+};
+$hxClasses["haxe.ds.EnumValueMap"] = haxe_ds_EnumValueMap;
+haxe_ds_EnumValueMap.__name__ = ["haxe","ds","EnumValueMap"];
+haxe_ds_EnumValueMap.__interfaces__ = [haxe_IMap];
+haxe_ds_EnumValueMap.__super__ = haxe_ds_BalancedTree;
+haxe_ds_EnumValueMap.prototype = $extend(haxe_ds_BalancedTree.prototype,{
+	compare: function(k1,k2) {
+		var d = k1[1] - k2[1];
+		if(d != 0) return d;
+		var p1 = k1.slice(2);
+		var p2 = k2.slice(2);
+		if(p1.length == 0 && p2.length == 0) return 0;
+		return this.compareArgs(p1,p2);
+	}
+	,compareArgs: function(a1,a2) {
+		var ld = a1.length - a2.length;
+		if(ld != 0) return ld;
+		var _g1 = 0;
+		var _g = a1.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var d = this.compareArg(a1[i],a2[i]);
+			if(d != 0) return d;
+		}
+		return 0;
+	}
+	,compareArg: function(v1,v2) {
+		if(Reflect.isEnumValue(v1) && Reflect.isEnumValue(v2)) return this.compare(v1,v2); else if((v1 instanceof Array) && v1.__enum__ == null && ((v2 instanceof Array) && v2.__enum__ == null)) return this.compareArgs(v1,v2); else return Reflect.compare(v1,v2);
+	}
+	,__class__: haxe_ds_EnumValueMap
+});
 var haxe_ds_IntMap = function() {
 	this.h = { };
 };
