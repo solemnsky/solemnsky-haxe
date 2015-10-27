@@ -1,14 +1,11 @@
 package control;
 
-import kha.Key;
-
 /**
  * solemnsky.control.Event: 
  * A single datatype for all UI events.
  */
 
 enum Event {
-    MouseMove(x:Float, y:Float);
-    CharKey(char:String, state:Bool);
-    SpecialKey(key:Key, state:Bool);
+    MouseEvent(x:Float, y:Float);
+    KbEvent(key:Key, state:Bool);
 }

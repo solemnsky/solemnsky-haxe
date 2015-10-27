@@ -56,18 +56,25 @@ class InputDemo extends EmptyControl {
         return scene;
     }
 
+    private function handleKb(key, state):Void {
+        switch (key) {
+        case CharKey(char): {
+            if (char == "i") movement.up = state;
+            if (char == "j") movement.left = state;
+            if (char == "l") movement.right = state;
+            if (char == "k") movement.down = state;
+        }
+        }
+    }
+
     override function handle(e:Event):Void {
         switch (e) {
-            case MouseMove(x, y): {
-                pos.x = x; pos.y = y;
-            }
-            case CharKey(char, state): {
-                if (char == "i") movement.up = state;
-                if (char == "j") movement.left = state;
-                if (char == "l") movement.right = state;
-                if (char == "k") movement.down = state;
-            }
-            default: {}
+        case MouseEvent(x, y): {
+            pos.x = x; pos.y = y;
+        }
+        case KbEvent(key, state): 
+            handleKb(key, state);
+        default: {}
         }
     }
 }

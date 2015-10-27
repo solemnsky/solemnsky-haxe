@@ -3,6 +3,7 @@ package;
 import control.Control;
 import control.Event;
 import control.Profile;
+import control.Key;
 import haxe.Timer;
 import kha.Configuration;
 import kha.Framebuffer;
@@ -185,17 +186,21 @@ class Manager extends Game {
         tickSleepStart = Timer.stamp(); // BEGIN SLEEP
     }
 
+    /*************************************************************************/
+    /* UI event handling
+    /*************************************************************************/
+
     override public function mouseMove(x:Int, y:Int):Void {
         var event:Event;
         if (realWidth/realHeight > 16/9) {
             var factor = 900 / realHeight;
-            event = MouseMove(
+            event = MouseEvent(
                 x * factor + (1600 - realWidth * factor) / 2
                 , y * factor
             );
         } else {
             var factor = 1600 / realWidth;
-            event = MouseMove(
+            event = MouseEvent(
                 x * factor
                 , y * factor + (900 - realHeight * factor) / 2
             );
@@ -203,20 +208,25 @@ class Manager extends Game {
         ctrl.handle(event);
     }
 
-    override public function keyDown(key, char):Void {
+    /**
+     * Converts a kha Key to a control Event.Key.
+     */
+    private static function keyFromKha(key, char):Key {
+        var key;
         if (char != "") {
-            ctrl.handle(CharKey(char, true));
+            key = CharKey(char);
         } else {
-            ctrl.handle(SpecialKey(key, true));
+            key = BadKey; // TODO: fix other keys on Kha.. ??
         }
+        return key;
+    }
+
+    override public function keyDown(key, char):Void {
+       ctrl.handle(KbEvent(keyFromKha(key, char), true));
     }
 
     override public function keyUp(key, char):Void {
-        if (char != null) {
-            ctrl.handle(CharKey(char, false));
-        } else {
-            ctrl.handle(SpecialKey(key, false));
-        }
+        ctrl.handle(KbEvent(keyFromKha(key, char), false));
     }
 
     /*************************************************************************/

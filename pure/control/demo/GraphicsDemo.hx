@@ -106,7 +106,7 @@ class GraphicsDemo implements Control {
 
     public function handle(e:Event):Void {
         switch (e) {
-            case MouseMove(x, y): {
+            case MouseEvent(x, y): {
                 this.x = x; this.y = y;
             }
             default: { }

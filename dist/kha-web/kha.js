@@ -287,6 +287,11 @@ var Manager = function(ctrl,tps) {
 };
 $hxClasses["Manager"] = Manager;
 Manager.__name__ = ["Manager"];
+Manager.keyFromKha = function(key,$char) {
+	var key1;
+	if($char != "") key1 = control_Key.CharKey($char); else key1 = control_Key.BadKey;
+	return key1;
+};
 Manager.__super__ = kha_Game;
 Manager.prototype = $extend(kha_Game.prototype,{
 	init: function() {
@@ -330,18 +335,18 @@ Manager.prototype = $extend(kha_Game.prototype,{
 		var event;
 		if(this.realWidth / this.realHeight > 1.77777777777777768) {
 			var factor = 900 / this.realHeight;
-			event = control_Event.MouseMove(x * factor + (1600 - this.realWidth * factor) / 2,y * factor);
+			event = control_Event.MouseEvent(x * factor + (1600 - this.realWidth * factor) / 2,y * factor);
 		} else {
 			var factor1 = 1600 / this.realWidth;
-			event = control_Event.MouseMove(x * factor1,y * factor1 + (900 - this.realHeight * factor1) / 2);
+			event = control_Event.MouseEvent(x * factor1,y * factor1 + (900 - this.realHeight * factor1) / 2);
 		}
 		this.ctrl.handle(event);
 	}
 	,keyDown: function(key,$char) {
-		if($char != "") this.ctrl.handle(control_Event.CharKey($char,true)); else this.ctrl.handle(control_Event.SpecialKey(key,true));
+		this.ctrl.handle(control_Event.KbEvent(Manager.keyFromKha(key,$char),true));
 	}
 	,keyUp: function(key,$char) {
-		if($char != null) this.ctrl.handle(control_Event.CharKey($char,false)); else this.ctrl.handle(control_Event.SpecialKey(key,false));
+		this.ctrl.handle(control_Event.KbEvent(Manager.keyFromKha(key,$char),false));
 	}
 	,pushProfile: function(point,profile) {
 		profile.push(Math.round(point * 1000));
@@ -708,10 +713,26 @@ control_EmptyControl.prototype = {
 	}
 	,__class__: control_EmptyControl
 };
-var control_Event = $hxClasses["control.Event"] = { __ename__ : ["control","Event"], __constructs__ : ["MouseMove","CharKey","SpecialKey"] };
-control_Event.MouseMove = function(x,y) { var $x = ["MouseMove",0,x,y]; $x.__enum__ = control_Event; $x.toString = $estr; return $x; };
-control_Event.CharKey = function($char,state) { var $x = ["CharKey",1,$char,state]; $x.__enum__ = control_Event; $x.toString = $estr; return $x; };
-control_Event.SpecialKey = function(key,state) { var $x = ["SpecialKey",2,key,state]; $x.__enum__ = control_Event; $x.toString = $estr; return $x; };
+var control_Event = $hxClasses["control.Event"] = { __ename__ : ["control","Event"], __constructs__ : ["MouseEvent","KbEvent"] };
+control_Event.MouseEvent = function(x,y) { var $x = ["MouseEvent",0,x,y]; $x.__enum__ = control_Event; $x.toString = $estr; return $x; };
+control_Event.KbEvent = function(key,state) { var $x = ["KbEvent",1,key,state]; $x.__enum__ = control_Event; $x.toString = $estr; return $x; };
+var control_Key = $hxClasses["control.Key"] = { __ename__ : ["control","Key"], __constructs__ : ["CharKey","BadKey","ArrLeftKey","ArrRightKey","ArrUpKey","ArrDownKey"] };
+control_Key.CharKey = function($char) { var $x = ["CharKey",0,$char]; $x.__enum__ = control_Key; $x.toString = $estr; return $x; };
+control_Key.BadKey = ["BadKey",1];
+control_Key.BadKey.toString = $estr;
+control_Key.BadKey.__enum__ = control_Key;
+control_Key.ArrLeftKey = ["ArrLeftKey",2];
+control_Key.ArrLeftKey.toString = $estr;
+control_Key.ArrLeftKey.__enum__ = control_Key;
+control_Key.ArrRightKey = ["ArrRightKey",3];
+control_Key.ArrRightKey.toString = $estr;
+control_Key.ArrRightKey.__enum__ = control_Key;
+control_Key.ArrUpKey = ["ArrUpKey",4];
+control_Key.ArrUpKey.toString = $estr;
+control_Key.ArrUpKey.__enum__ = control_Key;
+control_Key.ArrDownKey = ["ArrDownKey",5];
+control_Key.ArrDownKey.toString = $estr;
+control_Key.ArrDownKey.__enum__ = control_Key;
 var control_Network = function() { };
 $hxClasses["control.Network"] = control_Network;
 control_Network.__name__ = ["control","Network"];
@@ -780,6 +801,7 @@ control_Scene.prototype = {
 	__class__: control_Scene
 };
 var control_demo_PhysDemo = function() {
+	this.movement = { left : false, right : false, up : false, down : false};
 	control_EmptyControl.call(this);
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
@@ -848,10 +870,15 @@ control_demo_PhysDemo.__super__ = control_EmptyControl;
 control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 	tick: function(delta) {
 		this.space.step(delta / 1000);
+		if(this.movement.left) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(-1 * delta,0,true)));
+		if(this.movement.right) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(delta,0,true)));
+		if(this.movement.up) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(0,-1 * delta,true)));
+		if(this.movement.down) this.ball.set_velocity(this.ball.get_velocity().add(nape_geom_Vec2.get(0,-1 * delta,true)));
 	}
 	,render: function(delta) {
 		var scene = new control_Scene();
-		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),40),control_DrawPrim.SetColor(0,255,0,255)];
+		scene.prims = [control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),40),control_DrawPrim.SetColor(0,255,0,255)];
+		if(this.movement.left || this.movement.right || this.movement.up || this.movement.down) scene.prims.unshift(control_DrawPrim.SetColor(50,0,0,255)); else scene.prims.unshift(control_DrawPrim.SetColor(0,0,0,255));
 		var _g = 0;
 		var _g1 = this.boxes;
 		while(_g < _g1.length) {
@@ -866,7 +893,27 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		}
 		return scene;
 	}
+	,handleKb: function(key,state) {
+		switch(key[1]) {
+		case 0:
+			var $char = key[2];
+			if($char == "j") this.movement.left = state;
+			if($char == "l") this.movement.right = state;
+			if($char == "i") this.movement.up = state;
+			if($char == "k") this.movement.down = state;
+			break;
+		default:
+		}
+	}
 	,handle: function(e) {
+		switch(e[1]) {
+		case 1:
+			var state = e[3];
+			var key = e[2];
+			this.handleKb(key,state);
+			break;
+		default:
+		}
 	}
 	,__class__: control_demo_PhysDemo
 });

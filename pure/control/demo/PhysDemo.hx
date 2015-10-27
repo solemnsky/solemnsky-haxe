@@ -26,6 +26,9 @@ class PhysDemo extends EmptyControl {
     private var ball:Body;
     private var boxes:Array<Body>;
 
+    private var movement = 
+        {left: false, right: false, up: false, down: false};
+
     public function new() {
         super();
 
@@ -62,6 +65,21 @@ class PhysDemo extends EmptyControl {
 
     override function tick(delta:Float):Void {
         space.step(delta / 1000);
+        if (movement.left) 
+            ball.velocity = ball.velocity.add(
+                Vec2.weak(-1 * delta, 0));
+
+        if (movement.right)
+            ball.velocity = ball.velocity.add(
+                Vec2.weak(1 * delta, 0));
+
+        if (movement.up) 
+            ball.velocity = ball.velocity.add(
+                Vec2.weak(0, -1 * delta));
+
+        if (movement.down) 
+            ball.velocity = ball.velocity.add(
+                Vec2.weak(0, -1 * delta));
     }
 
     /*************************************************************************/
@@ -85,10 +103,16 @@ class PhysDemo extends EmptyControl {
         var scene = new Scene();
 
         scene.prims = [
-            SetColor(0, 0, 0, 255)
-            , DrawCircle(Util.vectorFromNape(ball.position), 40)
+            DrawCircle(Util.vectorFromNape(ball.position), 40)
             , SetColor(0, 255, 0, 255)
         ];
+
+        if (movement.left || movement.right 
+            || movement.up || movement.down) {
+            scene.prims.unshift(SetColor(50, 0, 0, 255));
+        } else {
+            scene.prims.unshift(SetColor(0, 0, 0, 255));
+        }
 
         for (box in boxes) {
             scene.children.push(rotatedBox(
@@ -101,7 +125,22 @@ class PhysDemo extends EmptyControl {
         return scene;
     }
 
+    private function handleKb(key:Key, state):Void {
+        switch (key) {
+        case CharKey(char): { 
+            if (char == 'j') movement.left = state;
+            if (char == 'l') movement.right = state;
+            if (char == 'i') movement.up = state;
+            if (char == 'k') movement.down = state;
+        }
+        default: { }
+        }
+    }
+
     override function handle(e:Event):Void {
-        // empty
+        switch (e) {
+        case KbEvent(key, state): handleKb(key, state);
+        default: {}
+        }
     }
 }
