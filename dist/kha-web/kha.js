@@ -821,13 +821,18 @@ control_demo_Direction.RightDir.toString = $estr;
 control_demo_Direction.RightDir.__enum__ = control_demo_Direction;
 var control_demo_PhysDemo = function() {
 	control_EmptyControl.call(this);
-	this.cooldown = 0;
 	var _g = new haxe_ds_EnumValueMap();
-	_g.set(control_demo_Direction.UpDir,false);
-	_g.set(control_demo_Direction.DownDir,false);
-	_g.set(control_demo_Direction.LeftDir,false);
-	_g.set(control_demo_Direction.RightDir,false);
-	this.movement = _g;
+	_g.set(control_demo_Direction.UpDir,0);
+	_g.set(control_demo_Direction.DownDir,0);
+	_g.set(control_demo_Direction.LeftDir,0);
+	_g.set(control_demo_Direction.RightDir,0);
+	this.cooldown = _g;
+	var _g1 = new haxe_ds_EnumValueMap();
+	_g1.set(control_demo_Direction.UpDir,false);
+	_g1.set(control_demo_Direction.DownDir,false);
+	_g1.set(control_demo_Direction.LeftDir,false);
+	_g1.set(control_demo_Direction.RightDir,false);
+	this.movement = _g1;
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
 	var w = 1600;
@@ -845,9 +850,9 @@ var control_demo_PhysDemo = function() {
 	floor.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.rect(50,h - 50,w - 50,1)));
 	floor.set_space(this.space);
 	this.boxes = [];
-	var _g1 = 0;
-	while(_g1 < 16) {
-		var i = _g1++;
+	var _g2 = 0;
+	while(_g2 < 16) {
+		var i = _g2++;
 		var box = new nape_phys_Body((function($this) {
 			var $r;
 			if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
@@ -923,7 +928,34 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		var $it0 = this.movement.keys();
 		while( $it0.hasNext() ) {
 			var d = $it0.next();
-			if(this.movement.get(d)) this.ball.set_velocity(this.ball.get_velocity().add(solemnsky_Util.napeFromVector(this.vecFromDir(d).mult(delta))));
+			var value = this.cooldown.get(d) + delta;
+			this.cooldown.set(d,value);
+			if(this.movement.get(d)) {
+				this.ball.set_velocity(this.ball.get_velocity().add(solemnsky_Util.napeFromVector(this.vecFromDir(d).mult(delta))));
+				if(this.cooldown.get(d) > 300) {
+					this.cooldown.set(d,0);
+					var box = new nape_phys_Body((function($this) {
+						var $r;
+						if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
+							zpp_$nape_util_ZPP_$Flags.internal = true;
+							zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC = new nape_phys_BodyType();
+							zpp_$nape_util_ZPP_$Flags.internal = false;
+						}
+						$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
+						return $r;
+					}(this)));
+					box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
+					var pos = this.vecFromDir(d).mult(-50).add(solemnsky_Util.vectorFromNape(this.ball.get_position()));
+					((function($this) {
+						var $r;
+						if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
+						$r = box.zpp_inner.wrap_pos;
+						return $r;
+					}(this))).setxy(pos.x,pos.y);
+					box.set_space(this.space);
+					this.boxes.push(box);
+				}
+			}
 		}
 	}
 	,controlling: function() {
@@ -68709,6 +68741,7 @@ var Uint8Array = (Function("return typeof Uint8Array != 'undefined' ? Uint8Array
 kha_Game.FPS = 60;
 Manager.profileWindow = 50;
 Manager.profileUpdate = 100;
+control_demo_PhysDemo.maxCoolDown = 300;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
 haxe_Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
