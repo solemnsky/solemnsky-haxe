@@ -973,6 +973,12 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		}
 		return false;
 	}
+	,score: function() {
+		var scene = new control_Scene();
+		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new math_Vector(0,0),control_TextAlign.CenterText,"" + this.boxes.length)];
+		scene.trans = new math_Transform(1,0,800,0,1,20,0,0,1).multmat(new math_Transform(3,0,0,0,3,0,0,0,1));
+		return scene;
+	}
 	,render: function(delta) {
 		var scene = new control_Scene();
 		scene.prims = [control_DrawPrim.DrawCircle(solemnsky_Util.vectorFromNape(this.ball.get_position()),40),control_DrawPrim.SetColor(0,255,0,255)];
@@ -989,6 +995,7 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 				return $r;
 			}(this))),12,box.zpp_inner.rot));
 		}
+		scene.children.push(this.score());
 		return scene;
 	}
 	,handleKb: function(key,state) {

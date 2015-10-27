@@ -176,6 +176,20 @@ class PhysDemo extends EmptyControl {
             if (movement.get(d)) return true;
         return false;
     }
+
+    private function score():Scene {
+        var scene = new Scene();
+        scene.prims = [
+            SetColor(0, 0, 0, 255)
+            , SetFont("Arial", 14)
+            , DrawText(new Vector(0, 0), CenterText, '' + boxes.length)
+        ];
+        scene.trans = Transform.translation(800, 20)
+            .multmat(Transform.scale(3, 3));
+        return scene;
+
+    }
+
     override function render(delta:Float):Scene {
         var scene = new Scene();
 
@@ -195,6 +209,8 @@ class PhysDemo extends EmptyControl {
                 , box.rotation
             ));
         }
+
+        scene.children.push(score());
 
         return scene;
     }
