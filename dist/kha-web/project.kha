@@ -18,8 +18,6 @@
 		{
 			"type": "image",
 			"name": "title",
-			"original_width": 0,
-			"original_height": 0,
 			"files": [
 				"title.png"
 			]

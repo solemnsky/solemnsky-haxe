@@ -1,4 +1,4 @@
-all: web
+all: flambe kha-web
 
 clean:
 	rm -rf dist/*
@@ -6,20 +6,18 @@ clean:
 	rm -rf export/kha-web/build/
 
 flambe:
-	# build
+	### FLAMBE ###
 	cd export/flambe && \
 	flambe build html
-	# copy to dist
+	
 	rm -rf dist/flambe/ ; mkdir -p dist/flambe/
-	rm -rf ./dist/flambe/
 	cp -r export/flambe/build/web/* ./dist/flambe/
 
 kha-web:
-	# build
+	### KHA-WEB ###
 	cd export/kha-web && \
 	node Kha/make html5
-	# copy to dist
+
 	rm -rf dist/kha-web/ ; mkdir -p dist/kha-web/
-	rm -rf ./dist/kha-web/
 	cp -r export/kha-web/build/html5/* ./dist/kha-web/
 
