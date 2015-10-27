@@ -1,17 +1,25 @@
 all: web
 
 clean:
-	rm -rf ./dist/*
+	rm -rf dist/*
+	rm -rf export/flambe/build/
+	rm -rf export/kha-web/build/
 
-html:
-	# pure html5 release courtesy of Flambe
+flambe:
+	# build
 	cd export/flambe && \
 	flambe build html
-	cp -r export/flambe/build/web ./dist/
+	# copy to dist
+	rm -rf dist/flambe/ ; mkdir -p dist/flambe/
+	rm -rf ./dist/flambe/
+	cp -r export/flambe/build/web/* ./dist/flambe/
 
-native:
-	# fast native release courtesy of Kha
-	echo "TODO lol" 
-	false
-
+kha-web:
+	# build
+	cd export/kha-web && \
+	node Kha/make html5
+	# copy to dist
+	rm -rf dist/kha-web/ ; mkdir -p dist/kha-web/
+	rm -rf ./dist/kha-web/
+	cp -r export/kha-web/build/html5/* ./dist/kha-web/
 
