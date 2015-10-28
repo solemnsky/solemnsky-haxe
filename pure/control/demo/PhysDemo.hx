@@ -32,6 +32,33 @@ enum Direction {
     RightDir;
 } 
 
+class Projectile {
+    private static inline var maxLife:Float = 1000;
+    private var life:Float = 0;
+    public var box:Body;
+
+    public function new(space:Space, pos:Vector, vel:Vector) {
+        box = new Body(BodyType.DYNAMIC);
+        box.shapes.add(new Polygon(Polygon.box(20, 20)));
+        box.position.setxy(pos.x, pos.y);
+        box.velocity.setxy(vel.x, vel.y);
+        box.space = space;
+    }
+
+    public function tick(delta:Float) {
+        life += delta;
+    }
+
+    public function conclude():Bool {
+        return (life > maxLife);
+    }
+
+    public function vivacity():Float {
+        return (1 - (life / maxLife)) 
+            * Math.sin((3 * Math.PI) * life / maxLife);
+    }
+}
+
 class PhysDemo extends EmptyControl {
     /**
      * game state
@@ -39,6 +66,7 @@ class PhysDemo extends EmptyControl {
     private static inline var maxCoolDown:Float = 100;
     private var cooldown: Map<Direction,Float>;
     private var movement: Map<Direction,Bool>;
+    private var projectiles: Array<Projectile>;
 
     /**
      * physics
@@ -64,6 +92,7 @@ class PhysDemo extends EmptyControl {
         movement = [
             UpDir => false, DownDir => false
             , LeftDir => false, RightDir => false ];
+        projectiles = [];
         // yeah haxe lets you do this
 
         /*********************************************************************/
@@ -141,17 +170,22 @@ class PhysDemo extends EmptyControl {
                     var pos = vecFromDir(d)
                         .mult(-50)
                         .add(Util.vectorFromNape(ball.position));
-                    var vel = vecFromDir(d).mult(5);
+                    var vel = vecFromDir(d).mult(10);
 
-                    var box = new Body(BodyType.DYNAMIC);
-                    box.shapes.add(new Polygon(Polygon.box(24, 24)));
-                    box.position.setxy(pos.x, pos.y);
-                    box.velocity.setxy(vel.x, vel.y);
-                    box.space = space;
-                    boxes.push(box);
+                    projectiles.push(new Projectile(
+                        space, pos, vel));
                 }
             }
         }
+
+        for (p in projectiles) {
+            p.tick(delta);
+        }
+
+        projectiles = projectiles.filter(function(p) {
+            if (p.conclude()) p.box.space = null;
+            return (! p.conclude());
+        });
     }
 
     /*************************************************************************/
@@ -162,10 +196,12 @@ class PhysDemo extends EmptyControl {
         pos:Vector
         , width:Float
         , alpha:Float
+        , color:Scene.DrawPrim
     ):Scene {
         var scene = new Scene();
         scene.prims = [
-            DrawRect(new Vector(-width, -width), new Vector(width, width))];
+            color
+            , DrawRect(new Vector(-width, -width), new Vector(width, width))];
         scene.trans = Transform.translation(pos.x, pos.y)
             .multmat(Transform.rotation(alpha));
         return scene;
@@ -181,7 +217,7 @@ class PhysDemo extends EmptyControl {
         var scene = new Scene();
         scene.prims = [
             SetColor(0, 0, 0, 255)
-            , SetFont("Arial", 14)
+            , SetFont("Arial", 14) 
             , DrawText(new Vector(0, 0), CenterText, '' + boxes.length)
         ];
         scene.trans = Transform.translation(800, 20)
@@ -207,6 +243,16 @@ class PhysDemo extends EmptyControl {
                 Util.vectorFromNape(box.position)
                 , 12
                 , box.rotation
+                , SetColor(0, 255, 0, 255)
+            ));
+        }
+
+        for (p in projectiles) {
+            scene.children.push(rotatedBox(
+                Util.vectorFromNape(p.box.position)
+                , 10
+                , p.box.rotation 
+                , SetColor(200, 0, 0, Math.round(p.vivacity() * 255))
             ));
         }
 

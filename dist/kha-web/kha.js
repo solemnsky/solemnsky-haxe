@@ -819,6 +819,37 @@ control_demo_Direction.LeftDir.__enum__ = control_demo_Direction;
 control_demo_Direction.RightDir = ["RightDir",3];
 control_demo_Direction.RightDir.toString = $estr;
 control_demo_Direction.RightDir.__enum__ = control_demo_Direction;
+var control_demo_Projectile = function(space,pos,vel) {
+	this.life = 0;
+	this.box = new nape_phys_Body((function($this) {
+		var $r;
+		if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
+			zpp_$nape_util_ZPP_$Flags.internal = true;
+			zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC = new nape_phys_BodyType();
+			zpp_$nape_util_ZPP_$Flags.internal = false;
+		}
+		$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
+		return $r;
+	}(this)));
+	this.box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(20,20)));
+	this.box.get_position().setxy(pos.x,pos.y);
+	this.box.get_velocity().setxy(vel.x,vel.y);
+	this.box.set_space(space);
+};
+$hxClasses["control.demo.Projectile"] = control_demo_Projectile;
+control_demo_Projectile.__name__ = ["control","demo","Projectile"];
+control_demo_Projectile.prototype = {
+	tick: function(delta) {
+		this.life += delta;
+	}
+	,conclude: function() {
+		return this.life > 1000;
+	}
+	,vivacity: function() {
+		return (1 - this.life / 1000) * Math.sin(3 * Math.PI * this.life / 1000);
+	}
+	,__class__: control_demo_Projectile
+};
 var control_demo_PhysDemo = function() {
 	control_EmptyControl.call(this);
 	var _g = new haxe_ds_EnumValueMap();
@@ -833,6 +864,7 @@ var control_demo_PhysDemo = function() {
 	_g1.set(control_demo_Direction.LeftDir,false);
 	_g1.set(control_demo_Direction.RightDir,false);
 	this.movement = _g1;
+	this.projectiles = [];
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
 	var w = 1600;
@@ -890,9 +922,9 @@ var control_demo_PhysDemo = function() {
 };
 $hxClasses["control.demo.PhysDemo"] = control_demo_PhysDemo;
 control_demo_PhysDemo.__name__ = ["control","demo","PhysDemo"];
-control_demo_PhysDemo.rotatedBox = function(pos,width,alpha) {
+control_demo_PhysDemo.rotatedBox = function(pos,width,alpha,color) {
 	var scene = new control_Scene();
-	scene.prims = [control_DrawPrim.DrawRect(new math_Vector(-width,-width),new math_Vector(width,width))];
+	scene.prims = [color,control_DrawPrim.DrawRect(new math_Vector(-width,-width),new math_Vector(width,width))];
 	scene.trans = new math_Transform(1,0,pos.x,0,1,pos.y,0,0,1).multmat(new math_Transform(Math.cos(alpha),-Math.sin(alpha),0,Math.sin(alpha),Math.cos(alpha),0,0,0,1));
 	return scene;
 };
@@ -935,35 +967,22 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 				if(this.cooldown.get(d) > 100) {
 					this.cooldown.set(d,0);
 					var pos = this.vecFromDir(d).mult(-50).add(solemnsky_Util.vectorFromNape(this.ball.get_position()));
-					var vel = this.vecFromDir(d).mult(5);
-					var box = new nape_phys_Body((function($this) {
-						var $r;
-						if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
-							zpp_$nape_util_ZPP_$Flags.internal = true;
-							zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC = new nape_phys_BodyType();
-							zpp_$nape_util_ZPP_$Flags.internal = false;
-						}
-						$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
-						return $r;
-					}(this)));
-					box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
-					((function($this) {
-						var $r;
-						if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
-						$r = box.zpp_inner.wrap_pos;
-						return $r;
-					}(this))).setxy(pos.x,pos.y);
-					((function($this) {
-						var $r;
-						if(box.zpp_inner.wrap_vel == null) box.zpp_inner.setupVelocity();
-						$r = box.zpp_inner.wrap_vel;
-						return $r;
-					}(this))).setxy(vel.x,vel.y);
-					box.set_space(this.space);
-					this.boxes.push(box);
+					var vel = this.vecFromDir(d).mult(10);
+					this.projectiles.push(new control_demo_Projectile(this.space,pos,vel));
 				}
 			}
 		}
+		var _g = 0;
+		var _g1 = this.projectiles;
+		while(_g < _g1.length) {
+			var p = _g1[_g];
+			++_g;
+			p.tick(delta);
+		}
+		this.projectiles = this.projectiles.filter(function(p1) {
+			if(p1.conclude()) p1.box.set_space(null);
+			return !p1.conclude();
+		});
 	}
 	,controlling: function() {
 		var $it0 = this.movement.keys();
@@ -993,7 +1012,14 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 				if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
 				$r = box.zpp_inner.wrap_pos;
 				return $r;
-			}(this))),12,box.zpp_inner.rot));
+			}(this))),12,box.zpp_inner.rot,control_DrawPrim.SetColor(0,255,0,255)));
+		}
+		var _g2 = 0;
+		var _g11 = this.projectiles;
+		while(_g2 < _g11.length) {
+			var p = _g11[_g2];
+			++_g2;
+			scene.children.push(control_demo_PhysDemo.rotatedBox(solemnsky_Util.vectorFromNape(p.box.get_position()),10,p.box.zpp_inner.rot,control_DrawPrim.SetColor(200,0,0,Math.round(p.vivacity() * 255))));
 		}
 		scene.children.push(this.score());
 		return scene;
@@ -68748,6 +68774,17 @@ var Bool = $hxClasses.Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = $hxClasses.Class = { __name__ : ["Class"]};
 var Enum = { };
+if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
+	var a1 = [];
+	var _g11 = 0;
+	var _g2 = this.length;
+	while(_g11 < _g2) {
+		var i1 = _g11++;
+		var e = this[i1];
+		if(f1(e)) a1.push(e);
+	}
+	return a1;
+};
 var __map_reserved = {}
 var ArrayBuffer = (Function("return typeof ArrayBuffer != 'undefined' ? ArrayBuffer : null"))() || js_html_compat_ArrayBuffer;
 if(ArrayBuffer.prototype.slice == null) ArrayBuffer.prototype.slice = js_html_compat_ArrayBuffer.sliceImpl;
@@ -68755,6 +68792,7 @@ var Uint8Array = (Function("return typeof Uint8Array != 'undefined' ? Uint8Array
 kha_Game.FPS = 60;
 Manager.profileWindow = 50;
 Manager.profileUpdate = 100;
+control_demo_Projectile.maxLife = 1000;
 control_demo_PhysDemo.maxCoolDown = 100;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
