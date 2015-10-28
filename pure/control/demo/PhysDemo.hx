@@ -59,6 +59,48 @@ class Projectile {
     }
 }
 
+class FloatingBox {
+    private static inline var w:Int = 1600;
+    private static inline var h:Int = 900;
+
+    public var box:Body;
+    private var index:Int;
+
+    private function originalPos():Vector {
+        return new Vector(w / 2, (h - 50) - 50 * (index + 0.5));
+    }
+
+    private function getPos():Vector {
+        return Util.vectorFromNape(box.position);
+    }
+
+    private function setPos(v:Vector) {
+        box.position.setxy(v.x, v.y);
+    }
+
+    public function new(space, index) {
+        this.index = index;
+
+        box = new Body(BodyType.DYNAMIC);
+        box.shapes.add(new Polygon(Polygon.box(24, 24)));
+        box.space = space;
+        setPos(originalPos());
+    }
+
+    public function reset() {
+        setPos(originalPos());
+        box.velocity.setxy(0, 0);
+        box.rotation = 0;
+        box.angularVel = 0;
+    }
+
+    public function tick(delta:Float) {
+        var dp = originalPos().sub(getPos());
+        box.velocity.setxy(dp.x, dp.y);
+        box.angularVel = box.angularVel * Math.pow(0.5, (delta / 1000));
+    }
+}
+
 class PhysDemo extends EmptyControl {
     /**
      * game state
@@ -67,13 +109,13 @@ class PhysDemo extends EmptyControl {
     private var cooldown: Map<Direction,Float>;
     private var movement: Map<Direction,Bool>;
     private var projectiles: Array<Projectile>;
+    private var boxes:Array<FloatingBox>;
+    private var ball:Body;
 
     /**
      * physics
      */
     private var space:Space;
-    private var ball:Body;
-    private var boxes:Array<Body>;
 
     /*********************************************************************/
     /* constructor
@@ -83,20 +125,7 @@ class PhysDemo extends EmptyControl {
         super();
 
         /*********************************************************************/
-        /* game state
-        /*********************************************************************/
-
-        cooldown = [
-            UpDir => 0, DownDir => 0
-            , LeftDir => 0, RightDir => 0];
-        movement = [
-            UpDir => false, DownDir => false
-            , LeftDir => false, RightDir => false ];
-        projectiles = [];
-        // yeah haxe lets you do this
-
-        /*********************************************************************/
-        /* set up nape space
+        /* nape space
         /*********************************************************************/
 
         var gravity = Vec2.weak(0, 600);
@@ -108,16 +137,31 @@ class PhysDemo extends EmptyControl {
         var floor = new Body(BodyType.STATIC);
         floor.shapes.add(
             new Polygon(Polygon.rect(50, (h - 50), (w - 50), 1)));
-        floor.space = space;
+        floor.space = space;        
+
+        /*********************************************************************/
+        /* game state
+        /*********************************************************************/
+
+        // cooldown and movement: player mechanics
+        cooldown = [
+            UpDir => 0, DownDir => 0
+            , LeftDir => 0, RightDir => 0];
+        movement = [
+            UpDir => false, DownDir => false
+            , LeftDir => false, RightDir => false ];
+
+        // projectiles and boxes: physics environment
+
+        projectiles = [];
 
         boxes = [];
         for (i in 0...16) {
-            var box = new Body(BodyType.DYNAMIC);
-            box.shapes.add(new Polygon(Polygon.box(24, 24)));
-            box.position.setxy((w / 2), ((h - 50) - 25 * (i + 0.5)));
-            box.space = space;
+            var box = new FloatingBox(space, i);
             boxes.push(box);
         }
+
+        // ball: the player's body
 
         ball = new Body(BodyType.DYNAMIC);
         ball.shapes.add(new Circle(40));
@@ -186,6 +230,10 @@ class PhysDemo extends EmptyControl {
             if (p.conclude()) p.box.space = null;
             return (! p.conclude());
         });
+
+        for (b in boxes) {
+            b.tick(delta);
+        }
     }
 
     /*************************************************************************/
@@ -215,13 +263,13 @@ class PhysDemo extends EmptyControl {
 
     private function score():Scene {
         var scene = new Scene();
-        scene.prims = [
-            SetColor(0, 0, 0, 255)
-            , SetFont("Arial", 14) 
-            , DrawText(new Vector(0, 0), CenterText, '' + boxes.length)
-        ];
-        scene.trans = Transform.translation(800, 20)
-            .multmat(Transform.scale(3, 3));
+        // scene.prims = [
+        //     SetColor(0, 0, 0, 255)
+        //     , SetFont("Arial", 14) 
+        //     , DrawText(new Vector(0, 0), CenterText, '' + boxes.length)
+        // ];
+        // scene.trans = Transform.translation(800, 20)
+        //     .multmat(Transform.scale(3, 3));
         return scene;
 
     }
@@ -240,9 +288,9 @@ class PhysDemo extends EmptyControl {
 
         for (box in boxes) {
             scene.children.push(rotatedBox(
-                Util.vectorFromNape(box.position)
+                Util.vectorFromNape(box.box.position)
                 , 12
-                , box.rotation
+                , box.box.rotation
                 , SetColor(0, 255, 0, 255)
             ));
         }
@@ -269,6 +317,14 @@ class PhysDemo extends EmptyControl {
         var dir = dirFromKey(key);
         if (dir != null) {
             movement.set(dir, state);
+            return;
+        } 
+        switch (key) {
+        case (CharKey(c)): {
+            if (c == 'r') 
+                for (b in boxes) b.reset();
+        }
+        default: {}
         }
     }
 

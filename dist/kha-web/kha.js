@@ -850,21 +850,49 @@ control_demo_Projectile.prototype = {
 	}
 	,__class__: control_demo_Projectile
 };
+var control_demo_FloatingBox = function(space,index) {
+	this.index = index;
+	this.box = new nape_phys_Body((function($this) {
+		var $r;
+		if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
+			zpp_$nape_util_ZPP_$Flags.internal = true;
+			zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC = new nape_phys_BodyType();
+			zpp_$nape_util_ZPP_$Flags.internal = false;
+		}
+		$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
+		return $r;
+	}(this)));
+	this.box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
+	this.box.set_space(space);
+	this.setPos(this.originalPos());
+};
+$hxClasses["control.demo.FloatingBox"] = control_demo_FloatingBox;
+control_demo_FloatingBox.__name__ = ["control","demo","FloatingBox"];
+control_demo_FloatingBox.prototype = {
+	originalPos: function() {
+		return new math_Vector(800.,850 - 50 * (this.index + 0.5));
+	}
+	,getPos: function() {
+		return solemnsky_Util.vectorFromNape(this.box.get_position());
+	}
+	,setPos: function(v) {
+		this.box.get_position().setxy(v.x,v.y);
+	}
+	,reset: function() {
+		this.setPos(this.originalPos());
+		this.box.get_velocity().setxy(0,0);
+		this.box.set_rotation(0);
+		this.box.set_angularVel(0);
+	}
+	,tick: function(delta) {
+		var dp = this.originalPos().sub(this.getPos());
+		this.box.get_velocity().setxy(dp.x,dp.y);
+		this.box.set_angularVel(this.box.zpp_inner.angvel * Math.pow(0.5,delta / 1000));
+	}
+	,__class__: control_demo_FloatingBox
+};
 var control_demo_PhysDemo = function() {
 	control_EmptyControl.call(this);
-	var _g = new haxe_ds_EnumValueMap();
-	_g.set(control_demo_Direction.UpDir,0);
-	_g.set(control_demo_Direction.DownDir,0);
-	_g.set(control_demo_Direction.LeftDir,0);
-	_g.set(control_demo_Direction.RightDir,0);
-	this.cooldown = _g;
-	var _g1 = new haxe_ds_EnumValueMap();
-	_g1.set(control_demo_Direction.UpDir,false);
-	_g1.set(control_demo_Direction.DownDir,false);
-	_g1.set(control_demo_Direction.LeftDir,false);
-	_g1.set(control_demo_Direction.RightDir,false);
-	this.movement = _g1;
-	this.projectiles = [];
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
 	var w = 1600;
@@ -881,28 +909,24 @@ var control_demo_PhysDemo = function() {
 	}(this)));
 	floor.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.rect(50,h - 50,w - 50,1)));
 	floor.set_space(this.space);
+	var _g = new haxe_ds_EnumValueMap();
+	_g.set(control_demo_Direction.UpDir,0);
+	_g.set(control_demo_Direction.DownDir,0);
+	_g.set(control_demo_Direction.LeftDir,0);
+	_g.set(control_demo_Direction.RightDir,0);
+	this.cooldown = _g;
+	var _g1 = new haxe_ds_EnumValueMap();
+	_g1.set(control_demo_Direction.UpDir,false);
+	_g1.set(control_demo_Direction.DownDir,false);
+	_g1.set(control_demo_Direction.LeftDir,false);
+	_g1.set(control_demo_Direction.RightDir,false);
+	this.movement = _g1;
+	this.projectiles = [];
 	this.boxes = [];
 	var _g2 = 0;
 	while(_g2 < 16) {
 		var i = _g2++;
-		var box = new nape_phys_Body((function($this) {
-			var $r;
-			if(zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC == null) {
-				zpp_$nape_util_ZPP_$Flags.internal = true;
-				zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC = new nape_phys_BodyType();
-				zpp_$nape_util_ZPP_$Flags.internal = false;
-			}
-			$r = zpp_$nape_util_ZPP_$Flags.BodyType_DYNAMIC;
-			return $r;
-		}(this)));
-		box.zpp_inner.wrap_shapes.add(new nape_shape_Polygon(nape_shape_Polygon.box(24,24)));
-		((function($this) {
-			var $r;
-			if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
-			$r = box.zpp_inner.wrap_pos;
-			return $r;
-		}(this))).setxy(w / 2,h - 50 - 25 * (i + 0.5));
-		box.set_space(this.space);
+		var box = new control_demo_FloatingBox(this.space,i);
 		this.boxes.push(box);
 	}
 	this.ball = new nape_phys_Body((function($this) {
@@ -983,6 +1007,13 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 			if(p1.conclude()) p1.box.set_space(null);
 			return !p1.conclude();
 		});
+		var _g2 = 0;
+		var _g11 = this.boxes;
+		while(_g2 < _g11.length) {
+			var b = _g11[_g2];
+			++_g2;
+			b.tick(delta);
+		}
 	}
 	,controlling: function() {
 		var $it0 = this.movement.keys();
@@ -994,8 +1025,6 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 	}
 	,score: function() {
 		var scene = new control_Scene();
-		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new math_Vector(0,0),control_TextAlign.CenterText,"" + this.boxes.length)];
-		scene.trans = new math_Transform(1,0,800,0,1,20,0,0,1).multmat(new math_Transform(3,0,0,0,3,0,0,0,1));
 		return scene;
 	}
 	,render: function(delta) {
@@ -1007,12 +1036,7 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		while(_g < _g1.length) {
 			var box = _g1[_g];
 			++_g;
-			scene.children.push(control_demo_PhysDemo.rotatedBox(solemnsky_Util.vectorFromNape((function($this) {
-				var $r;
-				if(box.zpp_inner.wrap_pos == null) box.zpp_inner.setupPosition();
-				$r = box.zpp_inner.wrap_pos;
-				return $r;
-			}(this))),12,box.zpp_inner.rot,control_DrawPrim.SetColor(0,255,0,255)));
+			scene.children.push(control_demo_PhysDemo.rotatedBox(solemnsky_Util.vectorFromNape(box.box.get_position()),12,box.box.zpp_inner.rot,control_DrawPrim.SetColor(0,255,0,255)));
 		}
 		var _g2 = 0;
 		var _g11 = this.projectiles;
@@ -1026,7 +1050,25 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 	}
 	,handleKb: function(key,state) {
 		var dir = this.dirFromKey(key);
-		if(dir != null) this.movement.set(dir,state);
+		if(dir != null) {
+			this.movement.set(dir,state);
+			return;
+		}
+		switch(key[1]) {
+		case 0:
+			var c = key[2];
+			if(c == "r") {
+				var _g = 0;
+				var _g1 = this.boxes;
+				while(_g < _g1.length) {
+					var b = _g1[_g];
+					++_g;
+					b.reset();
+				}
+			}
+			break;
+		default:
+		}
 	}
 	,handle: function(e) {
 		switch(e[1]) {
@@ -68793,6 +68835,8 @@ kha_Game.FPS = 60;
 Manager.profileWindow = 50;
 Manager.profileUpdate = 100;
 control_demo_Projectile.maxLife = 1000;
+control_demo_FloatingBox.w = 1600;
+control_demo_FloatingBox.h = 900;
 control_demo_PhysDemo.maxCoolDown = 100;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
