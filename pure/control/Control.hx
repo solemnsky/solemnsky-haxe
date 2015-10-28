@@ -64,7 +64,7 @@ interface Control<T> {
 /**
  * Smallest possible implementation of Control
  */
-class EmptyControl implements Control {
+class EmptyControl implements Control<Noise> {
     public function new():Void {}
 
     public function init(_):Void {}
@@ -81,7 +81,7 @@ class EmptyControl implements Control {
 
     public function handle(e:Event):Void {}
 
-    public function hasEnded():Bool {
-        return false;
+    public function conclude():Null<Noise> {
+        return null;
     }
 }

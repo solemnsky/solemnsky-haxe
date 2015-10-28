@@ -1,20 +1,17 @@
 package control.demo;
 
-import control.Control;
-import solemnsky.Util;
 import control.Event;
+import control.Key;
 import control.Scene;
-import math.Vector;
 import math.Transform;
-
+import math.Vector;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import nape.space.Space;
-import nape.util.BitmapDebug;
-import nape.util.Debug;
+import solemnsky.Util;
 
 /**
  * solemnsky.control.demo.PhysDemo:

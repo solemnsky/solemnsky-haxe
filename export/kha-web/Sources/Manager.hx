@@ -31,7 +31,7 @@ class Manager extends Game {
      */ 
     private var tps:Float;
     private var tickLength:Float;
-    private var ctrl:Control;
+    private var ctrl:Control<Noise>;
     private var backbuffer:Image;
     private var g:Graphics;
 
@@ -77,7 +77,7 @@ class Manager extends Game {
     /* constructor
     /*************************************************************************/
 
-    public function new(ctrl:Control, tps:Int = 60):Void {
+    public function new(ctrl:Control<Noise>, tps:Int = 60):Void {
         super("solemnsky", false); // initialise our game, I think kha does
                                    // a whole bunch of stuff here
 
