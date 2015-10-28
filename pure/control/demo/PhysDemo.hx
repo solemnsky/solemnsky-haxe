@@ -1,5 +1,6 @@
 package control.demo;
 
+import control.Control;
 import control.Event;
 import control.Key;
 import control.Scene;

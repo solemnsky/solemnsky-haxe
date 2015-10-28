@@ -1,6 +1,7 @@
 package;
 
 import control.Control;
+import control.Noise;
 import control.Event;
 import control.Profile;
 import control.Key;
