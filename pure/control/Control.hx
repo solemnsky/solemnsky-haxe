@@ -5,21 +5,28 @@ import math.Transform;
 
 /**
  * solemnsky.control.Control:
- * Interface to the world; represents an application, abstracted from its
- * implemtnation. Features:
- * - Networking
+ * Interface to the world from our pure abstracted code.
+ * Features:
+ * - Networking (optionally implemented)
  * - Realtime logic
- * - Rendering 
- * - Handling profiling data
- * - Handling user events
- * - Quitting
+ * - Realtime rendering (not implemented in server targets)
+ * - Capturing profiling data
+ * - Handling user events (not implemented in server targets)
+ * - Exiting (optionally implemented)
  */
 
 /*****************************************************************************/
 /* Control object definition                                                 */
 /*****************************************************************************/
 
-interface Control {
+/**
+ * Represents an all-encompassing UI that runs and eventually may return a 
+ * value of type T. The semantics of this return value isn't always useful,
+ * for example in the context of the top-level control object; in that case
+ * its existance is merely a signal to the application to stop. However, when
+ * used in 
+ */
+interface Control<T> {
     public function init(network:Network):Void;
 
     /**
@@ -49,9 +56,9 @@ interface Control {
          
 
     /**
-     * Application quits when this returns true.
+     * Potentially conclude the control by returning a T instead of a null.
      */
-    public function hasEnded():Bool;
+    public function conclude():Null<T>;
 }
 
 /**

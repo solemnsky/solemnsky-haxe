@@ -96,7 +96,7 @@ class FloatingBox {
 
     public function tick(delta:Float) {
         var dp = originalPos().sub(getPos());
-        box.velocity.setxy(dp.x, dp.y);
+        box.velocity.setxy(dp.x * 0.5, dp.y * 0.5);
         box.angularVel = box.angularVel * Math.pow(0.5, (delta / 1000));
     }
 }
@@ -262,14 +262,15 @@ class PhysDemo extends EmptyControl {
     }
 
     private function score():Scene {
+        var text = 'use i/j/k/l to move';
         var scene = new Scene();
-        // scene.prims = [
-        //     SetColor(0, 0, 0, 255)
-        //     , SetFont("Arial", 14) 
-        //     , DrawText(new Vector(0, 0), CenterText, '' + boxes.length)
-        // ];
-        // scene.trans = Transform.translation(800, 20)
-        //     .multmat(Transform.scale(3, 3));
+        scene.prims = [
+            SetColor(0, 0, 0, 255)
+            , SetFont("Arial", 14) 
+            , DrawText(new Vector(0, 0), CenterText, text)
+        ];
+        scene.trans = Transform.translation(800, 20)
+            .multmat(Transform.scale(3, 3));
         return scene;
 
     }

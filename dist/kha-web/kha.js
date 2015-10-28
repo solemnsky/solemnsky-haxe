@@ -886,7 +886,7 @@ control_demo_FloatingBox.prototype = {
 	}
 	,tick: function(delta) {
 		var dp = this.originalPos().sub(this.getPos());
-		this.box.get_velocity().setxy(dp.x,dp.y);
+		this.box.get_velocity().setxy(dp.x * 0.5,dp.y * 0.5);
 		this.box.set_angularVel(this.box.zpp_inner.angvel * Math.pow(0.5,delta / 1000));
 	}
 	,__class__: control_demo_FloatingBox
@@ -1024,7 +1024,10 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		return false;
 	}
 	,score: function() {
+		var text = "use i/j/k/l to move";
 		var scene = new control_Scene();
+		scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new math_Vector(0,0),control_TextAlign.CenterText,text)];
+		scene.trans = new math_Transform(1,0,800,0,1,20,0,0,1).multmat(new math_Transform(3,0,0,0,3,0,0,0,1));
 		return scene;
 	}
 	,render: function(delta) {
