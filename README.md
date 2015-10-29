@@ -30,7 +30,7 @@ SolemnSky achieves portability by virtue of a decoupling between 'pure' code (ab
 
 Good extensibility implies an efficient and elegant handling of parallel and branched modification in any of the various levels the game's logic and interface. For example, game modes should be possible to develop in parallel, and tweaks in basic gameplay mechanics should ripple up the various branches of modification. Adding layers of functionality on top of already deployed modes without introducing complexity should be a non-issue.
 
-SolemnSky achieves extensibility through a separation of a ``Core`` interface that defines core game logic from the definitions of UI and server-side release wrappers defined in function of these logical objects. Furthermore, the core game engine is modularized and represented as an implementable interface.
+SolemnSky achieves extensibility through a separation of a ``Core`` interface that defines core game logic from the definitions of UI and server-side release wrappers defined in function of these logical objects. Furthermore, the core game engine is defined as a separate object, used by the various Core implementations.
 
 ### performance
 
