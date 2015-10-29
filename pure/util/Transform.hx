@@ -1,7 +1,7 @@
-package math;
+package util;
 
 /**
- * math.Transform
+ * util.Transform
  * Transform class, representing an affine transformation.
  */
 

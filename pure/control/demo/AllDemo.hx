@@ -31,7 +31,7 @@ class SelectionScreen implements Control<Noise> {
             "Welcome to the solemnsky control technical demo."
             , "What you are seeing is the the control object control.AllDemo.run()"
             , "compiled through one of our export media."
-            , "It demonstrates of several features that should be achieved in a "
+            , "It demonstrates several features that should be achieved in a "
             , " technically sound export media. "
             , "Press 1, 2, or 3 on your keyboard to continue."
         ];
@@ -55,9 +55,7 @@ class SelectionScreen implements Control<Noise> {
 
     public function render(delta:Float):Scene {
         var scene = new Scene();
-
         scene.children.push(renderText());
-
         return scene;
     }
 

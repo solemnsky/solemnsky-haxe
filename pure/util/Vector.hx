@@ -1,7 +1,7 @@
-package math;
+package util;
 
 /**
- * math.Vector
+ * util.Vector
  * Vector class, representing a 2d vector.
  */
  
