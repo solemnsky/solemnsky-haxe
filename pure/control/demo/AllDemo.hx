@@ -15,16 +15,17 @@ import control.Combinator;
 /**
  * Selection screen, results in the demo that the user wants to run.
  */
-class SelectionScreen implements Control<Noise> {
-    public function new():Void {}
+class SelectionScreen extends EmptyControl implements Control<Noise> {
+    private var ended:Bool = false;
 
-    public function init(_):Void {}
-
-    public function tick(delta:Float):Void {}
+    public function new():Void {
+        super();
+    }
 
     /*************************************************************************/
     /* rendering
     /*************************************************************************/
+
     private static function renderText():Scene {
         var scene = new Scene();
 
@@ -54,19 +55,35 @@ class SelectionScreen implements Control<Noise> {
         return scene;
     }
 
-    public function render(delta:Float):Scene {
+    override public function render(delta:Float):Scene {
         var scene = new Scene();
         scene.children.push(renderText());
         return scene;
     }
 
-    public function profiling(data:Profile):Void {
+    override public function profiling(data:Profile):Void {
         trace(data.print());
     }
 
-    public function handle(e:Event):Void {}
+    /*************************************************************************/
+    /* events
+    /*************************************************************************/
 
-    public function conclude():Null<Noise> {
+    override public function handle(e:Event):Void {
+        switch(e) {
+        case KbEvent(_, _): {
+            ended = true;
+            trace('BEEP');
+        }
+        default: {}
+        } 
+    }
+
+    override public function conclude():Null<Noise> {
+        if (ended) {
+            trace('beep');
+            return Noise; // happy noise!
+        }
         return null;
     }
 }

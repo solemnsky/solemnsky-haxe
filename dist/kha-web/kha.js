@@ -709,6 +709,8 @@ control_ControlNetwork.prototype = {
 	}
 	,tick: function(delta) {
 		this.ctrl.tick(delta);
+		var conclusion = this.ctrl.conclude();
+		if(conclusion != null) this.ctrl = this.moveThrough(conclusion);
 	}
 	,render: function(delta) {
 		return this.ctrl.render(delta);
@@ -720,8 +722,6 @@ control_ControlNetwork.prototype = {
 		this.ctrl.handle(e);
 	}
 	,conclude: function() {
-		var conclusion = this.ctrl.conclude();
-		if(conclusion != null) this.ctrl = this.moveThrough(conclusion);
 		return null;
 	}
 	,__class__: control_ControlNetwork
@@ -847,6 +847,8 @@ control_Scene.prototype = {
 	__class__: control_Scene
 };
 var control_demo_SelectionScreen = function() {
+	this.ended = false;
+	control_EmptyControl.call(this);
 };
 $hxClasses["control.demo.SelectionScreen"] = control_demo_SelectionScreen;
 control_demo_SelectionScreen.__name__ = ["control","demo","SelectionScreen"];
@@ -863,26 +865,34 @@ control_demo_SelectionScreen.renderText = function() {
 	scene.trans = new util_Transform(1,0,0,0,1,5,0,0,1).multmat(new util_Transform(3,0,0,0,3,0,0,0,1));
 	return scene;
 };
-control_demo_SelectionScreen.prototype = {
-	init: function(_) {
-	}
-	,tick: function(delta) {
-	}
-	,render: function(delta) {
+control_demo_SelectionScreen.__super__ = control_EmptyControl;
+control_demo_SelectionScreen.prototype = $extend(control_EmptyControl.prototype,{
+	render: function(delta) {
 		var scene = new control_Scene();
 		scene.children.push(control_demo_SelectionScreen.renderText());
 		return scene;
 	}
 	,profiling: function(data) {
-		haxe_Log.trace(data.print(),{ fileName : "AllDemo.hx", lineNumber : 64, className : "control.demo.SelectionScreen", methodName : "profiling"});
+		haxe_Log.trace(data.print(),{ fileName : "AllDemo.hx", lineNumber : 65, className : "control.demo.SelectionScreen", methodName : "profiling"});
 	}
 	,handle: function(e) {
+		switch(e[1]) {
+		case 1:
+			this.ended = true;
+			haxe_Log.trace("BEEP",{ fileName : "AllDemo.hx", lineNumber : 76, className : "control.demo.SelectionScreen", methodName : "handle"});
+			break;
+		default:
+		}
 	}
 	,conclude: function() {
+		if(this.ended) {
+			haxe_Log.trace("beep",{ fileName : "AllDemo.hx", lineNumber : 84, className : "control.demo.SelectionScreen", methodName : "conclude"});
+			return control_Noise.Noise;
+		}
 		return null;
 	}
 	,__class__: control_demo_SelectionScreen
-};
+});
 var control_demo_AllDemo = function() { };
 $hxClasses["control.demo.AllDemo"] = control_demo_AllDemo;
 control_demo_AllDemo.__name__ = ["control","demo","AllDemo"];

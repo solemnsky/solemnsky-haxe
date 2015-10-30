@@ -47,6 +47,10 @@ class ControlNetwork<T> implements Control<Noise> {
 
     public function tick(delta:Float) {
         ctrl.tick(delta);
+
+        var conclusion = ctrl.conclude();
+        if (conclusion != null) 
+            ctrl = moveThrough(conclusion);
     }
 
     public function render(delta:Float):Scene {
@@ -62,9 +66,6 @@ class ControlNetwork<T> implements Control<Noise> {
     }
 
     public function conclude():Null<Noise> {
-        var conclusion = ctrl.conclude();
-        if (conclusion != null) 
-            ctrl = moveThrough(conclusion);
         return null;
     }
 }
