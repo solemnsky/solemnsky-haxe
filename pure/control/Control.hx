@@ -1,7 +1,7 @@
 package control;
 
-import math.Vector;
-import math.Transform;
+import util.Vector;
+import util.Transform;
 
 /**
  * solemnsky.control.Control:

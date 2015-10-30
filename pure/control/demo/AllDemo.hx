@@ -1,9 +1,10 @@
 package control.demo;
 
-import math.Vector;
-import math.Transform;
+import util.Vector;
+import util.Transform;
 import control.Control;
 import control.Scene;
+import control.Combinator;
 
 /**
  * control.demo.AllDemo:
@@ -76,6 +77,10 @@ class SelectionScreen implements Control<Noise> {
  */
 class AllDemo {
     public static function run():Control<Noise> {
-        return new SelectionScreen();
+        return Combinator.when(new SelectionScreen(), selectCallback);
+    }
+
+    private static function selectCallback(r:Noise):Control<Noise> {
+        return new PhysDemo();       
     }
 }

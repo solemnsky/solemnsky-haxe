@@ -4,8 +4,8 @@ import math.Vector;
 import nape.geom.Vec2;
 
 /**
- * solemnsky.Util:
- * Utility functions.
+ * util.Util:
+ * Static utility functions.
  */
 
 class Util {
