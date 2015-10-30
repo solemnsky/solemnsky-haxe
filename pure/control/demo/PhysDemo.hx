@@ -19,6 +19,10 @@ import util.Vector;
  * Demo control object demonstrating physics through Nape.
  */
 
+/****************************************************************************/
+/* helper structures
+/****************************************************************************/
+
 /**
  * We use directions a lot here, might as well take some redundancy
  * away and parameterize them abstractly...
@@ -99,7 +103,11 @@ class FloatingBox {
     }
 }
 
-class PhysDemo extends EmptyControl implements Control<Noise> {
+/****************************************************************************/
+/* main export
+/****************************************************************************/
+
+class PhysDemo extends EmptyControl implements Control<DemoSelect> {
     /**
      * game state
      */

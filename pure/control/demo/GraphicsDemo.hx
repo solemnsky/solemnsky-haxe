@@ -11,7 +11,8 @@ import math.Transform;
  * Demo control object demonstrating graphics.
  */
 
-class GraphicsDemo implements Control {
+class GraphicsDemo implements Control<DemoSelect> {
+                                      // from AllDemo.hx
     private var time:Float = 0;
     private var x:Float = 0;
     private var y:Float = 0;
@@ -117,7 +118,7 @@ class GraphicsDemo implements Control {
         trace(data.print());
     }
 
-    public function hasEnded():Bool {
-        return false;
+    public function conclude():Null<DemoSelect> {
+        return null;
     }
 }

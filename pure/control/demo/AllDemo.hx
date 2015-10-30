@@ -15,8 +15,8 @@ import control.Combinator;
 /**
  * Selection screen, results in the demo that the user wants to run.
  */
-class SelectionScreen extends EmptyControl implements Control<Noise> {
-    private var ended:Bool = false;
+class SelectionScreen extends EmptyControl implements Control<DemoSelect> {
+    private var selection:Null<DemoSelect> = null;
 
     public function new():Void {
         super();
@@ -71,20 +71,17 @@ class SelectionScreen extends EmptyControl implements Control<Noise> {
 
     override public function handle(e:Event):Void {
         switch(e) {
-        case KbEvent(_, _): {
-            ended = true;
-            trace('BEEP');
+        case KbEvent(key, _): {
+            if (key == CharKey('1')) selection = GraphicsSelect;
+            if (key == CharKey('2')) selection = InputSelect;
+            if (key == CharKey('3')) selection = PhysSelect;
         }
         default: {}
         } 
     }
 
-    override public function conclude():Null<Noise> {
-        if (ended) {
-            trace('beep');
-            return Noise; // happy noise!
-        }
-        return null;
+    override public function conclude():Null<DemoSelect> {
+        return selection;
     }
 }
 
@@ -99,7 +96,13 @@ class AllDemo {
             , new SelectionScreen() );
     }
 
-    private static function moveThrough(r:Noise):Control<Noise> {
-        return new PhysDemo();       
+    private static function moveThrough(r:DemoSelect):Control<DemoSelect> {
+        if (r == PhysSelect) {
+            var demo:Control<DemoSelect> = new PhysDemo();
+            return demo;
+        } else {
+            var screen:Control<DemoSelect> = new SelectionScreen();
+            return screen;
+        }
     }
 }
