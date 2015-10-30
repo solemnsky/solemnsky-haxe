@@ -11,18 +11,18 @@ package control;
 /**
  * Implementation of Combinator.when()
  */
-class WhenControl<T, T2> implements Control<T2> {
+class WhenControl<T, TN> implements Control<TN> {
     /*************************************************************************/
     /* variables 
     /*************************************************************************/
 
     // initialised state
     private var ctrl:Control<T>;
-    private var handle:T->Control<T2>;
+    private var handle:T->Control<TN>;
 
     public function new(
         ctrl:Control<T>
-        , handle:T->Control<T2>
+        , handle:T->Control<TN>
     ) {
         this.ctrl = ctrl;
         this.handle = handle;
@@ -52,10 +52,11 @@ class WhenControl<T, T2> implements Control<T2> {
         ctrl.handle(e);
     }
 
-    public function conclude():Null<T2> {
+    public function conclude():Null<TN> {
         var conclusion = ctrl.conclude();
         if (conclusion != null) 
             this = handle(conclusion);
+        return null;
     }
 }
 
@@ -65,8 +66,8 @@ class WhenControl<T, T2> implements Control<T2> {
 class Combinator {
     public static function when(
         ctrl:Control<T>
-        , handle:T->Control<T2>
-    ): Control<T2> {
+        , handle:T->Control<TN>
+    ): Control<TN> {
         return WhenControl(ctrl, handle);
     }
 }
