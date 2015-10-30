@@ -98,7 +98,7 @@ class AllDemo {
 
     private static function moveThrough(r:DemoSelect):Control<DemoSelect> {
         if (r == PhysSelect) {
-            var demo:Control<DemoSelect> = new PhysDemo();
+            var demo:Control<DemoSelect> = new SelectionScreen();
             return demo;
         } else {
             var screen:Control<DemoSelect> = new SelectionScreen();
