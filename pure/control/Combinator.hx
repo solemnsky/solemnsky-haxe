@@ -8,28 +8,37 @@ package control;
  * but they make you think of cool stuff like GADTs and category theory.
  */
 
+
+/*****************************************************************************/
+/* ControlNetwork
+/*****************************************************************************/
+
 /**
- * Implementation of Combinator.when()
+ * A generalised control network manager.
+ * 
+ * At every moment it is directed by an internal control object
+ * but this control object ends and is substitued by a new one
+ * dictated by a network ticker function (moveThrough) when it
+ * ends by returing a value through conclude().
  */
-class WhenControl<T, TN> implements Control<TN> {
+class ControlNetwork<T> implements Control<Noise> {
     /*************************************************************************/
-    /* variables 
+    /* variables
     /*************************************************************************/
 
-    // initialised state
+    private var moveThrough:T->Control<T>;
     private var ctrl:Control<T>;
-    private var handle:T->Control<TN>;
 
     public function new(
-        ctrl:Control<T>
-        , handle:T->Control<TN>
+        moveThrough:T->Control<T>
+        , initialCtrl:Control<T>
     ) {
-        this.ctrl = ctrl;
-        this.handle = handle;
+        this.moveThrough = moveThrough;
+        ctrl = initialCtrl;
     }
 
     /*************************************************************************/
-    /* Control implementation
+    /* control implementation
     /*************************************************************************/
     
     public function init(n) {
@@ -52,22 +61,26 @@ class WhenControl<T, TN> implements Control<TN> {
         ctrl.handle(e);
     }
 
-    public function conclude():Null<TN> {
+    public function conclude():Null<Noise> {
         var conclusion = ctrl.conclude();
         if (conclusion != null) 
-            this = handle(conclusion);
+            ctrl = moveThrough(conclusion);
         return null;
     }
 }
+
+/*****************************************************************************/
+/* Combinator (top-level)
+/*****************************************************************************/
 
 /**
  * All our combinators are static functions in this class.
  */
 class Combinator {
-    public static function when(
-        ctrl:Control<T>
-        , handle:T->Control<TN>
-    ): Control<TN> {
-        return WhenControl(ctrl, handle);
+    public static function network<T>(
+        moveThrough:T->Control<T>
+        , initialCtrl:Control<T>
+    ): Control<Noise> {
+        return new ControlNetwork(moveThrough, initialCtrl);
     }
 }

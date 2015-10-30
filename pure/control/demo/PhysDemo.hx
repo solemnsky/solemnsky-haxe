@@ -4,15 +4,15 @@ import control.Control;
 import control.Event;
 import control.Key;
 import control.Scene;
-import math.Transform;
-import math.Vector;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import nape.space.Space;
-import solemnsky.Util;
+import util.Transform;
+import util.Util;
+import util.Vector;
 
 /**
  * solemnsky.control.demo.PhysDemo:
@@ -99,7 +99,7 @@ class FloatingBox {
     }
 }
 
-class PhysDemo extends EmptyControl {
+class PhysDemo extends EmptyControl implements Control<Noise> {
     /**
      * game state
      */

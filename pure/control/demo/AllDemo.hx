@@ -77,10 +77,12 @@ class SelectionScreen implements Control<Noise> {
  */
 class AllDemo {
     public static function run():Control<Noise> {
-        return Combinator.when(new SelectionScreen(), selectCallback);
+        return Combinator.network(
+            moveThrough
+            , new SelectionScreen() );
     }
 
-    private static function selectCallback(r:Noise):Control<Noise> {
+    private static function moveThrough(r:Noise):Control<Noise> {
         return new PhysDemo();       
     }
 }
