@@ -15,12 +15,14 @@ import control.Combinator;
 /**
  * Selection screen, results in the demo that the user wants to run.
  */
-class SelectionScreen extends EmptyControl implements Control<DemoSelect> {
+class SelectionScreen implements Control<DemoSelect> {
     private var selection:Null<DemoSelect> = null;
 
-    public function new():Void {
+    public function new() {
         super();
     }
+
+    public function init(_) {}
 
     /*************************************************************************/
     /* rendering
@@ -55,13 +57,13 @@ class SelectionScreen extends EmptyControl implements Control<DemoSelect> {
         return scene;
     }
 
-    override public function render(delta:Float):Scene {
+    public function render(delta:Float):Scene {
         var scene = new Scene();
         scene.children.push(renderText());
         return scene;
     }
 
-    override public function profiling(data:Profile):Void {
+    public function profiling(data:Profile):Void {
         trace(data.print());
     }
 
@@ -69,7 +71,7 @@ class SelectionScreen extends EmptyControl implements Control<DemoSelect> {
     /* events
     /*************************************************************************/
 
-    override public function handle(e:Event):Void {
+    public function handle(e:Event):Void {
         switch(e) {
         case KbEvent(key, _): {
             if (key == CharKey('1')) selection = GraphicsSelect;
@@ -80,7 +82,7 @@ class SelectionScreen extends EmptyControl implements Control<DemoSelect> {
         } 
     }
 
-    override public function conclude():Null<DemoSelect> {
+    public function conclude():Null<DemoSelect> {
         return selection;
     }
 }
