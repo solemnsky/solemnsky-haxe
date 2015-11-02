@@ -104,14 +104,23 @@ class Manager extends Game {
         lastRender = now; 
 
         /***********************************************/
-        /* resizing on html5
+        /* resizing 
         /***********************************************/
+
+        #if js
         var doc = js.Browser.document;
         doc.body.style.margin = "0px";
         doc.body.style.overflow = "hidden";
         doc.getElementsByTagName("p").item(0).style.margin = "0px";
         resize();
         js.Browser.window.onresize = resize;
+        #end
+
+        #if cpp
+        resize();
+        // stub
+        #end
+
    }
 
     /*************************************************************************/
@@ -290,6 +299,7 @@ class Manager extends Game {
     /* resizing
     /*************************************************************************/
 
+    #if js
     private function resize():Void {
         var win = js.Browser.window;
         var canvas = 
@@ -301,5 +311,12 @@ class Manager extends Game {
 
         this.realWidth = w; this.realHeight = h;
     }
+    #end
+
+    #if cpp
+    private function resize():Void {
+        // stub 
+    }
+    #end
 
 }
