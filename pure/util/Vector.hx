@@ -5,12 +5,16 @@ package util;
  * Vector class, representing a 2d vector.
  */
  
-class Vector {
+class Vector implements Poolable {
     public var x:Float;
     public var y:Float;
 
     public function new(x:Float, y:Float) {
         this.x = x; this.y = y;
+    }
+
+    public function reset() {
+        this.x = 0; this.y = 0;
     }
 
     public inline function clone():Vector {

@@ -11,8 +11,8 @@ package util;
  */
 
 interface Poolable {
-    public function new():Void;
-    public function reset():Void;
+    public function new(/*some arguments*/):Void;
+    public function reset(/*some arguments*/):Void;
 }
 
 class Pool<T:Poolable> {
@@ -34,13 +34,13 @@ class Pool<T:Poolable> {
     /**
      * Asks for a new object.
      */
-    public function new():T {
+    public function get(/*some arguments*/):T {
         index++;
         if (pool.length > index) {
-            pool[index].reset();
-            return pool[index];
+            pool[index].reset(/*some arguments*/);
         } else {
+            pool.push(new T(/*some arguments*/));
         }
+        return pool[index];
     }
 }
-
