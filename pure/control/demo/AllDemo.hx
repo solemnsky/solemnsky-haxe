@@ -91,7 +91,7 @@ class SelectionScreen implements Control<DemoSelect> {
 
 /**
  * Instead of implementing a Control<Noise> class, this constructs one with
- * control.Combinator.when(), fancy eh.
+ * control.Combinator.network(), fancy eh.
  */
 class AllDemo {
     public static function run():Control<Noise> {
