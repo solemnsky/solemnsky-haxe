@@ -36,6 +36,9 @@ class Manager extends Game {
     private var backbuffer:Image;
     private var g:Graphics;
 
+    /**
+     * resizing
+     */
     private var realHeight:Float;
     private var realWidth:Float;
 
