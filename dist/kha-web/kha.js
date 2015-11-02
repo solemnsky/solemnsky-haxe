@@ -2292,6 +2292,10 @@ haxe_io_Bytes.prototype = {
 		if(this.data == null) this.data = new DataView(this.b.buffer,this.b.byteOffset,this.b.byteLength);
 		this.data.setFloat64(pos,v,true);
 	}
+	,getUInt16: function(pos) {
+		if(this.data == null) this.data = new DataView(this.b.buffer,this.b.byteOffset,this.b.byteLength);
+		return this.data.getUint16(pos,true);
+	}
 	,getInt32: function(pos) {
 		if(this.data == null) this.data = new DataView(this.b.buffer,this.b.byteOffset,this.b.byteLength);
 		return this.data.getInt32(pos,true);
@@ -3687,7 +3691,6 @@ kha_Kravur.prototype = {
 };
 var kha_Loader = $hx_exports.kha.Loader = function() {
 	this.basePath = ".";
-	this.autoCleanupAssets = true;
 	this.blobs = new haxe_ds_StringMap();
 	this.images = new haxe_ds_StringMap();
 	this.sounds = new haxe_ds_StringMap();
@@ -3726,14 +3729,14 @@ kha_Loader.prototype = {
 		return this.blobs.get(name);
 	}
 	,getImage: function(name) {
-		if(!this.images.exists(name) && name != "") haxe_Log.trace("Could not find image " + name + ".",{ fileName : "Loader.hx", lineNumber : 65, className : "kha.Loader", methodName : "getImage"});
+		if(!this.images.exists(name) && name != "") haxe_Log.trace("Could not find image " + name + ".",{ fileName : "Loader.hx", lineNumber : 63, className : "kha.Loader", methodName : "getImage"});
 		return this.images.get(name);
 	}
 	,getMusic: function(name) {
 		return this.musics.get(name);
 	}
 	,getSound: function(name) {
-		if(name != "" && !this.sounds.exists(name)) haxe_Log.trace("Sound '" + name + "' not found",{ fileName : "Loader.hx", lineNumber : 76, className : "kha.Loader", methodName : "getSound"});
+		if(name != "" && !this.sounds.exists(name)) haxe_Log.trace("Sound '" + name + "' not found",{ fileName : "Loader.hx", lineNumber : 74, className : "kha.Loader", methodName : "getSound"});
 		return this.sounds.get(name);
 	}
 	,getVideo: function(name) {
@@ -3835,12 +3838,11 @@ kha_Loader.prototype = {
 			var blobname = $it4.next();
 			if(!kha_Loader.containsAsset(blobname,"blob",this.enqueued)) this.removeBlob(this.blobs,blobname);
 		}
-		if(!this.autoCleanupAssets) this.enqueued = [];
 	}
-	,loadFiles: function(call,autoCleanup) {
+	,loadFiles: function(call) {
 		var _g3 = this;
 		this.multiFileCallbacks.push(call);
-		if(autoCleanup) this.cleanup();
+		this.cleanup();
 		if(this.enqueued.length > 0) {
 			var _g1 = 0;
 			var _g = this.enqueued.length;
@@ -3952,7 +3954,7 @@ kha_Loader.prototype = {
 		this.enqueue({ name : "project.kha", files : [this.basePath == "."?"project.kha":this.basePath + "/project.kha"], type : "blob"});
 		this.loadFiles(function() {
 			_g.loadShaders(call);
-		},false);
+		});
 	}
 	,loadShaders: function(call) {
 		var _g2 = this;
@@ -3994,7 +3996,7 @@ kha_Loader.prototype = {
 	}
 	,loadRoom: function(name,call) {
 		this.loadRoomAssets(this.rooms.get(name));
-		this.loadFiles(call,this.autoCleanupAssets);
+		this.loadFiles(call);
 	}
 	,unloadedImage: function(name) {
 		this.removeImage(this.images,name);
@@ -4056,7 +4058,7 @@ kha_Loader.prototype = {
 	,checkComplete: function() {
 		if(this.loadingFilesLeft == 0) {
 			this.loadingFilesCount = 0;
-			if(this.autoCleanupAssets) this.enqueued = [];
+			this.enqueued = [];
 			var lastMultiFileCallbacks = this.multiFileCallbacks;
 			this.multiFileCallbacks = [];
 			var _g = 0;
@@ -4065,7 +4067,7 @@ kha_Loader.prototype = {
 				++_g;
 				callback();
 			}
-		} else if(this.loadingFilesLeft < 0) haxe_Log.trace("Weird loading error, please restart the internet.",{ fileName : "Loader.hx", lineNumber : 393, className : "kha.Loader", methodName : "checkComplete"});
+		} else if(this.loadingFilesLeft < 0) haxe_Log.trace("Weird loading error, please restart the internet.",{ fileName : "Loader.hx", lineNumber : 389, className : "kha.Loader", methodName : "checkComplete"});
 	}
 	,loadDummyFile: function() {
 		--this.loadingFilesLeft;
@@ -4838,7 +4840,7 @@ kha_GamepadStates.prototype = {
 var kha_Starter = function(backbufferFormat) {
 	haxe_Log.trace = js_Boot.__trace;
 	kha_Starter.keyboard = new kha_input_Keyboard();
-	kha_Starter.mouse = new kha_input_Mouse(this);
+	kha_Starter.mouse = new kha_input_Mouse();
 	kha_Starter.surface = new kha_input_Surface();
 	kha_Starter.gamepads = [];
 	kha_Starter.gamepadStates = [];
@@ -4870,7 +4872,6 @@ var kha_Starter = function(backbufferFormat) {
 	kha_Loader.init(new kha_js_Loader());
 	kha_Sys.initPerformanceTimer();
 	kha_Scheduler.init();
-	this.canvas = window.document.getElementById("khanvas");
 	kha_EnvironmentVariables.instance = new kha_js_EnvironmentVariables();
 };
 $hxClasses["kha.Starter"] = kha_Starter;
@@ -4909,6 +4910,38 @@ kha_Starter.checkGamepad = function(pad) {
 			}
 		}
 	}
+};
+kha_Starter.lockMouse = function() {
+	if(($_=kha_Sys.khanvas,$bind($_,$_.requestPointerLock))) kha_Sys.khanvas.requestPointerLock(); else if(canvas.mozRequestPointerLock) kha_Sys.khanvas.mozRequestPointerLock(); else if(canvas.webkitRequestPointerLock) kha_Sys.khanvas.webkitRequestPointerLock();
+};
+kha_Starter.unlockMouse = function() {
+	if(document.exitPointerLock) document.exitPointerLock(); else if(document.mozExitPointerLock) document.mozExitPointerLock(); else if(document.webkitExitPointerLock) document.webkitExitPointerLock();
+};
+kha_Starter.canLockMouse = function() {
+	return 'pointerLockElement' in document ||
+        'mozPointerLockElement' in document ||
+        'webkitPointerLockElement' in document;
+};
+kha_Starter.isMouseLocked = function() {
+	return document.pointerLockElement === kha_Sys.khanvas ||
+  			document.mozPointerLockElement === kha_Sys.khanvas ||
+  			document.webkitPointerLockElement === kha_Sys.khanvas;
+};
+kha_Starter.notifyOfMouseLockChange = function(func,error) {
+	window.document.addEventListener("pointerlockchange",func,false);
+	window.document.addEventListener("mozpointerlockchange",func,false);
+	window.document.addEventListener("webkitpointerlockchange",func,false);
+	window.document.addEventListener("pointerlockerror",error,false);
+	window.document.addEventListener("mozpointerlockerror",error,false);
+	window.document.addEventListener("webkitpointerlockerror",error,false);
+};
+kha_Starter.removeFromMouseLockChange = function(func,error) {
+	window.document.removeEventListener("pointerlockchange",func,false);
+	window.document.removeEventListener("mozpointerlockchange",func,false);
+	window.document.removeEventListener("webkitpointerlockchange",func,false);
+	window.document.removeEventListener("pointerlockerror",error,false);
+	window.document.removeEventListener("mozpointerlockerror",error,false);
+	window.document.removeEventListener("webkitpointerlockerror",error,false);
 };
 kha_Starter.unload = function(_) {
 	kha_Game.the.onPause();
@@ -5256,13 +5289,13 @@ kha_Starter.prototype = {
 		kha_Loader.the.loadProject($bind(this,this.loadFinished));
 	}
 	,loadFinished: function() {
-		var _g = this;
 		kha_Loader.the.initProject();
 		this.gameToStart.width = kha_Loader.the.width;
 		this.gameToStart.height = kha_Loader.the.height;
+		var canvas = window.document.getElementById("khanvas");
 		var gl = false;
 		try {
-			kha_Sys.gl = this.canvas.getContext("experimental-webgl",{ alpha : false, antialias : kha_Loader.the.antiAliasingSamples > 1});
+			kha_Sys.gl = canvas.getContext("experimental-webgl",{ alpha : false, antialias : kha_Loader.the.antiAliasingSamples > 1});
 			if(kha_Sys.gl != null) {
 				kha_Sys.gl.pixelStorei(kha_Sys.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
 				kha_Sys.gl.getExtension("OES_texture_float");
@@ -5270,11 +5303,11 @@ kha_Starter.prototype = {
 			}
 		} catch( e ) {
 			if (e instanceof js__$Boot_HaxeError) e = e.val;
-			haxe_Log.trace(e,{ fileName : "Starter.hx", lineNumber : 144, className : "kha.Starter", methodName : "loadFinished"});
+			haxe_Log.trace(e,{ fileName : "Starter.hx", lineNumber : 141, className : "kha.Starter", methodName : "loadFinished"});
 		}
-		kha_Sys.init(this.canvas);
-		var widthTransform = this.canvas.width / kha_Loader.the.width;
-		var heightTransform = this.canvas.height / kha_Loader.the.height;
+		kha_Sys.init(canvas);
+		var widthTransform = canvas.width / kha_Loader.the.width;
+		var heightTransform = canvas.height / kha_Loader.the.height;
 		var transform = Math.min(widthTransform,heightTransform);
 		if(gl) {
 			var g4;
@@ -5282,7 +5315,7 @@ kha_Starter.prototype = {
 			kha_Starter.frame = new kha_Framebuffer(null,null,g4);
 			kha_Starter.frame.init(new kha_graphics2_Graphics1(kha_Starter.frame),new kha_js_graphics4_Graphics2(kha_Starter.frame),g4);
 		} else {
-			var g2 = new kha_js_CanvasGraphics(this.canvas.getContext("2d"),Math.round(kha_Loader.the.width * transform),Math.round(kha_Loader.the.height * transform));
+			var g2 = new kha_js_CanvasGraphics(canvas.getContext("2d"),Math.round(kha_Loader.the.width * transform),Math.round(kha_Loader.the.height * transform));
 			kha_Starter.frame = new kha_Framebuffer(null,g2,null);
 			kha_Starter.frame.init(new kha_graphics2_Graphics1(kha_Starter.frame),g2,null);
 		}
@@ -5308,8 +5341,8 @@ kha_Starter.prototype = {
 			var sysGamepads = (navigator.getGamepads && navigator.getGamepads()) || (navigator.webkitGetGamepads && navigator.webkitGetGamepads());
 			if(sysGamepads != null) {
 				var _g1 = 0;
-				var _g2 = sysGamepads.length;
-				while(_g1 < _g2) {
+				var _g = sysGamepads.length;
+				while(_g1 < _g) {
 					var i = _g1++;
 					var pad = sysGamepads[i];
 					if(pad != null) {
@@ -5324,12 +5357,12 @@ kha_Starter.prototype = {
 				}
 			}
 			kha_Scheduler.executeFrame();
-			if(_g.canvas.getContext) {
-				var displayWidth = _g.canvas.clientWidth;
-				var displayHeight = _g.canvas.clientHeight;
-				if(_g.canvas.width != displayWidth || _g.canvas.height != displayHeight) {
-					_g.canvas.width = displayWidth;
-					_g.canvas.height = displayHeight;
+			if(canvas.getContext) {
+				var displayWidth = canvas.clientWidth;
+				var displayHeight = canvas.clientHeight;
+				if(canvas.width != displayWidth || canvas.height != displayHeight) {
+					canvas.width = displayWidth;
+					canvas.height = displayHeight;
 				}
 				kha_Configuration.theScreen.render(kha_Starter.frame);
 				if(kha_Sys.gl != null) {
@@ -5342,54 +5375,22 @@ kha_Starter.prototype = {
 		};
 		animate = animate1;
 		if(requestAnimationFrame == null) $window.setTimeout(animate,16.6666666666666679); else requestAnimationFrame(animate);
-		if(this.canvas.getAttribute("tabindex") == null) this.canvas.setAttribute("tabindex","0");
-		this.canvas.focus();
-		this.canvas.oncontextmenu = function(event) {
+		if(canvas.getAttribute("tabindex") == null) canvas.setAttribute("tabindex","0");
+		canvas.focus();
+		canvas.oncontextmenu = function(event) {
 			event.stopPropagation();
 			event.preventDefault();
 		};
-		this.canvas.onmousedown = kha_Starter.mouseDown;
-		this.canvas.onmousemove = kha_Starter.mouseMove;
-		this.canvas.onkeydown = kha_Starter.keyDown;
-		this.canvas.onkeyup = kha_Starter.keyUp;
-		this.canvas.addEventListener("touchstart",kha_Starter.touchDown,false);
-		this.canvas.addEventListener("touchend",kha_Starter.touchUp,false);
-		this.canvas.addEventListener("touchmove",kha_Starter.touchMove,false);
+		canvas.onmousedown = kha_Starter.mouseDown;
+		canvas.onmousemove = kha_Starter.mouseMove;
+		canvas.onkeydown = kha_Starter.keyDown;
+		canvas.onkeyup = kha_Starter.keyUp;
+		canvas.addEventListener("touchstart",kha_Starter.touchDown,false);
+		canvas.addEventListener("touchend",kha_Starter.touchUp,false);
+		canvas.addEventListener("touchmove",kha_Starter.touchMove,false);
 		window.addEventListener("unload",kha_Starter.unload);
 		kha_Configuration.setScreen(this.gameToStart);
 		this.gameToStart.loadFinished();
-	}
-	,lockMouse: function() {
-		if(this.canvas.requestPointerLock) this.canvas.requestPointerLock(); else if(this.canvas.mozRequestPointerLock) this.canvas.mozRequestPointerLock(); else if(this.canvas.webkitRequestPointerLock) this.canvas.webkitRequestPointerLock();
-	}
-	,unlockMouse: function() {
-		if(document.exitPointerLock) document.exitPointerLock(); else if(document.mozExitPointerLock) document.mozExitPointerLock(); else if(document.webkitExitPointerLock) document.webkitExitPointerLock();
-	}
-	,canLockMouse: function() {
-		return 'pointerLockElement' in document ||
-        'mozPointerLockElement' in document ||
-        'webkitPointerLockElement' in document;
-	}
-	,isMouseLocked: function() {
-		return document.pointerLockElement === this.canvas ||
-  			document.mozPointerLockElement === this.canvas ||
-  			document.webkitPointerLockElement === this.canvas;
-	}
-	,notifyOfMouseLockChange: function(func,error) {
-		window.document.addEventListener("pointerlockchange",func,false);
-		window.document.addEventListener("mozpointerlockchange",func,false);
-		window.document.addEventListener("webkitpointerlockchange",func,false);
-		window.document.addEventListener("pointerlockerror",error,false);
-		window.document.addEventListener("mozpointerlockerror",error,false);
-		window.document.addEventListener("webkitpointerlockerror",error,false);
-	}
-	,removeFromMouseLockChange: function(func,error) {
-		window.document.removeEventListener("pointerlockchange",func,false);
-		window.document.removeEventListener("mozpointerlockchange",func,false);
-		window.document.removeEventListener("webkitpointerlockchange",func,false);
-		window.document.removeEventListener("pointerlockerror",error,false);
-		window.document.removeEventListener("mozpointerlockerror",error,false);
-		window.document.removeEventListener("webkitpointerlockerror",error,false);
 	}
 	,__class__: kha_Starter
 };
@@ -5470,6 +5471,48 @@ kha_Sys.systemId = function() {
 };
 kha_Sys.requestShutdown = function() {
 	window.close();
+};
+kha_Sys.canSwitchFullscreen = function() {
+	return 'fullscreenElement ' in document ||
+        'mozFullScreenElement' in document ||
+        'webkitFullscreenElement' in document ||
+        'msFullscreenElement' in document
+        ;
+};
+kha_Sys.isFullscreen = function() {
+	return document.fullscreenElement === this.khanvas ||
+  			document.mozFullScreenElement === this.khanvas ||
+  			document.webkitFullscreenElement === this.khanvas ||
+  			document.msFullscreenElement === this.khanvas ;
+};
+kha_Sys.requestFullscreen = function() {
+	if(($_=kha_Sys.khanvas,$bind($_,$_.requestFullscreen))) kha_Sys.khanvas.requestFullscreen(); else if(kha_Sys.khanvas.msRequestFullscreen) kha_Sys.khanvas.msRequestFullscreen(); else if(kha_Sys.khanvas.mozRequestFullScreen) kha_Sys.khanvas.mozRequestFullScreen(); else if(kha_Sys.khanvas.webkitRequestFullscreen) kha_Sys.khanvas.webkitRequestFullscreen();
+};
+kha_Sys.exitFullscreen = function() {
+	if(document.exitFullscreen) document.exitFullscreen(); else if(document.msExitFullscreen) document.msExitFullscreen(); else if(document.mozCancelFullScreen) document.mozCancelFullScreen(); else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+};
+kha_Sys.prototype = {
+	notifyOfFullscreenChange: function(func,error) {
+		window.document.addEventListener("fullscreenchange",func,false);
+		window.document.addEventListener("mozfullscreenchange",func,false);
+		window.document.addEventListener("webkitfullscreenchange",func,false);
+		window.document.addEventListener("MSFullscreenChange",func,false);
+		window.document.addEventListener("fullscreenerror",error,false);
+		window.document.addEventListener("mozfullscreenerror",error,false);
+		window.document.addEventListener("webkitfullscreenerror",error,false);
+		window.document.addEventListener("MSFullscreenError",error,false);
+	}
+	,removeFromFullscreenChange: function(func,error) {
+		window.document.removeEventListener("fullscreenchange",func,false);
+		window.document.removeEventListener("mozfullscreenchange",func,false);
+		window.document.removeEventListener("webkitfullscreenchange",func,false);
+		window.document.removeEventListener("MSFullscreenChange",func,false);
+		window.document.removeEventListener("fullscreenerror",error,false);
+		window.document.removeEventListener("mozfullscreenerror",error,false);
+		window.document.removeEventListener("webkitfullscreenerror",error,false);
+		window.document.removeEventListener("MSFullscreenError",error,false);
+	}
+	,__class__: kha_Sys
 };
 var kha_Video = function() {
 };
@@ -11007,27 +11050,34 @@ kha_input_Gamepad.prototype = {
 	}
 	,__class__: kha_input_Gamepad
 };
-var kha_network_Controller = function() { };
+var kha_network_Controller = function() {
+	this.__id = kha_network_ControllerBuilder.nextId++;
+};
 $hxClasses["kha.network.Controller"] = kha_network_Controller;
 kha_network_Controller.__name__ = ["kha","network","Controller"];
 kha_network_Controller.prototype = {
-	__class__: kha_network_Controller
+	_id: function() {
+		return this.__id;
+	}
+	,_receive: function(offset,bytes) {
+	}
+	,__class__: kha_network_Controller
 };
 var kha_input_Keyboard = $hx_exports.kha.input.Keyboard = function() {
-	this.__id = 0;
+	kha_network_Controller.call(this);
 	this.downListeners = [];
 	this.upListeners = [];
 	kha_input_Keyboard.instance = this;
 };
 $hxClasses["kha.input.Keyboard"] = kha_input_Keyboard;
 kha_input_Keyboard.__name__ = ["kha","input","Keyboard"];
-kha_input_Keyboard.__interfaces__ = [kha_network_Controller];
 kha_input_Keyboard.get = function(num) {
 	if(num == null) num = 0;
 	if(num != 0) return null;
 	return kha_input_Keyboard.instance;
 };
-kha_input_Keyboard.prototype = {
+kha_input_Keyboard.__super__ = kha_network_Controller;
+kha_input_Keyboard.prototype = $extend(kha_network_Controller.prototype,{
 	notify: function(downListener,upListener) {
 		if(downListener != null) this.downListeners.push(downListener);
 		if(upListener != null) this.upListeners.push(upListener);
@@ -11038,13 +11088,16 @@ kha_input_Keyboard.prototype = {
 	}
 	,sendDownEvent: function(key,$char) {
 		if(kha_network_Session.the() != null) {
-			var bytes = haxe_io_Bytes.alloc(19);
+			var bytes = haxe_io_Bytes.alloc(28);
 			bytes.b[0] = 2;
 			bytes.setInt32(1,this._id());
 			bytes.setDouble(5,kha_Scheduler.realTime());
-			bytes.setInt32(13,0);
-			bytes.b[17] = key[1] & 255;
-			bytes.set(18,HxOverrides.cca($char,0));
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,0);
+			bytes.b[26] = key[1] & 255;
+			bytes.set(27,HxOverrides.cca($char,0));
 			kha_network_Session.the().network.send(bytes,false);
 		}
 		var _g = 0;
@@ -11057,13 +11110,16 @@ kha_input_Keyboard.prototype = {
 	}
 	,sendUpEvent: function(key,$char) {
 		if(kha_network_Session.the() != null) {
-			var bytes = haxe_io_Bytes.alloc(19);
+			var bytes = haxe_io_Bytes.alloc(28);
 			bytes.b[0] = 2;
 			bytes.setInt32(1,this._id());
 			bytes.setDouble(5,kha_Scheduler.realTime());
-			bytes.setInt32(13,1);
-			bytes.b[17] = key[1] & 255;
-			bytes.set(18,HxOverrides.cca($char,0));
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,1);
+			bytes.b[26] = key[1] & 255;
+			bytes.set(27,HxOverrides.cca($char,0));
 			kha_network_Session.the().network.send(bytes,false);
 		}
 		var _g = 0;
@@ -11089,18 +11145,15 @@ kha_input_Keyboard.prototype = {
 			return;
 		}
 	}
-	,_id: function() {
-		return this.__id;
-	}
 	,__class__: kha_input_Keyboard
-};
-var kha_input_Mouse = $hx_exports.kha.input.Mouse = function(starter) {
+});
+var kha_input_Mouse = $hx_exports.kha.input.Mouse = function() {
+	kha_network_Controller.call(this);
 	this.downListeners = [];
 	this.upListeners = [];
 	this.moveListeners = [];
 	this.wheelListeners = [];
 	kha_input_Mouse.instance = this;
-	this.starter = starter;
 };
 $hxClasses["kha.input.Mouse"] = kha_input_Mouse;
 kha_input_Mouse.__name__ = ["kha","input","Mouse"];
@@ -11109,7 +11162,8 @@ kha_input_Mouse.get = function(num) {
 	if(num != 0) return null;
 	return kha_input_Mouse.instance;
 };
-kha_input_Mouse.prototype = {
+kha_input_Mouse.__super__ = kha_network_Controller;
+kha_input_Mouse.prototype = $extend(kha_network_Controller.prototype,{
 	notify: function(downListener,upListener,moveListener,wheelListener) {
 		if(downListener != null) this.downListeners.push(downListener);
 		if(upListener != null) this.upListeners.push(upListener);
@@ -11123,24 +11177,38 @@ kha_input_Mouse.prototype = {
 		if(wheelListener != null) HxOverrides.remove(this.wheelListeners,wheelListener);
 	}
 	,lock: function() {
-		this.starter.lockMouse();
+		kha_Starter.lockMouse();
 	}
 	,unlock: function() {
-		this.starter.unlockMouse();
+		kha_Starter.unlockMouse();
 	}
 	,canLock: function() {
-		return this.starter.canLockMouse();
+		return kha_Starter.canLockMouse();
 	}
 	,isLocked: function() {
-		return this.starter.isMouseLocked();
+		return kha_Starter.isMouseLocked();
 	}
 	,notifyOfLockChange: function(func,error) {
-		this.starter.notifyOfMouseLockChange(func,error);
+		kha_Starter.notifyOfMouseLockChange(func,error);
 	}
 	,removeFromLockChange: function(func,error) {
-		this.starter.removeFromMouseLockChange(func,error);
+		kha_Starter.removeFromMouseLockChange(func,error);
 	}
 	,sendDownEvent: function(button,x,y) {
+		if(kha_network_Session.the() != null) {
+			var bytes = haxe_io_Bytes.alloc(38);
+			bytes.b[0] = 2;
+			bytes.setInt32(1,this._id());
+			bytes.setDouble(5,kha_Scheduler.realTime());
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,0);
+			bytes.setInt32(26,button);
+			bytes.setInt32(30,x);
+			bytes.setInt32(34,y);
+			kha_network_Session.the().network.send(bytes,false);
+		}
 		var _g = 0;
 		var _g1 = this.downListeners;
 		while(_g < _g1.length) {
@@ -11150,6 +11218,20 @@ kha_input_Mouse.prototype = {
 		}
 	}
 	,sendUpEvent: function(button,x,y) {
+		if(kha_network_Session.the() != null) {
+			var bytes = haxe_io_Bytes.alloc(38);
+			bytes.b[0] = 2;
+			bytes.setInt32(1,this._id());
+			bytes.setDouble(5,kha_Scheduler.realTime());
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,1);
+			bytes.setInt32(26,button);
+			bytes.setInt32(30,x);
+			bytes.setInt32(34,y);
+			kha_network_Session.the().network.send(bytes,false);
+		}
 		var _g = 0;
 		var _g1 = this.upListeners;
 		while(_g < _g1.length) {
@@ -11159,6 +11241,21 @@ kha_input_Mouse.prototype = {
 		}
 	}
 	,sendMoveEvent: function(x,y,movementX,movementY) {
+		if(kha_network_Session.the() != null) {
+			var bytes = haxe_io_Bytes.alloc(42);
+			bytes.b[0] = 2;
+			bytes.setInt32(1,this._id());
+			bytes.setDouble(5,kha_Scheduler.realTime());
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,2);
+			bytes.setInt32(26,x);
+			bytes.setInt32(30,y);
+			bytes.setInt32(34,movementX);
+			bytes.setInt32(38,movementY);
+			kha_network_Session.the().network.send(bytes,false);
+		}
 		var _g = 0;
 		var _g1 = this.moveListeners;
 		while(_g < _g1.length) {
@@ -11168,6 +11265,18 @@ kha_input_Mouse.prototype = {
 		}
 	}
 	,sendWheelEvent: function(delta) {
+		if(kha_network_Session.the() != null) {
+			var bytes = haxe_io_Bytes.alloc(30);
+			bytes.b[0] = 2;
+			bytes.setInt32(1,this._id());
+			bytes.setDouble(5,kha_Scheduler.realTime());
+			bytes.setInt32(13,kha_Sys.get_pixelWidth());
+			bytes.setInt32(17,kha_Sys.get_pixelHeight());
+			bytes.b[21] = kha_Sys.screenRotation[1] & 255;
+			bytes.setInt32(22,3);
+			bytes.setInt32(26,delta);
+			kha_network_Session.the().network.send(bytes,false);
+		}
 		var _g = 0;
 		var _g1 = this.wheelListeners;
 		while(_g < _g1.length) {
@@ -11176,8 +11285,30 @@ kha_input_Mouse.prototype = {
 			listener(delta);
 		}
 	}
+	,_receive: function(offset,bytes) {
+		var funcindex = bytes.getInt32(offset);
+		if(funcindex == 0) {
+			var input0 = bytes.getInt32(offset + 4);
+			var input1 = bytes.getInt32(offset + 8);
+			var input2 = bytes.getInt32(offset + 12);
+			this.sendDownEvent(input0,input1,input2);
+			return;
+		}
+		if(funcindex == 1) {
+			var input01 = bytes.getInt32(offset + 4);
+			var input11 = bytes.getInt32(offset + 8);
+			var input21 = bytes.getInt32(offset + 12);
+			this.sendUpEvent(input01,input11,input21);
+			return;
+		}
+		if(funcindex == 3) {
+			var input02 = bytes.getInt32(offset + 4);
+			this.sendWheelEvent(input02);
+			return;
+		}
+	}
 	,__class__: kha_input_Mouse
-};
+});
 var kha_input_Surface = $hx_exports.kha.input.Surface = function() {
 	this.touchStartListeners = [];
 	this.touchEndListeners = [];
@@ -12593,6 +12724,9 @@ kha_network_Client.__name__ = ["kha","network","Client"];
 kha_network_Client.prototype = {
 	__class__: kha_network_Client
 };
+var kha_network_ControllerBuilder = function() { };
+$hxClasses["kha.network.ControllerBuilder"] = kha_network_ControllerBuilder;
+kha_network_ControllerBuilder.__name__ = ["kha","network","ControllerBuilder"];
 var kha_network_Entity = function() { };
 $hxClasses["kha.network.Entity"] = kha_network_Entity;
 kha_network_Entity.__name__ = ["kha","network","Entity"];
@@ -12666,14 +12800,11 @@ kha_network_Session.prototype = {
 		this.entities.h[key] = entity;
 	}
 	,addController: function(controller) {
-		haxe_Log.trace("Adding controller id " + controller._id(),{ fileName : "Session.hx", lineNumber : 69, className : "kha.network.Session", methodName : "addController"});
+		haxe_Log.trace("Adding controller id " + controller._id(),{ fileName : "Session.hx", lineNumber : 71, className : "kha.network.Session", methodName : "addController"});
 		var key = controller._id();
 		this.controllers.h[key] = controller;
 	}
-	,send: function() {
-		return null;
-	}
-	,receive: function(bytes) {
+	,receive: function(bytes,client) {
 		var _g = bytes.b[0];
 		switch(_g) {
 		case 0:
@@ -12693,12 +12824,77 @@ kha_network_Session.prototype = {
 			}
 			kha_Scheduler.back(time);
 			break;
+		case 3:
+			var args = [];
+			var index1 = 1;
+			var classnamelength = bytes.getUInt16(index1);
+			index1 += 2;
+			var classname = "";
+			var _g1 = 0;
+			while(_g1 < classnamelength) {
+				var i = _g1++;
+				classname += String.fromCharCode(bytes.b[index1]);
+				++index1;
+			}
+			var methodnamelength = bytes.getUInt16(index1);
+			index1 += 2;
+			var methodname = "";
+			var _g11 = 0;
+			while(_g11 < methodnamelength) {
+				var i1 = _g11++;
+				methodname += String.fromCharCode(bytes.b[index1]);
+				++index1;
+			}
+			while(index1 < bytes.length) {
+				var type = bytes.b[index1];
+				++index1;
+				switch(type) {
+				case 66:
+					var value = bytes.b[index1] == 1;
+					++index1;
+					haxe_Log.trace("Bool: " + (value == null?"null":"" + value),{ fileName : "Session.hx", lineNumber : 182, className : "kha.network.Session", methodName : "receive"});
+					args.push(value);
+					break;
+				case 70:
+					var value1 = bytes.getDouble(index1);
+					index1 += 8;
+					haxe_Log.trace("Float: " + value1,{ fileName : "Session.hx", lineNumber : 187, className : "kha.network.Session", methodName : "receive"});
+					args.push(value1);
+					break;
+				case 73:
+					var value2 = bytes.getInt32(index1);
+					index1 += 4;
+					haxe_Log.trace("Int: " + value2,{ fileName : "Session.hx", lineNumber : 192, className : "kha.network.Session", methodName : "receive"});
+					args.push(value2);
+					break;
+				case 83:
+					var length = bytes.getUInt16(index1);
+					index1 += 2;
+					var str = "";
+					var _g12 = 0;
+					while(_g12 < length) {
+						var i2 = _g12++;
+						str += String.fromCharCode(bytes.b[index1]);
+						++index1;
+					}
+					haxe_Log.trace("String: " + str,{ fileName : "Session.hx", lineNumber : 202, className : "kha.network.Session", methodName : "receive"});
+					args.push(str);
+					break;
+				default:
+					haxe_Log.trace("Unknown argument type.",{ fileName : "Session.hx", lineNumber : 205, className : "kha.network.Session", methodName : "receive"});
+				}
+			}
+			Reflect.callMethod(null,Reflect.field(Type.resolveClass(classname),methodname + "_remotely"),args);
+			break;
 		}
 	}
 	,waitForStart: function(callback) {
+		var _g = this;
 		this.startCallback = callback;
 		this.network = new kha_network_Network("localhost",6789);
-		this.network.listen($bind(this,this.receive));
+		this.network.listen(function(bytes) {
+			_g.receive(bytes);
+		});
 	}
 	,update: function() {
 	}
@@ -69206,6 +69402,7 @@ kha_graphics4_ColoredShaderPainter.triangleBufferSize = 100;
 kha_graphics4_TextShaderPainter.bufferSize = 100;
 kha_input_Gamepad.instances = [];
 kha_input_Keyboard.__meta__ = { fields : { sendDownEvent : { input : null}, sendUpEvent : { input : null}}};
+kha_input_Mouse.__meta__ = { fields : { sendDownEvent : { input : null}, sendUpEvent : { input : null}, sendMoveEvent : { input : null}, sendWheelEvent : { input : null}}};
 kha_js_Mouse.SystemCursor = "default";
 kha_js_Music.loading = new List();
 kha_js_Sound.loading = new List();
@@ -69216,9 +69413,11 @@ kha_math_Matrix3.width = 3;
 kha_math_Matrix3.height = 3;
 kha_math_Matrix4.width = 4;
 kha_math_Matrix4.height = 4;
+kha_network_ControllerBuilder.nextId = 0;
 kha_network_Session.START = 0;
 kha_network_Session.ENTITY_UPDATES = 1;
 kha_network_Session.CONTROLLER_UPDATES = 2;
+kha_network_Session.REMOTE_CALL = 3;
 nape_Config.epsilon = 1e-8;
 nape_Config.fluidAngularDragFriction = 2.5;
 nape_Config.fluidAngularDrag = 100;

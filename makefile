@@ -1,4 +1,4 @@
-all: flambe kha-web
+all: flambe kha-web kha-native
 
 clean:
 	rm -rf dist/*
@@ -20,4 +20,13 @@ kha-web:
 
 	rm -rf dist/kha-web/ ; mkdir -p dist/kha-web/
 	cp -r export/kha-web/build/html5/* ./dist/kha-web/
+
+kha-native:
+	### KHA-NATIVE ###
+	cd export/kha-native && \
+	node Kha/make 	
+
+	rm -rf dist/kha-native/ ; mkdir -p dist/kha-native/
+	cp -r export/kha-native/build/linux-build/* ./dist/kha-native/
+
 
