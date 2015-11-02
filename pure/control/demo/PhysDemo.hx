@@ -107,16 +107,19 @@ class FloatingBox {
 /* main export
 /****************************************************************************/
 
-class PhysDemo extends EmptyControl implements Control<DemoSelect> {
+class PhysDemo implements Control<DemoSelect> {
     /**
      * game state
      */
     private static inline var maxCoolDown:Float = 100;
+    private static inline var initSpeed:Float = 20;
     private var cooldown: Map<Direction,Float>;
     private var movement: Map<Direction,Bool>;
     private var projectiles: Array<Projectile>;
     private var boxes:Array<FloatingBox>;
     private var ball:Body;
+
+    private var exit:Bool = false;
 
     /**
      * physics
@@ -127,9 +130,9 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
     /* constructor
     /*********************************************************************/
 
-    public function new() {
-        super();
+    public function init(_) {}
 
+    public function new() {
         /*********************************************************************/
         /* nape space
         /*********************************************************************/
@@ -202,7 +205,7 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
         }
     }
 
-    override function tick(delta:Float):Void {
+    public function tick(delta:Float):Void {
         space.step(delta / 1000);
 
         for (d in movement.keys()) {
@@ -220,7 +223,7 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
                     var pos = vecFromDir(d)
                         .mult(-50)
                         .add(Util.vectorFromNape(ball.position));
-                    var vel = vecFromDir(d).mult(10);
+                    var vel = vecFromDir(d).mult(initSpeed);
 
                     projectiles.push(new Projectile(
                         space, pos, vel));
@@ -245,6 +248,10 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
     /*************************************************************************/
     /* render
     /*************************************************************************/
+
+    public function profiling(d) {
+        trace(d.print());
+    }
 
     private static inline function rotatedBox(
         pos:Vector
@@ -281,7 +288,7 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
 
     }
 
-    override function render(delta:Float):Scene {
+    public function render(delta:Float):Scene {
         var scene = new Scene();
 
         scene.prims = [
@@ -330,15 +337,22 @@ class PhysDemo extends EmptyControl implements Control<DemoSelect> {
         case (CharKey(c)): {
             if (c == 'r') 
                 for (b in boxes) b.reset();
+            if (c == 'q')
+                exit = true;
         }
         default: {}
         }
     }
 
-    override function handle(e:Event):Void {
+    public function handle(e:Event):Void {
         switch (e) {
         case KbEvent(key, state): handleKb(key, state);
         default: {}
         }
+    }
+
+    public function conclude():Null<DemoSelect> {
+        if (exit) return HomeSelect;
+        return null;
     }
 }

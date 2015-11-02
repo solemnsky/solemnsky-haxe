@@ -5,6 +5,7 @@ import util.Transform;
 import control.Control;
 import control.Scene;
 import control.Combinator;
+import control.Key;
 
 /**
  * control.demo.AllDemo:
@@ -19,10 +20,11 @@ class SelectionScreen implements Control<DemoSelect> {
     private var selection:Null<DemoSelect> = null;
 
     public function new() {
-        super();
     }
 
     public function init(_) {}
+
+    public function tick(_) {}
 
     /*************************************************************************/
     /* rendering
@@ -37,7 +39,7 @@ class SelectionScreen implements Control<DemoSelect> {
             , "compiled through one of our export media."
             , "It demonstrates several features that should be achieved in a "
             , " technically sound export media. "
-            , "Press 1, 2, or 3 on your keyboard to continue."
+            , "Press '1', '2', or '3' to select a demo from here and 'q' to exit a demo."
         ];
 
         scene.prims = [
@@ -74,9 +76,9 @@ class SelectionScreen implements Control<DemoSelect> {
     public function handle(e:Event):Void {
         switch(e) {
         case KbEvent(key, _): {
-            if (key == CharKey('1')) selection = GraphicsSelect;
-            if (key == CharKey('2')) selection = InputSelect;
-            if (key == CharKey('3')) selection = PhysSelect;
+            if (Type.enumEq(key, CharKey('1'))) selection = GraphicsSelect;
+            if (Type.enumEq(key, CharKey('2'))) selection = InputSelect;
+            if (Type.enumEq(key, CharKey('3'))) selection = PhysSelect;
         }
         default: {}
         } 
@@ -99,12 +101,15 @@ class AllDemo {
     }
 
     private static function moveThrough(r:DemoSelect):Control<DemoSelect> {
-        if (r == PhysSelect) {
-            var demo:Control<DemoSelect> = new SelectionScreen();
-            return demo;
-        } else {
-            var screen:Control<DemoSelect> = new SelectionScreen();
-            return screen;
+        var ctrl:Control<DemoSelect>;
+
+        switch (r) {
+        case HomeSelect:     ctrl = new SelectionScreen();
+        case GraphicsSelect: ctrl = new GraphicsDemo();
+        case InputSelect:    ctrl = new InputDemo();
+        case PhysSelect:     ctrl = new PhysDemo();
         }
+
+        return ctrl;
     }
 }

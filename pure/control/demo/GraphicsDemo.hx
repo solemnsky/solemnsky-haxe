@@ -3,8 +3,8 @@ package control.demo;
 import control.Control;
 import control.Event;
 import control.Scene;
-import math.Vector;
-import math.Transform;
+import util.Vector;
+import util.Transform;
 
 /**
  * solemnsky.control.demo.GraphicsDemo:
@@ -16,6 +16,7 @@ class GraphicsDemo implements Control<DemoSelect> {
     private var time:Float = 0;
     private var x:Float = 0;
     private var y:Float = 0;
+    private var exit:Bool = false;
 
     public function new():Void {}
 
@@ -110,6 +111,10 @@ class GraphicsDemo implements Control<DemoSelect> {
             case MouseEvent(x, y): {
                 this.x = x; this.y = y;
             }
+            case KbEvent(key, state): {
+                if (Type.enumEq(key, CharKey('q')))
+                    exit = true;
+            }
             default: { }
         }
     }
@@ -119,6 +124,7 @@ class GraphicsDemo implements Control<DemoSelect> {
     }
 
     public function conclude():Null<DemoSelect> {
+        if (exit) return HomeSelect;
         return null;
     }
 }

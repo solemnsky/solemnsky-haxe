@@ -673,6 +673,24 @@ Type["typeof"] = function(v) {
 		return ValueType.TUnknown;
 	}
 };
+Type.enumEq = function(a,b) {
+	if(a == b) return true;
+	try {
+		if(a[0] != b[0]) return false;
+		var _g1 = 2;
+		var _g = a.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(!Type.enumEq(a[i],b[i])) return false;
+		}
+		var e = a.__enum__;
+		if(e != b.__enum__ || e == null) return false;
+	} catch( e1 ) {
+		if (e1 instanceof js__$Boot_HaxeError) e1 = e1.val;
+		return false;
+	}
+	return true;
+};
 var _$UInt_UInt_$Impl_$ = {};
 $hxClasses["_UInt.UInt_Impl_"] = _$UInt_UInt_$Impl_$;
 _$UInt_UInt_$Impl_$.__name__ = ["_UInt","UInt_Impl_"];
@@ -847,8 +865,7 @@ control_Scene.prototype = {
 	__class__: control_Scene
 };
 var control_demo_SelectionScreen = function() {
-	this.ended = false;
-	control_EmptyControl.call(this);
+	this.selection = null;
 };
 $hxClasses["control.demo.SelectionScreen"] = control_demo_SelectionScreen;
 control_demo_SelectionScreen.__name__ = ["control","demo","SelectionScreen"];
@@ -860,39 +877,40 @@ control_demo_SelectionScreen.renderText = function() {
 	var text_2 = "compiled through one of our export media.";
 	var text_3 = "It demonstrates several features that should be achieved in a ";
 	var text_4 = " technically sound export media. ";
-	var text_5 = "Press 1, 2, or 3 on your keyboard to continue.";
+	var text_5 = "Press '1', '2', or '3' to select a demo from here and 'q' to exit a demo.";
 	scene.prims = [control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new util_Vector(266.666666666666686,0),control_TextAlign.CenterText,text_0),control_DrawPrim.DrawText(new util_Vector(0,25),control_TextAlign.LeftText,text_1),control_DrawPrim.DrawText(new util_Vector(0,40),control_TextAlign.LeftText,text_2),control_DrawPrim.DrawText(new util_Vector(0,65),control_TextAlign.LeftText,text_3),control_DrawPrim.DrawText(new util_Vector(0,80),control_TextAlign.LeftText,text_4),control_DrawPrim.DrawText(new util_Vector(266.666666666666686,105),control_TextAlign.CenterText,text_5)];
 	scene.trans = new util_Transform(1,0,0,0,1,5,0,0,1).multmat(new util_Transform(3,0,0,0,3,0,0,0,1));
 	return scene;
 };
-control_demo_SelectionScreen.__super__ = control_EmptyControl;
-control_demo_SelectionScreen.prototype = $extend(control_EmptyControl.prototype,{
-	render: function(delta) {
+control_demo_SelectionScreen.prototype = {
+	init: function(_) {
+	}
+	,tick: function(_) {
+	}
+	,render: function(delta) {
 		var scene = new control_Scene();
 		scene.children.push(control_demo_SelectionScreen.renderText());
 		return scene;
 	}
 	,profiling: function(data) {
-		haxe_Log.trace(data.print(),{ fileName : "AllDemo.hx", lineNumber : 65, className : "control.demo.SelectionScreen", methodName : "profiling"});
+		haxe_Log.trace(data.print(),{ fileName : "AllDemo.hx", lineNumber : 69, className : "control.demo.SelectionScreen", methodName : "profiling"});
 	}
 	,handle: function(e) {
 		switch(e[1]) {
 		case 1:
-			this.ended = true;
-			haxe_Log.trace("BEEP",{ fileName : "AllDemo.hx", lineNumber : 76, className : "control.demo.SelectionScreen", methodName : "handle"});
+			var key = e[2];
+			if(Type.enumEq(key,control_Key.CharKey("1"))) this.selection = control_demo_DemoSelect.GraphicsSelect;
+			if(Type.enumEq(key,control_Key.CharKey("2"))) this.selection = control_demo_DemoSelect.InputSelect;
+			if(Type.enumEq(key,control_Key.CharKey("3"))) this.selection = control_demo_DemoSelect.PhysSelect;
 			break;
 		default:
 		}
 	}
 	,conclude: function() {
-		if(this.ended) {
-			haxe_Log.trace("beep",{ fileName : "AllDemo.hx", lineNumber : 84, className : "control.demo.SelectionScreen", methodName : "conclude"});
-			return control_Noise.Noise;
-		}
-		return null;
+		return this.selection;
 	}
 	,__class__: control_demo_SelectionScreen
-});
+};
 var control_demo_AllDemo = function() { };
 $hxClasses["control.demo.AllDemo"] = control_demo_AllDemo;
 control_demo_AllDemo.__name__ = ["control","demo","AllDemo"];
@@ -900,7 +918,187 @@ control_demo_AllDemo.run = function() {
 	return control_Combinator.network(control_demo_AllDemo.moveThrough,new control_demo_SelectionScreen());
 };
 control_demo_AllDemo.moveThrough = function(r) {
-	return new control_demo_PhysDemo();
+	var ctrl;
+	switch(r[1]) {
+	case 0:
+		ctrl = new control_demo_SelectionScreen();
+		break;
+	case 1:
+		ctrl = new control_demo_GraphicsDemo();
+		break;
+	case 2:
+		ctrl = new control_demo_InputDemo();
+		break;
+	case 3:
+		ctrl = new control_demo_PhysDemo();
+		break;
+	}
+	return ctrl;
+};
+var control_demo_DemoSelect = $hxClasses["control.demo.DemoSelect"] = { __ename__ : ["control","demo","DemoSelect"], __constructs__ : ["HomeSelect","GraphicsSelect","InputSelect","PhysSelect"] };
+control_demo_DemoSelect.HomeSelect = ["HomeSelect",0];
+control_demo_DemoSelect.HomeSelect.toString = $estr;
+control_demo_DemoSelect.HomeSelect.__enum__ = control_demo_DemoSelect;
+control_demo_DemoSelect.GraphicsSelect = ["GraphicsSelect",1];
+control_demo_DemoSelect.GraphicsSelect.toString = $estr;
+control_demo_DemoSelect.GraphicsSelect.__enum__ = control_demo_DemoSelect;
+control_demo_DemoSelect.InputSelect = ["InputSelect",2];
+control_demo_DemoSelect.InputSelect.toString = $estr;
+control_demo_DemoSelect.InputSelect.__enum__ = control_demo_DemoSelect;
+control_demo_DemoSelect.PhysSelect = ["PhysSelect",3];
+control_demo_DemoSelect.PhysSelect.toString = $estr;
+control_demo_DemoSelect.PhysSelect.__enum__ = control_demo_DemoSelect;
+var control_demo_GraphicsDemo = function() {
+	this.exit = false;
+	this.y = 0;
+	this.x = 0;
+	this.time = 0;
+};
+$hxClasses["control.demo.GraphicsDemo"] = control_demo_GraphicsDemo;
+control_demo_GraphicsDemo.__name__ = ["control","demo","GraphicsDemo"];
+control_demo_GraphicsDemo.__interfaces__ = [control_Control];
+control_demo_GraphicsDemo.prototype = {
+	init: function(_) {
+	}
+	,tick: function(delta) {
+		this.time += delta;
+	}
+	,renderElem: function(centerPos) {
+		var scene = new control_Scene();
+		var pos = new util_Vector(0,0);
+		var offset = new util_Vector(27,0);
+		scene.prims = [control_DrawPrim.SetColor(0,255,0,255),control_DrawPrim.DrawCircle(pos,20),control_DrawPrim.DrawCircle(new util_Vector(pos.x + offset.x,pos.y + offset.y),7)];
+		scene.trans = new util_Transform(1,0,0,0,1,0,0,0,1).multmat(new util_Transform(1,0,centerPos.x,0,1,centerPos.y,0,0,1)).multmat(util_Transform.rotation(this.time / 1000));
+		return scene;
+	}
+	,renderFront: function(delta) {
+		var scene = new control_Scene();
+		var offset = new util_Vector(40,-40);
+		var offset2 = new util_Vector(40,40);
+		var pos = new util_Vector(0,0);
+		var _g = 1;
+		while(_g < 20) {
+			var i = _g++;
+			scene.children.push(this.renderElem(pos));
+			pos = new util_Vector(pos.x + offset.x,pos.y + offset.y);
+		}
+		pos = new util_Vector(0,0);
+		var _g1 = 1;
+		while(_g1 < 20) {
+			var i1 = _g1++;
+			scene.children.push(this.renderElem(pos));
+			pos = new util_Vector(pos.x + offset2.x,pos.y + offset2.y);
+		}
+		pos = new util_Vector(0,0);
+		var _g2 = 1;
+		while(_g2 < 20) {
+			var i2 = _g2++;
+			scene.children.push(this.renderElem(pos));
+			pos = new util_Vector(pos.x - offset2.x,pos.y - offset2.y);
+		}
+		pos = new util_Vector(0,0);
+		var _g3 = 1;
+		while(_g3 < 20) {
+			var i3 = _g3++;
+			scene.children.push(this.renderElem(pos));
+			pos = new util_Vector(pos.x - offset.x,pos.y - offset.y);
+		}
+		scene.prims = [control_DrawPrim.SetColor(0,0,0,100),control_DrawPrim.DrawRect(new util_Vector(0,0),new util_Vector(200,200)),control_DrawPrim.DrawRect(new util_Vector(0,0),new util_Vector(-200,-200)),control_DrawPrim.SetColor(0,0,0,200),control_DrawPrim.DrawRect(new util_Vector(0,0),new util_Vector(200,-200)),control_DrawPrim.DrawRect(new util_Vector(0,0),new util_Vector(-200,200))];
+		scene.trans = new util_Transform(1,0,0,0,1,0,0,0,1).multmat(new util_Transform(1,0,this.x,0,1,this.y,0,0,1)).multmat(util_Transform.rotation(-this.time / 1200));
+		return scene;
+	}
+	,render: function(delta) {
+		var scene = new control_Scene();
+		scene.children = [this.renderFront(delta)];
+		scene.prims = [control_DrawPrim.SetColor(0,0,255,255),control_DrawPrim.DrawImage(new util_Vector(0,0),"title"),control_DrawPrim.SetColor(0,0,0,255),control_DrawPrim.SetFont("Arial",14),control_DrawPrim.DrawText(new util_Vector(500,500),control_TextAlign.LeftText,"this text isn't part of the image")];
+		return scene;
+	}
+	,handle: function(e) {
+		switch(e[1]) {
+		case 0:
+			var y = e[3];
+			var x = e[2];
+			this.x = x;
+			this.y = y;
+			break;
+		case 1:
+			var state = e[3];
+			var key = e[2];
+			if(Type.enumEq(key,control_Key.CharKey("q"))) this.exit = true;
+			break;
+		}
+	}
+	,profiling: function(data) {
+		haxe_Log.trace(data.print(),{ fileName : "GraphicsDemo.hx", lineNumber : 123, className : "control.demo.GraphicsDemo", methodName : "profiling"});
+	}
+	,conclude: function() {
+		if(this.exit) return control_demo_DemoSelect.HomeSelect;
+		return null;
+	}
+	,__class__: control_demo_GraphicsDemo
+};
+var control_demo_InputDemo = function() {
+	this.exit = false;
+	this.pos = new util_Vector(0,0);
+	this.ball = new util_Vector(0,0);
+	this.movement = { left : false, right : false, down : false, up : false};
+};
+$hxClasses["control.demo.InputDemo"] = control_demo_InputDemo;
+control_demo_InputDemo.__name__ = ["control","demo","InputDemo"];
+control_demo_InputDemo.__interfaces__ = [control_Control];
+control_demo_InputDemo.prototype = {
+	init: function(_) {
+	}
+	,tick: function(delta) {
+		var factor = Math.pow(0.8,delta);
+		this.ball = this.ball.add(this.pos.sub(this.ball).mult(factor));
+		var moveScale = delta;
+		if(this.movement.up) this.ball = this.ball.add(new util_Vector(0,-1).mult(moveScale));
+		if(this.movement.down) this.ball = this.ball.add(new util_Vector(0,1).mult(moveScale));
+		if(this.movement.right) this.ball = this.ball.add(new util_Vector(1,0).mult(moveScale));
+		if(this.movement.left) this.ball = this.ball.add(new util_Vector(-1,0).mult(moveScale));
+	}
+	,render: function(delta) {
+		var scene = new control_Scene();
+		scene.prims = [control_DrawPrim.SetColor(0,255,0,255),control_DrawPrim.DrawCircle(this.ball,50),control_DrawPrim.SetColor(255,0,0,127),control_DrawPrim.DrawCircle(this.pos,50)];
+		return scene;
+	}
+	,profiling: function(d) {
+		haxe_Log.trace(d.print(),{ fileName : "InputDemo.hx", lineNumber : 63, className : "control.demo.InputDemo", methodName : "profiling"});
+	}
+	,handleKb: function(key,state) {
+		switch(key[1]) {
+		case 0:
+			var $char = key[2];
+			if($char == "i") this.movement.up = state;
+			if($char == "j") this.movement.left = state;
+			if($char == "l") this.movement.right = state;
+			if($char == "k") this.movement.down = state;
+			if($char == "q") this.exit = true;
+			break;
+		default:
+		}
+	}
+	,handle: function(e) {
+		switch(e[1]) {
+		case 0:
+			var y = e[3];
+			var x = e[2];
+			this.pos.x = x;
+			this.pos.y = y;
+			break;
+		case 1:
+			var state = e[3];
+			var key = e[2];
+			this.handleKb(key,state);
+			break;
+		}
+	}
+	,conclude: function() {
+		if(this.exit) return control_demo_DemoSelect.HomeSelect;
+		return null;
+	}
+	,__class__: control_demo_InputDemo
 };
 var control_demo_Direction = $hxClasses["control.demo.Direction"] = { __ename__ : ["control","demo","Direction"], __constructs__ : ["UpDir","DownDir","LeftDir","RightDir"] };
 control_demo_Direction.UpDir = ["UpDir",0];
@@ -988,7 +1186,7 @@ control_demo_FloatingBox.prototype = {
 	,__class__: control_demo_FloatingBox
 };
 var control_demo_PhysDemo = function() {
-	control_EmptyControl.call(this);
+	this.exit = false;
 	var gravity = nape_geom_Vec2.get(0,600,true);
 	this.space = new nape_space_Space(gravity);
 	var w = 1600;
@@ -1049,9 +1247,10 @@ control_demo_PhysDemo.rotatedBox = function(pos,width,alpha,color) {
 	scene.trans = new util_Transform(1,0,pos.x,0,1,pos.y,0,0,1).multmat(new util_Transform(Math.cos(alpha),-Math.sin(alpha),0,Math.sin(alpha),Math.cos(alpha),0,0,0,1));
 	return scene;
 };
-control_demo_PhysDemo.__super__ = control_EmptyControl;
-control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
-	vecFromDir: function(m) {
+control_demo_PhysDemo.prototype = {
+	init: function(_) {
+	}
+	,vecFromDir: function(m) {
 		switch(m[1]) {
 		case 0:
 			return new util_Vector(0,-1);
@@ -1088,7 +1287,7 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 				if(this.cooldown.get(d) > 100) {
 					this.cooldown.set(d,0);
 					var pos = this.vecFromDir(d).mult(-50).add(util_Util.vectorFromNape(this.ball.get_position()));
-					var vel = this.vecFromDir(d).mult(10);
+					var vel = this.vecFromDir(d).mult(20);
 					this.projectiles.push(new control_demo_Projectile(this.space,pos,vel));
 				}
 			}
@@ -1111,6 +1310,9 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 			++_g2;
 			b.tick(delta);
 		}
+	}
+	,profiling: function(d) {
+		haxe_Log.trace(d.print(),{ fileName : "PhysDemo.hx", lineNumber : 253, className : "control.demo.PhysDemo", methodName : "profiling"});
 	}
 	,controlling: function() {
 		var $it0 = this.movement.keys();
@@ -1166,6 +1368,7 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 					b.reset();
 				}
 			}
+			if(c == "q") this.exit = true;
 			break;
 		default:
 		}
@@ -1180,8 +1383,12 @@ control_demo_PhysDemo.prototype = $extend(control_EmptyControl.prototype,{
 		default:
 		}
 	}
+	,conclude: function() {
+		if(this.exit) return control_demo_DemoSelect.HomeSelect;
+		return null;
+	}
 	,__class__: control_demo_PhysDemo
-});
+};
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
 haxe_IMap.__name__ = ["haxe","IMap"];
@@ -68938,6 +69145,7 @@ control_demo_Projectile.maxLife = 1000;
 control_demo_FloatingBox.w = 1600;
 control_demo_FloatingBox.h = 900;
 control_demo_PhysDemo.maxCoolDown = 100;
+control_demo_PhysDemo.initSpeed = 20;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
 haxe_Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";

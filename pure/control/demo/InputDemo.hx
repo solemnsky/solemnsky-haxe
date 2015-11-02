@@ -3,8 +3,9 @@ package control.demo;
 import control.Control;
 import control.Event;
 import control.Scene;
-import math.Vector;
-import math.Transform;
+import control.Key;
+import util.Vector;
+import util.Transform;
 
 /**
  * solemnsky.control.demo.InputDemo:
@@ -15,20 +16,22 @@ typedef Movement = {
     left:Bool, right:Bool, down:Bool, up:Bool
 }
 
-class InputDemo extends EmptyControl {
+class InputDemo implements Control<DemoSelect> {
     private var pos:Vector;
     private var ball:Vector;
     private var movement:Movement;
+    private var exit:Bool = false;
 
     public function new() {
-        super();
         pos = new Vector(0, 0);
         ball = new Vector(0, 0);
         movement = 
             {left: false, right: false, down: false, up: false};
     }   
 
-    override function tick(delta:Float):Void {
+    public function init(_) {}
+
+    public function tick(delta:Float):Void {
         var factor = Math.pow(0.8, delta);
         ball = ball.add(pos.sub(ball).mult(factor));
 
@@ -43,7 +46,7 @@ class InputDemo extends EmptyControl {
             ball.add((new Vector(-1, 0)).mult(moveScale));
     }
 
-    override function render(delta:Float):Scene {
+    public function render(delta:Float):Scene {
         var scene = new Scene();
 
         scene.prims = [
@@ -56,18 +59,24 @@ class InputDemo extends EmptyControl {
         return scene;
     }
 
+    public function profiling(d) {
+        trace(d.print());
+    }
+
     private function handleKb(key, state):Void {
         switch (key) {
         case CharKey(char): {
-            if (char == "i") movement.up = state;
-            if (char == "j") movement.left = state;
-            if (char == "l") movement.right = state;
-            if (char == "k") movement.down = state;
+            if (char == 'i') movement.up = state;
+            if (char == 'j') movement.left = state;
+            if (char == 'l') movement.right = state;
+            if (char == 'k') movement.down = state;
+            if (char == 'q') exit = true;
         }
+        default: {}
         }
     }
 
-    override function handle(e:Event):Void {
+    public function handle(e:Event):Void {
         switch (e) {
         case MouseEvent(x, y): {
             pos.x = x; pos.y = y;
@@ -76,5 +85,10 @@ class InputDemo extends EmptyControl {
             handleKb(key, state);
         default: {}
         }
+    }
+
+    public function conclude():Null<DemoSelect> {
+        if (exit) return HomeSelect;
+        return null;
     }
 }
