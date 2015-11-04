@@ -12,6 +12,10 @@ enum VectorConstruct {
 }
  
 class Vector implements Construct<VectorConstruct> {
+    /*************************************************************************/
+    /* constructor
+    /*************************************************************************/
+
     public var x:Float = 0;
     public var y:Float = 0;
 
