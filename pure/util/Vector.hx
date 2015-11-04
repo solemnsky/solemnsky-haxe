@@ -4,17 +4,28 @@ package util;
  * util.Vector
  * Vector class, representing a 2d vector.
  */
+
+// 
+enum VectorConstruct {
+    XY(x:Float, y:Float);
+    Unit(alpha:Float);
+}
  
-class Vector implements Poolable {
-    public var x:Float;
-    public var y:Float;
+class Vector implements Construct<VectorConstruct> {
+    public var x:Float = 0;
+    public var y:Float = 0;
 
-    public function new(x:Float, y:Float) {
-        this.x = x; this.y = y;
-    }
+    public function new() {}
 
-    public function reset() {
-        this.x = 0; this.y = 0;
+    public function fromConstruct(param) {
+        switch (param) {
+        case XY(x, y): {
+            this.x = x; this.y = y
+        }
+        case Unit(alpha) {
+            this.x = Math.cos(alpha); this.y = Math.sin(alpha);
+        }
+        }
     }
 
     public inline function clone():Vector {

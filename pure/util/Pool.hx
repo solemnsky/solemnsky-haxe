@@ -10,12 +10,23 @@ package util;
  * that don't live for more than one frame.
  */
 
-interface Poolable {
-    public function new(/*some arguments*/):Void;
-    public function reset(/*some arguments*/):Void;
+/**
+ * A class that's very much in tune with the immutable design pattern; can be
+ * constructed from a small non-instantiated constructor value and doesn't
+ * live for longer than a single cycle or logical operation.
+ */
+interface Construct<C> {
+    // C: the constructor type
+
+    /**
+     * Set the 
+     */
+    public function fromConstruct(construct:C):Void;
 }
 
-class Pool<T:Poolable> {
+class Pool<T:Construct<C>> {
+    // T: the type of the pool's elements
+
     private var index:Int;
     private var pool:Array<T>;
 
@@ -34,13 +45,10 @@ class Pool<T:Poolable> {
     /**
      * Asks for a new object.
      */
-    public function get(/*some arguments*/):T {
+    public function get(construct:C):T {
         index++;
-        if (pool.length > index) {
-            pool[index].reset(/*some arguments*/);
-        } else {
-            pool.push(new T(/*some arguments*/));
-        }
+        if (pool.length > index) pool.push(new T());
+        pool[index].fromConstruct(construct);
         return pool[index];
     }
 }
