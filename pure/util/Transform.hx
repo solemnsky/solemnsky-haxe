@@ -5,6 +5,13 @@ package util;
  * Transform class, representing an affine transformation.
  */
 
+enum TransformConstruct {
+    Identity;
+    Translation(x:Float, y:Float);
+    Scale(x:Float, y:Float);
+    Rotate(alpha:Float);
+}
+
 class Transform {
     /*************************************************************************/
     /* variables and constructor
@@ -14,7 +21,23 @@ class Transform {
     public var _01: Float; public var _11: Float; public var _21: Float;
     public var _02: Float; public var _12: Float; public var _22: Float;
 
-    public inline function new(
+    public function new() {
+        set(0, 0, 0
+          , 0, 0, 0
+          , 0, 0, 0);
+    }
+
+    public function fromConstruct(construct:TransformConstruct) {
+        switch (construct)  {
+            case Translation()
+        }
+    }
+
+    /*************************************************************************/
+    /* helper constructors
+    /*************************************************************************/
+
+    public function set(
         _00: Float, _10: Float, _20: Float,
         _01: Float, _11: Float, _21: Float,
         _02: Float, _12: Float, _22: Float
@@ -23,10 +46,6 @@ class Transform {
         this._01 = _01; this._11 = _11; this._21 = _21;
         this._02 = _02; this._12 = _12; this._22 = _22;
     }
-
-    /*************************************************************************/
-    /* helper constructors
-    /*************************************************************************/
 
     public static inline function translation(x:Float, y:Float):Transform {
         return new Transform(

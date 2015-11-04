@@ -17,8 +17,8 @@ class Vector implements Construct<VectorConstruct> {
 
     public function new() {}
 
-    public function fromConstruct(param) {
-        switch (param) {
+    public function fromConstruct(construct:VectorConstruct) {
+        switch (construc) {
         case XY(x, y): {
             this.x = x; this.y = y
         }
