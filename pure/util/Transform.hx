@@ -5,57 +5,67 @@ package util;
  * Transform class, representing an affine transformation.
  */
 
-enum TransformConstruct {
-    Identity;
-    Translate(x:Float, y:Float);
-    Scale(x:Float, y:Float);
-    Rotate(alpha:Float);
-}
-
 class Transform {
     /*************************************************************************/
-    /* constructor
+    /* variables and constructor
     /*************************************************************************/
 
     public var _00: Float; public var _10: Float; public var _20: Float;
     public var _01: Float; public var _11: Float; public var _21: Float;
     public var _02: Float; public var _12: Float; public var _22: Float;
 
-    public function new() {
-        set(
-            0, 0, 0
-          , 0, 0, 0
-          , 0, 0, 0
+    public inline function new(
+        _00: Float, _10: Float, _20: Float,
+        _01: Float, _11: Float, _21: Float,
+        _02: Float, _12: Float, _22: Float
+    ){
+        this._00 = _00; this._10 = _10; this._20 = _20;
+        this._01 = _01; this._11 = _11; this._21 = _21;
+        this._02 = _02; this._12 = _12; this._22 = _22;
+    }
+
+    /*************************************************************************/
+    /* helper constructors
+    /*************************************************************************/
+
+    public static inline function translation(x:Float, y:Float):Transform {
+        return new Transform(
+            1, 0, x,
+            0, 1, y,
+            0, 0, 1
         );
     }
 
-    public function fromConstruct(construct:TransformConstruct) {
-        switch (construct)  {
-            case Identity: 
-                set(
-                    1, 0, 0,
-                    0, 1, 0,
-                    0, 0, 1
-                );
-            case Translate(x, y): translate(x, y);
-                set(
-                    1, 0, x,
-                    0, 1, y,
-                    0, 0, 1
-                );
-            case Scale(x, y): scale(x, y);
-                set(
-                    x, 0, 0,
-                    0, y, 0,
-                    0, 0, 1
-                );
-            case Rotate(alpha): 
-                set(
-                    Math.cos(alpha), -Math.sin(alpha), 0,
-                    Math.sin(alpha), Math.cos(alpha), 0,
-                    0, 0, 1
-                );
-        }
+    public static inline function empty():Transform {
+        return new Transform(
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0
+        );
+    }
+
+    public static inline function identity(): Transform {
+        return new Transform(
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1
+        );
+    }
+
+    public static inline function scale(x: Float, y: Float): Transform {
+        return new Transform(
+            x, 0, 0,
+            0, y, 0,
+            0, 0, 1
+        );
+    }
+
+    public static inline function rotation(alpha: Float): Transform {
+        return new Transform(
+            Math.cos(alpha), -Math.sin(alpha), 0,
+            Math.sin(alpha), Math.cos(alpha), 0,
+            0, 0, 1
+        );
     }
 
     /*************************************************************************/

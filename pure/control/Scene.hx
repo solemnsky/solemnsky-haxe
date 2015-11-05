@@ -29,7 +29,7 @@ enum DrawPrim {
  * of graphic primitives at each level, through which affine transformations
  * and opacity values can traverse from parent to child.
  */
-class Scene implements Construct<Noise> {
+class Scene {
     /*************************************************************************/
     /* variables
     /*************************************************************************/
@@ -44,6 +44,4 @@ class Scene implements Construct<Noise> {
     /*************************************************************************/
 
     public function new() {}
-
-    public function fromConstruct(_) {}
 }
