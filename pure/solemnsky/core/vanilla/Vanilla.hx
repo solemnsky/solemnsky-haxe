@@ -1,12 +1,16 @@
 package solemnsky.core.vanilla;
 
-import solemnsky.engine.tune.EngineTuning;
-import solemnsky.engine.tune.PlaneTuning;
-import solemnsky.engine.Engine;
-import solemnsky.engine.Environment;
 import control.Event;
 import control.Scene;
 import haxe.io.Bytes;
+import solemnsky.core.demo.Demo;
+import solemnsky.engine.Engine;
+import solemnsky.engine.Environment;
+import solemnsky.engine.tune.EngineTuning;
+import solemnsky.engine.tune.PlaneTuning;
+import util.Transform;
+import util.Util;
+import util.Vector;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -52,7 +56,7 @@ class Vanilla {
     }
 
     public function tick(delta:Float):Array<String> {
-        engine.tick();
+        engine.tick(delta);
         return [];
     }
 

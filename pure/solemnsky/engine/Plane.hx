@@ -89,7 +89,7 @@ class Plane {
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
-        body.shapes.add(new Circle(tuning.planeRadius));
+        body.shapes.add(new Circle(parent.tuning.planeRadius));
         body.setShapeMaterials(nape.phys.Material.rubber());
         writeToBody();
     }

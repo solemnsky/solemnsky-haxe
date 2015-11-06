@@ -23,18 +23,16 @@ class Engine {
     /* variables
     /*************************************************************************/
 
-    private var tuning:EngineTuning;
-    private var debugTrace:String->Void;
+    public var tuning:EngineTuning;
 
-    private var planes:Map<Int, Plane>;
-    private var environment:Environment;
-    private var space:Space;
+    public var planes:Map<Int, Plane>;
+    public var environment:Null<Environment>;
+    public var space:Null<Space>;
 
     public function new(tuning:EngineTuning) {
         this.tuning = tuning;
-        this.debugTrace = debugTrace;
 
-        planes = [];
+        planes = new Map();
         environment = null;
         space = null;
 
@@ -86,7 +84,7 @@ class Engine {
     /*************************************************************************/
 
     public function tick(delta:Float):Array<String> {
-        if (space /= null) {
+        if (space != null) {
             for (plane in planes.iterator()) {
                 plane.writeToBody();
             }
