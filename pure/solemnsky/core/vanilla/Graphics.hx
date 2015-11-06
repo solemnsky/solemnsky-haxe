@@ -1,4 +1,4 @@
-package solemnsky.core.vanilla;
+package solemnsky.engine.vanilla;
 
 import control.Scene;
 

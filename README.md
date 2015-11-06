@@ -47,6 +47,19 @@ We use docker as a fool-proof build environment.
 
 Inside the development environment, the standard makefile is used to compile targets to the /dist directory. (The ``all`` target builds everything.)
 
+## outline of export media
+
+As outlined in the 'portability' section, there is a lowest common denominator API for an interactive / graphical system defined in pure/control, through which all of our pure code passes through, enabling the same code to be deployed to any multiple interactive system where I can define a boilerplate interface to run a Control object. These systems are currently:
+
+- Kha (kha-web and kha-native)
+  - Targets HTML5 flash and native, primarily.
+  - Still in development.
+  - I'm currently having issues getting correctly antialiased graphics and vector fonts.
+  - Is the fastest especially on native.
+- Flambe (flambe)
+  - Targets HTML5 and flash, primarily.
+  - Used by nickelodeon; is pretty stable.
+
 ## directories
 
 - /dist/

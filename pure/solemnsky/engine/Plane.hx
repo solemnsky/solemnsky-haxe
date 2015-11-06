@@ -8,7 +8,8 @@ import nape.shape.Circle;
 
 /**
  * solemnsky.core.vanilla.Player:
- * Player object, with physics wrapper methods and flight mechanics.
+ * Represents a plane in the game; are destroyed and recreated a
+ * bunch (deaths, environment changes, etc).
  */
 
 // toggles
@@ -27,7 +28,7 @@ typedef Movement = {
 /**
  * Non-derived, serialisable state for a player.
  */
-class PlayerState {
+class PlaneState {
     public var name:String;
     public var movement:Movement;
 
@@ -66,7 +67,7 @@ class PlayerState {
     }
 }
 
-class Player {
+class Plane {
     /*************************************************************************/
     /* private state variables
     /*************************************************************************/
@@ -74,7 +75,7 @@ class Player {
     private var parent:Vanilla;
     private var tuning:Tuning;
 
-    public var state:PlayerState;
+    public var state:PlaneState;
     public var body:Body;
 
     /*************************************************************************/
@@ -85,7 +86,7 @@ class Player {
         tuning:Tuning, parent:Vanilla
         , name:String, pos:Vector, rot:Float
     ):Void {
-        this.state = new PlayerState(name, pos, rot);
+        this.state = new PlaneState(name, pos, rot);
         this.parent = parent;
         this.tuning = tuning;
 
