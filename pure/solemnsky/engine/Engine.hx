@@ -23,14 +23,14 @@ class Engine {
     /* variables
     /*************************************************************************/
 
-    private var tuning:EnvTuning;
+    private var tuning:EngineTuning;
     private var debugTrace:String->Void;
 
     private var planes:Map<Int, Plane>;
     private var environment:Environment;
     private var space:Space;
 
-    public function new(tuning:Tuning, debugTrace:String->Void) {
+    public function new(tuning:Tuning) {
         this.tuning = tuning;
         this.debugTrace = debugTrace;
 
@@ -39,6 +39,10 @@ class Engine {
         space = null;
 
         debugTrace('engine instantiated');
+    }
+
+    private inline function debugTrace(str:String) {
+        tuning
     }
 
     /*************************************************************************/

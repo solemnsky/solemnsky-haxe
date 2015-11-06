@@ -6,5 +6,5 @@ package solemnsky.engine;
  */
 
 class Environment {
-    
+    // stub   
 }

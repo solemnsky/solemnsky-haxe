@@ -7,6 +7,7 @@ import kha.math.FastMatrix3;
 import kha.math.FastVector2;
 import solemnsky.control.Event;
 import solemnsky.control.Scene;
+import util.Util;
 
 /**
  * solemnsky.core.Demo:
@@ -58,17 +59,6 @@ class Demo implements Core {
             return true;                    
         }
         return false;
-    }
-
-    /**
-     * Function used to allocate new player IDs.
-     * There are several ways of doing this, this is the more obvious one.
-     */
-    private function takeUnique(taken:Iterator<Int>):Int {
-        var last:Int = -1;
-        for (id in taken) 
-            last = id;
-        return last + 1;
     }
 
     private static function initialPlayer(name:String) {
@@ -159,9 +149,8 @@ class Demo implements Core {
     /*************************************************************************/
 
     public function join(name:String):Int {
-        var newId = takeUnique(players.keys());
+        var newId = Util.allocNewId(players.keys());
         players.set(newId, initialPlayer(name));
-        trace('joining ' + name + ' as id ' + newId);
         return newId;
     }
 

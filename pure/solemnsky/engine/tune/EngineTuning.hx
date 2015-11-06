@@ -6,6 +6,8 @@ package solemnsky.engine.tune;
  */
 
 class EngineTuning {
+    public var debugTrace:String->Void;
+
     public var planeRadius:Float = 20; // lol
 
     // dimensions of the simple plane rectangle
@@ -20,7 +22,6 @@ class EngineTuning {
     public var contactDamangeMultiplier:Float = 0.01;
 
     public function new() {
-        planeMaxRotationStalled = Math.PI * 1.5;
-        planeMaxRotation = Math.PI * 1.2;
+        debugTrace = function(_){}
     }
 }

@@ -1,6 +1,7 @@
 package solemnsky.core.vanilla;
 
-import solemnsky.engine.Tuning;
+import solemnsky.engine.tune.EngineTuning;
+import solemnsky.engine.tune.PlaneTuning;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import control.Event;
@@ -12,7 +13,6 @@ import control.Scene;
  */
 
 class Vanilla {
-
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -20,11 +20,6 @@ class Vanilla {
     private var engine:Engine;
     private var players:Array<Player>;
 
-    public function makeTuning():Tuning {
-        var tuning = new Tuning();
-        // operations on tuning
-        return tuning;
-    }
 
     public function makeEnvironment():Environment {
         var environment = new Environment();   
@@ -86,9 +81,9 @@ class Vanilla {
         scene.children = [
             renderOverlay()
         ];
-        for(player in players){
-            scene.children.push(Graphics.renderPlayer(player));
-        }
+        // for (player in players) {
+        //     scene.children.push(Graphics.renderPlayer(player));
+        // }
 
         return scene;
     }
@@ -98,11 +93,66 @@ class Vanilla {
     }
 
     /************************************************************/
-    /* discrete networking
+    /* discrete networking 
     /************************************************************/
 
     public function join(name:String):Int {
+        var id = Util.allocNewId(players.keys());
+        var player = new Player(name);
+        players.set(id, player);
+        return id;
 
     }
 
+    public function quit(id:Int) {
+        players.remove(id);
+    }
+
+    public function getInitData():Dynamic {
+        return null;
+    }
+
+    /*************************************************************************/
+    /* continuous networking
+    /*************************************************************************/
+
+    public function clientAssert(id:Int):Dynamic {
+        return null; 
+    }
+    public function serverAssert():Dynamic {
+        return null;
+    }
+
+    public function clientMerge(id:Int, snap:Dynamic):Void {
+        // empty
+    }
+    public function serverMerge(id:Int, snap:Dynamic):Void {
+        // empty
+    }
+
+    /*************************************************************************/
+    /* network compression
+    /*************************************************************************/
+
+    public function serialiseSnap(snap:Dynamic):Bytes {
+        return null;
+    }
+    public function readSnap(bytes:Bytes):Dynamic {
+        return null;
+    }
+
+    /*************************************************************************/
+    /* tuning
+    /*************************************************************************/
+
+    public function makeEngineTuning():EngineTuning {
+        var tuning = new EngineTuning();
+        tuning.debugTrace = function(str){trace('engine log: '+str);};
+        return tuning;
+    }
+
+    public function makePlaneTuning():PlaneTuning {
+        var tuning = new PlaneTuning();
+        return tuning;
+    }
 }

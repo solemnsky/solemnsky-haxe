@@ -8,6 +8,11 @@ import solemnsky.engine.Plane;
  */
 
 class Player {
-    private var plane:Null<Plane>;
+    public var plane:Null<Plane>;
+    public var name:String;
 
+    public function new(name:String) {
+        plane = null;
+        this.name = name;
+    }
 }
