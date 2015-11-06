@@ -3,7 +3,6 @@ package solemnsky.core.vanilla;
 import control.Event;
 import control.Scene;
 import haxe.io.Bytes;
-import solemnsky.core.demo.Demo;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import solemnsky.engine.tune.EngineTuning;
@@ -11,19 +10,20 @@ import solemnsky.engine.tune.PlaneTuning;
 import util.Transform;
 import util.Util;
 import util.Vector;
+import solemnsky.core.Core;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
  * Vanilla core object.
  */
 
-class Vanilla {
+class Vanilla implements Core {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
 
     private var engine:Engine;
-    private var players:Array<Player>;
+    private var players:Map<Int, Player>;
 
 
     public function makeEnvironment():Environment {

@@ -2,6 +2,7 @@ package solemnsky.engine;
 
 import util.Vector;
 import util.Util;
+import solemnsky.engine.tune.PlaneTuning;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Circle;

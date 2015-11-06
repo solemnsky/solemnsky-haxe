@@ -32,4 +32,7 @@ class PlaneTuning {
     public var planeStallDamping:Float = 1.5;
     public var planeLeftoverVelDamping:Float = 0.10;
     public var planeThrottleSpeed:Float = 1.5;
+
+    public function new() {
+    }
 }

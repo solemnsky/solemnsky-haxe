@@ -17,15 +17,20 @@ class Util {
         return new Vector(vec.x, vec.y);
     }
 
-    public static function allocNewId(ids:Array<Int>):Int {
+    public static function allocNewId(ids:Iterator<Int>):Int {
         var next = 0;
-        ids.sort(function(x, y) {
+        var arr:Array<Int> = [];
+
+        for (id in ids) arr.push(id);
+        arr.sort(function(x, y) {
             return x - y;
         });
-        for (id in ids) {
+
+        for (id in arr) {
             if (id == next) next++;
             else return next;
         }
+
         return next;
     }
 } 
