@@ -32,7 +32,7 @@ interface Control<T> {
     /**
      * Tick internal simulation forward, given a delta; this ticks
      * at a fixed step, irregardless of the rate at rendering happens.
-     * All deltas in this interface are in milliseconds.
+     * All deltas in this interface are in seconds.
      */
     public function tick(delta:Float):Void;
 

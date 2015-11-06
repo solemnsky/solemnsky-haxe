@@ -23,6 +23,7 @@ class Engine {
     /*************************************************************************/
 
     private var tuning:Tuning;
+    private var debugTrace:String->Void;
 
     private var players:Map<Int, Player>;
     private var environment:Environment;
@@ -38,6 +39,26 @@ class Engine {
 
         players = new Map();
 
+    }    
+
+    public function new(tuning:Tuning, debugTrace:String->Void) {
+        this.tuning = tuning;
+        debugTrace('engine instantiated');
+    }
+
+    /*************************************************************************/
+    /* INTERNAL: managing the environment
+    /*************************************************************************/
+
+    public function loadEnvironment(environment:Environment) {
+        this.environment = environment;
+        loadSpaceFromEnvironment(environment);
+        debugTrace('loaded environment');
+    }
+
+    private inline function loadSpaceFromEnvironment(
+        environment:Environment
+    ) {
         space = new Space(new Vec2(0, 1));
 
         var floor = new Body(BodyType.STATIC);
@@ -46,15 +67,6 @@ class Engine {
         );
         floor.space = space;
         floor.setShapeMaterials(nape.phys.Material.rubber());
-    }    
-
-    /*************************************************************************/
-    /* INTERNAL: managing the environment
-    /*************************************************************************/
-
-    public function loadEnvironment(environment:Environment) {
-        this.environment = environment;
-
     }
 
     /*************************************************************************/
@@ -90,13 +102,11 @@ class Engine {
     /* simulation
     /*************************************************************************/
 
-    private function mutateByEvent(player:Player, event:Event):Void {
-
     public function tick(delta:Float):Array<String> {
         for (player in players.iterator()) {
             player.writeToBody();
         }
-        space.step(delta / 100); // centiseconds wtf
+        space.step(delta / 1000); 
         for (player in players.iterator()) {
             player.readFromBody();
             player.tick(delta);

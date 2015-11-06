@@ -1,2 +1,0 @@
-package solemnsky.core.vanilla;
-
