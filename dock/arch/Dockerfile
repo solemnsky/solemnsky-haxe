@@ -33,3 +33,8 @@ RUN pacman -S --noconfirm jre8-openjdk
 
 # nothing to do, kha is self-contained
 
+############## closure compiler ###################
+
+RUN pacman -S --noconfirm closure-compiler
+
+

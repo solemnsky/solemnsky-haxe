@@ -29,4 +29,11 @@ kha-native:
 	rm -rf dist/kha-native/ ; mkdir -p dist/kha-native/
 	cp -r export/kha-native/build/linux-build/* ./dist/kha-native/
 
+simple-js:
+	### SIMPLE-JS ###
+	cd export/simple-js && \
+	haxe build.hxml
+
+	rm -rf dist/simple-js/ ; mkdir -p dist/simple-js/
+	cp -r export/simple-js/build/* ./dist/simple-js/
 

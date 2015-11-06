@@ -5,7 +5,7 @@ package util;
  * Vector class, representing a 2d vector.
  */
  
-class Vector implements Poolable {
+class Vector {
     public var x:Float;
     public var y:Float;
 

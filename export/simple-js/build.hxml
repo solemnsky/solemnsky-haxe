@@ -1,0 +1,16 @@
+-cmd mkdir -p build 
+-cmd cat Assets/demo.html > build/demo.html
+
+--next 
+
+-cp Source
+-main Main
+-dce full
+-js build/main.js
+
+# uncomment only this section to minify with the google closure compiler
+-cmd closure --compilation_level ADVANCED build/main.js > build/main.min.js.1
+-cmd perl -p -e 's/\n//' build/main.min.js.1 > build/main.min.js; rm build/main.min.js.1
+
+# uncomment only this section to bypass minification
+# -cmd cat build/main.js > build/main.min.js 
