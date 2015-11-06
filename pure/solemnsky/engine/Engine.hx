@@ -11,10 +11,11 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
 import nape.space.Space;
+import util.Util;
 
 /**
  * solemnsky.engine.Engine:
- * The vanilla core game logic for our cute multiplayer plane game.
+ * The vanilla core game logic for our cute multiplane plane game.
  */
 
 class Engine {
@@ -22,32 +23,26 @@ class Engine {
     /* variables
     /*************************************************************************/
 
-    private var tuning:Tuning;
+    private var tuning:EnvTuning;
     private var debugTrace:String->Void;
 
-    private var players:Map<Int, Player>;
+    private var planes:Map<Int, Plane>;
     private var environment:Environment;
-    private var time:Float;
-
     private var space:Space;
-
-    public function new() {
-        tuning = new Tuning();
-
-        players = []
-        environment = null;
-
-        players = new Map();
-
-    }    
 
     public function new(tuning:Tuning, debugTrace:String->Void) {
         this.tuning = tuning;
+        this.debugTrace = debugTrace;
+
+        planes = [];
+        environment = null;
+        space = null;
+
         debugTrace('engine instantiated');
     }
 
     /*************************************************************************/
-    /* INTERNAL: managing the environment
+    /* environment
     /*************************************************************************/
 
     public function loadEnvironment(environment:Environment) {
@@ -70,32 +65,19 @@ class Engine {
     }
 
     /*************************************************************************/
-    /* INTERNAL: managing players
+    /* planes
     /*************************************************************************/
 
-    /**
-     * Given a transformation function and an id to target, execute
-     * the transformation on the player with that id, potentially
-     * failing and returning false.
-     */
-    private function doForPlayer(f:Player->Void, id:Int):Bool {
-        var player = players.get(id);
-        if (player != null) {
-            f(player);
+    public function addPlane()    
+
+
+    private function doForplane(f:Plane->Void, id:Int):Bool {
+        var plane = planes.get(id);
+        if (plane != null) {
+            f(plane);
             return true;                    
         }
         return false;
-    }
-
-    /**
-     * Function used to allocate new player IDs.
-     * There are several ways of doing this, this is the more obvious one.
-     */
-    private function takeUnique(taken:Iterator<Int>):Int {
-        var last:Int = -1;
-        for (id in taken) 
-            last = id;
-        return last + 1;
     }
 
     /*************************************************************************/
@@ -103,13 +85,14 @@ class Engine {
     /*************************************************************************/
 
     public function tick(delta:Float):Array<String> {
-        for (player in players.iterator()) {
-            player.writeToBody();
+        if 
+        for (plane in planes.iterator()) {
+            plane.writeToBody();
         }
         space.step(delta / 1000); 
-        for (player in players.iterator()) {
-            player.readFromBody();
-            player.tick(delta);
+        for (plane in planes.iterator()) {
+            plane.readFromBody();
+            plane.tick(delta);
         }
         return [];
     }
@@ -123,8 +106,8 @@ class Engine {
     /*************************************************************************/
 
     public function join(name:String):Int {
-        var newId = takeUnique(players.keys());
-        var newPlayer = new Player(
+        var newId = Util.allocNewId(planes.keys());
+        var newplane = new plane(
             tuning
             , this
             , name
@@ -132,13 +115,13 @@ class Engine {
             , 0
         );
 
-        players.set(newId, newPlayer);
-        newPlayer.body.space = space;
+        planes.set(newId, newplane);
+        newplane.body.space = space;
         return newId;
     }
 
     public function quit(id:Int):Void {
-        players.remove(id);
+        planes.remove(id);
     }
 
     public function getInitData():Dynamic {

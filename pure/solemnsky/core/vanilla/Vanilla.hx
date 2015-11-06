@@ -1,11 +1,68 @@
 package solemnsky.core.vanilla;
 
+import solemnsky.engine.Tuning;
+import solemnsky.engine.Engine;
+import solemnsky.engine.Environment;
+import control.Event;
+import control.Scene;
+
 /**
  * solemnsky.core.vanilla.Vanilla:
  * Vanilla core object.
  */
 
 class Vanilla {
+
+    /*************************************************************************/
+    /* constructor
+    /*************************************************************************/
+
+    private var engine:Engine;
+    private var players:Array<Player>;
+
+    public function makeTuning():Tuning {
+        var tuning = new Tuning();
+        // operations on tuning
+        return tuning;
+    }
+
+    public function makeEnvironment():Environment {
+        var environment = new Environment();   
+        // operations on environment
+        return environment;
+    }
+
+    public function new() {
+        engine = new Engine(makeTuning(), function(_){});
+        engine.loadEnvironment(makeEnvironment());
+    }
+
+    /*************************************************************************/
+    /* initialisation and modeId
+    /*************************************************************************/
+
+    public function init(initData) {
+        // nothing
+    }
+
+    public var modeId = "vanilla alpha";
+
+    /*************************************************************************/
+    /* simulation
+    /*************************************************************************/
+
+    public function handle(id:Int, event:Event):Void {
+
+    }
+
+    public function tick(delta:Float):Array<String> {
+        engine.tick();
+        return [];
+    }
+
+    /************************************************************/
+    /* rendering
+    /************************************************************/
 
     /**
      * Overlay making it very clear that this is a WIP.
@@ -35,4 +92,17 @@ class Vanilla {
 
         return scene;
     }
+
+    public function listPlayers():Array<String> {
+        return [];
+    }
+
+    /************************************************************/
+    /* discrete networking
+    /************************************************************/
+
+    public function join(name:String):Int {
+
+    }
+
 }

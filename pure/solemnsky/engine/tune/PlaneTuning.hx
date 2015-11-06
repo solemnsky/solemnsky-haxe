@@ -1,21 +1,11 @@
-package solemnsky.core.vanilla;
+package solemnsky.engine;
 
 /**
- * solemnsky.core.vanilla.Tuning:
- * Large object holding all kinds of tuning values (and potentially
- * callbacks) in over which the Engine's operation is parameterized.
+ * solemnsky.engine.EngineTuning;
+ * Object with values and callbacks to influence a plane's behaviour.
  */
 
-class Tuning {
-    public var planeRadius:Float = 20;
-
-    // dimensions of the simple plane rectangle
-    public var planeWidth:Float = 60;
-    public var planeHeight:Float = 30;
-
-    // acceleration of gravity 
-    public var gravity:Float = 3;
-
+class PlaneTuning {
     // stalled
     public var planeMaxRotationStalled:Float; // Math.PI * 1.5
     public var planeMaxVelocityStalled:Float = 300;
@@ -42,22 +32,4 @@ class Tuning {
     public var planeStallDamping:Float = 1.5;
     public var planeLeftoverVelDamping:Float = 0.10;
     public var planeThrottleSpeed:Float = 1.5;
-
-    // contact
-    public var minimumContactDamage:Float = 0.02;
-    public var contactDamangeMultiplier:Float = 0.01;
-
-    // graphics that look nice
-    public var graphicsThrustFade:Float = 4;
-    public var graphicsBarWidth:Float = 50;
-    public var graphicsBarHeight:Float = 8;
-    public var graphicsBarClear:Float = 50;
-    public var graphicsNameClear:Float = 35;
-
-    // I actually have to instantiate the object to have non-literal
-    // values exported as variables this is *an issue* 
-    public function new() {
-        planeMaxRotationStalled = Math.PI * 1.5;
-        planeMaxRotation = Math.PI * 1.2;
-    }
 }

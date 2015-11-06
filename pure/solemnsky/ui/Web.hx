@@ -12,7 +12,7 @@ import solemnsky.core.vanilla.Vanilla;
  * Web.ctrl() returns a control object for the web (html5) distribution.
  */
 
-class WebFromCore implements Control {
+class WebFromCore implements Control<Noise> {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
@@ -52,13 +52,13 @@ class WebFromCore implements Control {
         core.handle(myId, e);
     }
 
-    public function hasEnded():Bool {
-        return core.hasEnded();
+    public function conclude():Null<Noise> {
+        return null;
     }
 }
 
 class Web {
-    public static function ctrl():Control {
+    public static function ctrl():Control<Noise> {
         // return new DemoControl();
         var core:Core = new Vanilla();
         return new WebFromCore(core);

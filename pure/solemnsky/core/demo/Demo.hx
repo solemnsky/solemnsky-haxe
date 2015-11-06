@@ -114,10 +114,6 @@ class Demo implements Core {
         return names;
     }
 
-    public function hasEnded():Bool {
-        return false;
-    }
-
     /*************************************************************************/
     /* rendering
     /*************************************************************************/

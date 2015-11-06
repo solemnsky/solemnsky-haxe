@@ -13,7 +13,6 @@ import control.Scene;
 interface Core {
     /*************************************************************************/
     /* initialisation and modeId
-    /*   These functions are only called once.
     /*************************************************************************/
 
     public function init(initData:Dynamic):Void;
@@ -27,8 +26,6 @@ interface Core {
 
     public function handle(id:Int, event:Event):Void; 
     public function tick(delta:Float):Array<String>;
-
-    public function hasEnded():Bool;
 
     /*************************************************************************/
     /* rendering
