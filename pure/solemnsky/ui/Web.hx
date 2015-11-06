@@ -3,6 +3,7 @@ package solemnsky.ui;
 import control.Control;
 import control.Event;
 import control.Profile;
+import control.Noise;
 import control.Scene;
 import solemnsky.core.Core;
 import solemnsky.core.vanilla.Vanilla;

@@ -2,7 +2,6 @@ package solemnsky.engine;
 
 import control.Event;
 import control.Scene;
-import flash.display.Graphics;
 import haxe.io.Bytes;
 import util.Transform;
 import util.Vector;
@@ -11,6 +10,7 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
 import nape.space.Space;
+import solemnsky.engine.tune.EngineTuning;
 import util.Util;
 
 /**
@@ -30,7 +30,7 @@ class Engine {
     private var environment:Environment;
     private var space:Space;
 
-    public function new(tuning:Tuning) {
+    public function new(tuning:EngineTuning) {
         this.tuning = tuning;
         this.debugTrace = debugTrace;
 
@@ -42,7 +42,7 @@ class Engine {
     }
 
     private inline function debugTrace(str:String) {
-        tuning
+        tuning.debugTrace(str);
     }
 
     /*************************************************************************/
@@ -72,10 +72,7 @@ class Engine {
     /* planes
     /*************************************************************************/
 
-    public function addPlane()    
-
-
-    private function doForplane(f:Plane->Void, id:Int):Bool {
+    private function doForPlane(f:Plane->Void, id:Int):Bool {
         var plane = planes.get(id);
         if (plane != null) {
             f(plane);
@@ -89,77 +86,20 @@ class Engine {
     /*************************************************************************/
 
     public function tick(delta:Float):Array<String> {
-        if 
-        for (plane in planes.iterator()) {
-            plane.writeToBody();
-        }
-        space.step(delta / 1000); 
-        for (plane in planes.iterator()) {
-            plane.readFromBody();
-            plane.tick(delta);
+        if (space /= null) {
+            for (plane in planes.iterator()) {
+                plane.writeToBody();
+            }
+            space.step(delta / 1000); 
+            for (plane in planes.iterator()) {
+                plane.readFromBody();
+                plane.tick(delta);
+            }
         }
         return [];
     }
 
     public function hasEnded():Bool {
         return false;
-    }
-
-    /*************************************************************************/
-    /* discrete networking
-    /*************************************************************************/
-
-    public function join(name:String):Int {
-        var newId = Util.allocNewId(planes.keys());
-        var newplane = new plane(
-            tuning
-            , this
-            , name
-            , new Vector(500, 500)
-            , 0
-        );
-
-        planes.set(newId, newplane);
-        newplane.body.space = space;
-        return newId;
-    }
-
-    public function quit(id:Int):Void {
-        planes.remove(id);
-    }
-
-    public function getInitData():Dynamic {
-        return null;
-    }
-
-    /*************************************************************************/
-    /* continuous networking
-    /* this is completely unimplemented for the moment
-    /*************************************************************************/
-
-    public function clientAssert(id:Int):Dynamic {
-        return null; 
-    }
-    public function serverAssert():Dynamic {
-        return null;
-    }
-
-    public function clientMerge(id:Int, snap:Dynamic):Void {
-
-    }
-    public function serverMerge(id:Int, snap:Dynamic):Void {
-
-    }
-
-    /*************************************************************************/
-    /* network compression
-    /*************************************************************************/
-
-    public function serialiseSnap(snap:Dynamic):Bytes {
-        return null;
-    }
-
-    public function readSnap(bytes:Bytes):Dynamic {
-        return null;
     }
 }

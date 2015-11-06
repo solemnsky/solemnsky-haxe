@@ -1,4 +1,4 @@
-package solemnsky.core.vanilla;
+package solemnsky.engine;
 
 import util.Vector;
 import util.Util;
@@ -7,7 +7,7 @@ import nape.phys.BodyType;
 import nape.shape.Circle;
 
 /**
- * solemnsky.core.vanilla.plane:
+ * solemnsky.engine.Plane:
  * Represents a plane in the game; are destroyed and recreated a
  * bunch (deaths, environment changes, etc).
  */
@@ -69,8 +69,8 @@ class Plane {
 
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
-    private var parent:Vanilla;
-    private var tuning:Tuning;
+    private var parent:Engine;
+    private var tuning:PlaneTuning;
 
     public var state:PlaneState;
     public var body:Body;
@@ -80,7 +80,7 @@ class Plane {
     /*************************************************************************/
 
     public function new(
-        tuning:Tuning, parent:Vanilla
+        tuning:PlaneTuning, parent:Engine
         , name:String, pos:Vector, rot:Float
     ):Void {
         this.state = new PlaneState(name, pos, rot);

@@ -1,7 +1,7 @@
-package solemnsky.engine;
+package solemnsky.engine.tune;
 
 /**
- * solemnsky.engine.EngineTuning;
+ * solemnsky.engine.tune.EngineTuning;
  * Object with values and callbacks to influence a plane's behaviour.
  */
 

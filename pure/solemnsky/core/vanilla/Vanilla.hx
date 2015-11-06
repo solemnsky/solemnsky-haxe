@@ -6,6 +6,7 @@ import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import control.Event;
 import control.Scene;
+import haxe.io.Bytes;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -28,7 +29,7 @@ class Vanilla {
     }
 
     public function new() {
-        engine = new Engine(makeTuning(), function(_){});
+        engine = new Engine(makeEngineTuning());
         engine.loadEnvironment(makeEnvironment());
     }
 
@@ -137,6 +138,7 @@ class Vanilla {
     public function serialiseSnap(snap:Dynamic):Bytes {
         return null;
     }
+
     public function readSnap(bytes:Bytes):Dynamic {
         return null;
     }
