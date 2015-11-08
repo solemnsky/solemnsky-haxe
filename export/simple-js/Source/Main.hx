@@ -1,7 +1,6 @@
 package;
 
-import control.Control;
-import control.demo.AllDemo;
+import solemnsky.TopLevel;
 
 class Main {
     public static function main() {

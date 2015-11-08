@@ -2,9 +2,7 @@ package;
 
 import kha.Game;
 import kha.Starter;
-import control.Control;
-import control.Noise;
-import solemnsky.ui.Web;
+import solemnsky.TopLevel;
 
 /**
  * Top-level for the kha web export.
@@ -12,8 +10,10 @@ import solemnsky.ui.Web;
 
 class Main {
   public static function main() {
-    // var control:Control = Web.ctrl();
-    var control:Control<Noise> = Web.ctrl();
+    // create control
+    var control = TopLevel.offlineDemo();
+
+    // run control
     var starter = new Starter(); 
     var manager:Game = new Manager(control, 60); 
     starter.start(manager); 

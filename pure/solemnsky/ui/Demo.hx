@@ -9,11 +9,11 @@ import solemnsky.core.Core;
 import solemnsky.core.vanilla.Vanilla;
 
 /**
- * solemnsky.ui.Web: 
- * Web.ctrl() returns a control object for the web (html5) distribution.
+ * solemnsky.ui.Demo: 
+ * Demo.run(core:Core) runs a demo of core.
  */
 
-class WebFromCore implements Control<Noise> {
+class DemoFromCore implements Control<Noise> {
     private var core:Core;
     private var profileString:String;
     private var notes:Array<String> = [];
@@ -26,11 +26,11 @@ class WebFromCore implements Control<Noise> {
     }
 
     public function init(_) {
-        // network for the html5 target is null, javascript has no UDP
+        // no networking required
     }
 
     /*************************************************************************/
-    /* Control interface
+    /* control interface
     /*************************************************************************/
 
     public function tick(delta:Float):Void {
@@ -58,10 +58,9 @@ class WebFromCore implements Control<Noise> {
     }
 }
 
-class Web {
-    public static function ctrl():Control<Noise> {
+class Demo {
+    public static function run(core:Core):Control<Noise> {
         // return new DemoControl();
-        var core:Core = new Vanilla();
-        return new WebFromCore(core);
+        return new DemoFromCore(core);
     }
 } 
