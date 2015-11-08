@@ -61,7 +61,6 @@ class DemoFromCore<M,S> implements Control<Noise> {
             if (match(CharKey('k'))) control = CCDown(state);
             if (match(CharKey('f'))) control = CCFire(state);
             if (match(CharKey('d'))) control = CCSecondary(state);
-
         }
         }
         core.handle(myId, e);
