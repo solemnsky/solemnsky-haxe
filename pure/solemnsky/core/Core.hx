@@ -10,34 +10,45 @@ import control.Scene;
  * game can hold; decoupled from interface code and backend code.
  */
 
-typedef PlayerSig {
-   name:String, id:Int
-}
+interface Core<M,S> {
+    // M: metadata type
+    // S: snapshot type
 
-interface Core<E,S> {
     public var modeId:String;
 
     /*************************************************************************/
-    /* environment
+    /* metadata 
     /*************************************************************************/
 
-    public function loadEnv(environment:E);
-    public function describeEnv():E;
+    /**
+     * 'metadata' is the data that is produced from a discontinuous 
+     * network delta; it contains everything a client that was
+     * not previously involved in the game needs to know about it
+     */
+    public function loadMeta(meta:M):Void;
+    public function describeMeta():M;
 
     /*************************************************************************/
     /* players
     /*************************************************************************/
 
-    public function join(sig:Int, name:String);
-    public function quit(sig:Int);
-    public function listPlayers():Array<PlayerSig>;
-    public function loadPlayers(Array<PlayerSig>);
+    /**
+     * The concept of players that join and rejoin the game at will
+     * a constant, so it is abstracted out of the Core implementation.
+     * 'sig' is a unique id for the player and 'name' is the player's 
+     * name.
+     */
+    public function join(sig:Int, name:String):Void;
+    public function quit(sig:Int):Void;
+    public function loadPlayers(a:Array<{sig:Int, name:String}>):Void;
+        // for new clients
+    public function listPlayers():Array<{sig:Int, name:String}>;
 
     /*************************************************************************/
     /* user input
     /*************************************************************************/
 
-    public function handle(id:Int, event:Event):Void; 
+    public function handle(sig:Int, control:CoreControl):Void; 
 
     /*************************************************************************/
     /* simulation
@@ -55,13 +66,11 @@ interface Core<E,S> {
     /* network sync
     /*************************************************************************/
 
-    public function clientAssert(id:Int):S; // assert as a client
-    public function serverAssert():S; // assert as a server
+    public function clientAssert(sig:Int):S; 
+    public function serverAssert():S; 
 
-    public function clientMerge(id:Int, snap:S):Void; 
-                                                    // merge as a client
-    public function serverMerge(id:Int, snap:S):Void;
-                           // merge as a server, recieving from a client
+    public function clientMerge(sig:Int, snap:S):Void; 
+    public function serverMerge(sig:Int, snap:S):Void;
 
     /*************************************************************************/
     /* network compression

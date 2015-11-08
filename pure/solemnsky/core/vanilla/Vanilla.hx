@@ -17,7 +17,10 @@ import solemnsky.core.Core;
  * Vanilla core object.
  */
 
-class Vanilla implements Core {
+class Vanilla implements Core<VanillaMeta, VanillaSnap> {
+
+    public var modeId = "vanilla alpha";
+
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -39,22 +42,53 @@ class Vanilla implements Core {
     }
 
     /*************************************************************************/
-    /* initialisation and modeId
+    /* metadata
     /*************************************************************************/
 
-    public function init(initData) {
-        // nothing
+    public function loadMeta(meta:VanillaMeta) {
     }
 
-    public var modeId = "vanilla alpha";
+    public function describeMeta():VanillaMeta {
+        return new VanillaMeta();
+    }
 
     /*************************************************************************/
+    /* players
+    /*************************************************************************/
+
+    public function join(sig:Int, name:String) {
+        players.set(sig, new Player(name));
+    }
+
+    public function quit(sig:Int) {
+        players.remove(sig);
+    }
+
+    public function loadPlayers(a:Array<{sig:Int, name:String}>) {
+        for (i in a) {
+            players.set(i.sig, new Player(i.name));
+        }
+    }
+
+    public function listPlayers():Array<{sig:Int, name:String}> {
+        var arr = [];
+        for (i in players.keys()) {
+            arr.push({sig:i, name:players.get(i).name});
+        }
+        return arr;
+    }
+
+    /************************************************************/
+    /* user input
+    /************************************************************/
+
+    public function handle(sig:Int, event:Event) {
+
+    }
+
+    /************************************************************/
     /* simulation
-    /*************************************************************************/
-
-    public function handle(id:Int, event:Event):Void {
-
-    }
+    /************************************************************/
 
     public function tick(delta:Float):Array<String> {
         engine.tick(delta);
@@ -94,44 +128,21 @@ class Vanilla implements Core {
         return scene;
     }
 
-    public function listPlayers():Array<String> {
-        return [];
-    }
-
     /************************************************************/
-    /* discrete networking 
+    /* network sync
     /************************************************************/
 
-    public function join(name:String):Int {
-        var id = Util.allocNewId(players.keys());
-        var player = new Player(name);
-        players.set(id, player);
-        return id;
+    public function clientAssert(sig:Int):VanillaSnap {
+        return new VanillaSnap();
+    }
+    public function serverAssert():VanillaSnap {
+        return new VanillaSnap();
     }
 
-    public function quit(id:Int) {
-        players.remove(id);
-    }
+    public function clientMerge(sig:Int, snap:VanillaSnap) {
 
-    public function getInitData():Dynamic {
-        return null;
     }
-
-    /*************************************************************************/
-    /* continuous networking
-    /*************************************************************************/
-
-    public function clientAssert(id:Int):Dynamic {
-        return null; 
-    }
-    public function serverAssert():Dynamic {
-        return null;
-    }
-
-    public function clientMerge(id:Int, snap:Dynamic):Void {
-        // empty
-    }
-    public function serverMerge(id:Int, snap:Dynamic):Void {
+    public function serverMerge(sig:Int, snap:VanillaSnap) {
         // empty
     }
 
@@ -139,11 +150,11 @@ class Vanilla implements Core {
     /* network compression
     /*************************************************************************/
 
-    public function serialiseSnap(snap:Dynamic):Bytes {
+    public function serialiseSnap(snap:VanillaSnap):Bytes {
         return null;
     }
 
-    public function readSnap(bytes:Bytes):Dynamic {
+    public function readSnap(bytes:Bytes):VanillaSnap {
         return null;
     }
 
