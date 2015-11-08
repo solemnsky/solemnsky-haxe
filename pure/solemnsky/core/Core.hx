@@ -10,61 +10,63 @@ import control.Scene;
  * game can hold; decoupled from interface code and backend code.
  */
 
-interface Core {
-    /*************************************************************************/
-    /* initialisation and modeId
-    /*************************************************************************/
+typedef PlayerSig {
+   name:String, id:Int
+}
 
-    public function init(initData:Dynamic):Void;
+interface Core<E,S> {
     public var modeId:String;
 
     /*************************************************************************/
-    /* simulation
-    /*   These functions are called a whole lot, but don't generally give
-    /*   the user much information.
+    /* environment
+    /*************************************************************************/
+
+    public function loadEnv(environment:E);
+    public function describeEnv():E;
+
+    /*************************************************************************/
+    /* players
+    /*************************************************************************/
+
+    public function join(sig:Int, name:String);
+    public function quit(sig:Int);
+    public function listPlayers():Array<PlayerSig>;
+    public function loadPlayers(Array<PlayerSig>);
+
+    /*************************************************************************/
+    /* user input
     /*************************************************************************/
 
     public function handle(id:Int, event:Event):Void; 
+
+    /*************************************************************************/
+    /* simulation
+    /*************************************************************************/
+
     public function tick(delta:Float):Array<String>;
 
     /*************************************************************************/
     /* rendering
-    /*   The purpose of these functions is to give the user information.
     /*************************************************************************/
     
     public function render(delta:Float):Scene;
-    public function listPlayers():Array<String>;
 
     /*************************************************************************/
-    /* discrete networking
-    /*   Networking functions, only called now and then (when players join
-    /*   and quit for example).
+    /* network sync
     /*************************************************************************/
 
-    public function join(name:String):Int;
-    public function quit(id:Int):Void;
-    public function getInitData():Dynamic;
+    public function clientAssert(id:Int):S; // assert as a client
+    public function serverAssert():S; // assert as a server
 
-    /*************************************************************************/
-    /* continuous networking
-    /*   Networking functions, called all the time to synchronize state and
-    /*   user input.
-    /*************************************************************************/
-
-    public function clientAssert(id:Int):Dynamic; // assert as a client
-    public function serverAssert():Dynamic; // assert as a server
-
-    public function clientMerge(id:Int, snap:Dynamic):Void; 
+    public function clientMerge(id:Int, snap:S):Void; 
                                                     // merge as a client
-    public function serverMerge(id:Int, snap:Dynamic):Void;
+    public function serverMerge(id:Int, snap:S):Void;
                            // merge as a server, recieving from a client
 
     /*************************************************************************/
     /* network compression
-    /*   Used to compress and decompress data as it goes over a 
-    /*   bandwidth-limited network.
     /*************************************************************************/
 
-    public function serialiseSnap(snap:Dynamic):Bytes;
-    public function readSnap(bytes:Bytes):Dynamic;
+    public function serialiseSnap(snap:S):Bytes;
+    public function readSnap(bytes:Bytes):S;
 }

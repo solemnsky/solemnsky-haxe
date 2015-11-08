@@ -25,7 +25,6 @@ class Vanilla implements Core {
     private var engine:Engine;
     private var players:Map<Int, Player>;
 
-
     public function makeEnvironment():Environment {
         var environment = new Environment();   
         // operations on environment
@@ -35,6 +34,8 @@ class Vanilla implements Core {
     public function new() {
         engine = new Engine(makeEngineTuning());
         engine.loadEnvironment(makeEnvironment());
+
+        players = new Map();
     }
 
     /*************************************************************************/
@@ -106,7 +107,6 @@ class Vanilla implements Core {
         var player = new Player(name);
         players.set(id, player);
         return id;
-
     }
 
     public function quit(id:Int) {
