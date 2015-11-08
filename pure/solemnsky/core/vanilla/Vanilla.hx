@@ -82,7 +82,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /* user input
     /************************************************************/
 
-    public function handle(sig:Int, event:Event) {
+    public function handle(sig:Int, control:CoreControl) {
 
     }
 

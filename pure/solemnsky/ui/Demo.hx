@@ -50,9 +50,9 @@ class DemoFromCore<M,S> implements Control<Noise> {
     }
 
     public function handle(e:Event):Void {
-        var control:CoreControl;
+        var control:CoreControl = null;
         switch (e) {
-        KbEvent(key, state) {
+        case KbEvent(key, state): {
             var match = function(pat) return Type.enumEq(key, pat);
 
             if (match(CharKey('i'))) control = CCUp(state);
@@ -62,8 +62,10 @@ class DemoFromCore<M,S> implements Control<Noise> {
             if (match(CharKey('f'))) control = CCFire(state);
             if (match(CharKey('d'))) control = CCSecondary(state);
         }
+        default: {}
         }
-        core.handle(myId, e);
+        if (control != null)
+            core.handle(myId, control);
     }
 
     public function conclude():Null<Noise> {
