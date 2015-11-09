@@ -6,6 +6,7 @@ import solemnsky.engine.mod.PlaneMod;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Circle;
+import nape.geom.Vec2;
 
 /**
  * solemnsky.engine.Plane:
@@ -136,19 +137,22 @@ class Plane<D> {
         if (state.movement.right) targetRotVel += maxRotation;
 
         state.rotvel +=
-            (targetRotVel - state.rotvel) / Math.pow(mod.planeAngularDamping, delta);
+            (targetRotVel - state.rotvel) 
+                / Math.pow(mod.planeAngularDamping, delta);
 
         state.afterburner = false;            
 
         // motion when stalled
         if (state.stalled) {
             // add basic thrust
-            state.afterburner = true;
-            state.vel = Vector.fromAngle(state.rot)
-                .mult(
-                    delta / 1000 * mod.planeAfterburnerStalled
-                )
-                .add(state.vel);
+            if (state.movement.forward) {
+                state.afterburner = true;
+                state.vel = Vector.fromAngle(state.rot)
+                    .mult(
+                        delta / 1000 * mod.planeAfterburnerStalled
+                    )
+                    .add(state.vel);
+            }
 
             // apply damping when over planeMaxVelocityStalled
             var excessVel = speed - mod.planeMaxVelocityStalled;
@@ -212,6 +216,7 @@ class Plane<D> {
         if (state.stalled) {
             if (forwardVel > mod.planeExitStallThreshold) {
                 state.stalled = false;
+                body.force = new Vec2(0, 0);
                 state.leftoverVel = new Vector(
                     state.vel.x - forwardVel * Math.cos(state.rot)
                     , state.vel.y - forwardVel * Math.sin(state.rot)
@@ -223,6 +228,7 @@ class Plane<D> {
             }
         } else {
             if (forwardVel < mod.planeEnterStallThreshold) {
+                body.force = new Vec2(0, parent.mod.gravity);
                 state.stalled = true;
                 state.throttle = 1;
                 state.speed = 0;

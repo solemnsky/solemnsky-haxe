@@ -50,7 +50,7 @@ class Engine<D> {
     private inline function loadSpaceFromEnvironment(
         environment:Environment
     ) {
-        space = new Space(new Vec2(0, mod.gravity));
+        space = new Space(new Vec2(0, 0));
 
         var floor = new Body(BodyType.STATIC);
         floor.shapes.add(
