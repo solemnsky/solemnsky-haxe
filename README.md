@@ -1,40 +1,55 @@
 # SolemnSky
 
-Read [our website](http://solemnsky.com) for our end user-facing status. If you ain't no end-user, read on.
+[Our website](http://solemnsky.com) will be updated accordingly when certain milestones in project development are met. For now this repository is the primary hub of SolemnSky project activity.
 
-SolemnSky is a long-term project, currently maintained by myself Magnetic Duck alone. If you want to contribute, send me a line via one of my contact media and I'll be happy to help you get started. If you're generally interested in the project but don't know much about it yet, this readme has some basic information.
+## project design
 
-I am dedicated to making this happen, however long it will take.
+This project is not hacked together in the interest of producing a product quickly. It's designed in the interest of producing a good product that can be relied on as the base for future development.
 
-## index 
+Here's a quick overview of the way I have things set up...
 
-If you're interested in the top-level gist of this project, read 'outline of project direction'.
+### the base
 
-If you're interested in building our sources for yourself and possibly developing, read 'build instructions'.
+I have chosen the [Haxe language](http://haxe.org) for core development. Its virtues include:
 
-For a quick view of our directory structure, read 'directories'.
+- Transpilation to many targets (javascript, flash, C++ to name a few)
+- Generally good OOP-based design, with a powerful type system and GADTs.
+- A small history of being used for indie game development.
 
-For contact info or information on the resources put into this project read the last two sections 'contact' or 'credits'.
+To turn our code into interactive content on the target platforms, there are many haxe-based frameworks to choose from. I wrote a simple API that our code runs through (/pure/control), which can then be implemented in many ways; currently we are using Kha.
 
-## outline of project direction
+### interfaces
 
-The development of SolemnSky is intended to consider implications in the realms of portability, extensibility, and performance. It is not enough for me to make a game, I intend to make a game well.
+There are two important interfaces through with our core passes:
 
-### portability
+#### Control (/pure/control/)
 
-Good portability can yield an increased contact with more potential players without sacrificing features and stability. An engaging browser-playable demo could be a vector for virality and advertisement, for example, but we don't want to sacrifice a native release's advantages in performance and networking.
+This is an interface representing an interactive user interface or server. It's turned into a tangible export through one of our export media.
 
-SolemnSky achieves portability by virtue of a decoupling between 'pure' code (abstracted from platform boilerplate) written in framework-agnostic Haxe (having no ties to systems like OpenFL or platform API) and the particulars of platform deployment. Haxe is an extremely portable language; its transpiler can export C++, Flash, JavaScript, and C# (among others), and various frameworks such as Kha, Flambe and Luxe exist to deploy Haxe systems smoothly to many interactive targets. SolemnSky's pure code, operating in a small UI API (see /pure/control/Control.hx) can independently be released to multiple platforms through relatively small boilerplate interfaces (see /export/).
+#### Core (/pure/solemnsky/core/)
 
-### extensibility
+This is an interface representing a game mode, with networking functions and a whole load of stuff. It's turned into a Control through one of our UIs in solemnsky.ui.
 
-Good extensibility implies an efficient and elegant handling of parallel and branched modification in any of the various levels the game's logic and interface. For example, game modes should be possible to develop in parallel, and tweaks in basic gameplay mechanics should ripple up the various branches of modification. Adding layers of functionality on top of already deployed modes without introducing complexity should be a non-issue.
+### the engine
 
-SolemnSky achieves extensibility through a separation of a ``Core`` interface that defines core game logic from the definitions of UI and server-side release wrappers defined in function of these logical objects. Furthermore, the core game engine is defined as a separate object, used by the various Core implementations.
+Using [the nape physics engine](http://napephys.com) for the heavy lifting, I define a central game engine, universally useful across our code. It's used directly in the gameplay tutorial (solemnsky.ui.Tutorial.run()) and in the various Cores. It should itself manage state and network syncing as well as gameplay mechanics, delegating only more meaningful tasks to its user.
 
-### performance
+## roadmap
 
-It's of utmost importance to make SolemnSky performant and playable to a competitive level on as many systems as possible. The 2D sprite-based graphics we intend to use will make rendering speed a non-issue; fast and efficient networking will receive much more attention on this front.
+Name | Description | Completion 
+Goal 1 | Investigate Haxe and interactive frameworks. | Completed 
+Goal 2 | Create a project-specific API (Control) to write our interactive code in function of, implement it in Kha. | Completed 
+Goal 3 | Create dockerized build system, organise project file structure, find a satisfactory physics engine. | Completed
+Goal 3 | Demonstrate the Control framework by creating a demo in it (using the physics engine), account for possible performance pitfalls. | Completed
+Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
+Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
+Goal 6 | Conclude the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | In progress
+Milestone 1 | Add graphics to the demo, make presentable, add it to solemnsky.com. | None
+Goal 7 | Integrate network sync functionalities into the game engine. | None
+Goal 8 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched
+Goal 9 | Find or create UDP utilities. | None
+Goal 10 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
+Milestone 2 | Add functionality to the client-server pair, make Vanilla playable | None
 
 ## build instructions
 
@@ -46,19 +61,6 @@ We use docker as a fool-proof build environment.
     ./dock/run.sh      # run a shell in the development container
 
 Inside the development environment, the standard makefile is used to compile targets to the /dist directory. (The ``all`` target builds everything.)
-
-## outline of export media
-
-As outlined in the 'portability' section, there is a lowest common denominator API for an interactive / graphical system defined in pure/control, through which all of our pure code passes through, enabling the same code to be deployed to any multiple interactive system where I can define a boilerplate interface to run a Control object. These systems are currently:
-
-- Kha (kha-web and kha-native)
-  - Targets HTML5 flash and native, primarily.
-  - Still in development.
-  - I'm currently having issues getting correctly antialiased graphics and vector fonts.
-  - Is the fastest especially on native.
-- Flambe (flambe)
-  - Targets HTML5 and flash, primarily.
-  - Used by nickelodeon; is pretty stable.
 
 ## directories
 
