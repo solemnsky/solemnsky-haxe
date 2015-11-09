@@ -1,24 +1,35 @@
 package solemnsky.tutorial;
 
-import solemnsky.engine.Engine;
-import solemnsky.engine.tune.EngineTuning;
-import solemnsky.engine.tune.PlaneTuning;
+import util.Vector;
 import control.Control;
-import control.Noise;
 import control.Event;
-import control.Scene;
+import control.Noise;
 import control.Profile;
+import control.Scene;
+import solemnsky.engine.Engine;
+import solemnsky.engine.Environment;
+import solemnsky.engine.Player;
+import solemnsky.engine.mod.EngineMod;
+import solemnsky.engine.mod.PlaneMod;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
  */
 
+typedef PlayerData = {
+    name:String
+}
+
 class TutorialMain implements Control<Noise> {
-    private var engine:Engine;
+    private var engine:Engine<PlayerData>;
+    private var player:Player<PlayerData>;
 
     public function new() {
-        engine = new Engine(makeEngineTuning());
+        engine = new Engine(myEngineMod());
         engine.loadEnvironment(new Environment());
+
+        player = engine.addPlayer(0, {name:"offline player"});
+        player.spawn(myPlaneMod(), new Vector(0, 0), 0);
     }
 
     public function init(_) {}
@@ -49,14 +60,14 @@ class TutorialMain implements Control<Noise> {
     /* tuning
     /***************************************************************/
 
-    public function makeEngineTuning():EngineTuning {
-        var tuning = new EngineTuning();
+    public function myEngineMod():EngineMod {
+        var tuning = new EngineMod();
         tuning.debugTrace = function(str){trace('engine log: '+str);};
         return tuning;
     }
 
-    public function makePlaneTuning():PlaneTuning {
-        var tuning = new PlaneTuning();
+    public function myPlaneMod():PlaneMod {
+        var tuning = new PlaneMod();
         return tuning;
     }
 }

@@ -1,11 +1,11 @@
-package solemnsky.engine.tune;
+package solemnsky.engine.mod;
 
 /**
- * solemnsky.engine.tune.EngineTuning:
+ * solemnsky.engine.mod.EngineMod:
  * Object with values and callbacks to influence the engine's behaviour.
  */
 
-class EngineTuning {
+class EngineMod {
     public var debugTrace:String->Void;
 
     public var planeRadius:Float = 20; // lol

@@ -1,57 +1,32 @@
 package solemnsky.engine;
 
-import control.Event;
-import control.Scene;
-import haxe.io.Bytes;
-import util.Transform;
-import util.Vector;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
 import nape.space.Space;
-import solemnsky.engine.tune.EngineTuning;
-import util.Util;
+import solemnsky.engine.mod.EngineMod;
 
 /**
  * solemnsky.engine.Engine:
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
-class Player<D> {
-    public var data:D;
-
-    public var plane:Null<Plane>;
-
-    public function new(data:D) {
-        this.data = data;
-        plane = null;
-    }
-
-    public function kill() {
-        this.plane = null;
-    }
-
-    public function spawn() {
-        
-    }
-}
-
 class Engine<D> {
     /*************************************************************************/
     /* variables
     /*************************************************************************/
 
-    public var tuning:EngineTuning;
+    public var mod:EngineMod;
 
     public var players:Map<Int, Player<D>>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 
-    public function new(tuning:EngineTuning) {
-        this.tuning = tuning;
+    public function new(mod:EngineMod) {
+        this.mod = mod;
 
-        planes = new Map();
+        players = new Map();
         environment = null;
         space = null;
 
@@ -59,7 +34,7 @@ class Engine<D> {
     }
 
     private inline function debugTrace(str:String) {
-        tuning.debugTrace(str);
+        mod.debugTrace(str);
     }
 
     /*************************************************************************/
@@ -88,8 +63,14 @@ class Engine<D> {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int, data:D) {
-        players.set(sig, new Player(data));
+    public function addPlayer(sig:Int, data:D):Player<D> {
+        var player = new Player(this, data);
+        players.set(sig, player);
+        return player;
+    }
+
+    public function findPlayer(sig:Int):Null<Player<D>> {
+        return players.get(sig);
     }
 
     /*************************************************************************/
@@ -99,12 +80,12 @@ class Engine<D> {
     public function tick(delta:Float):Array<String> {
         if (space != null) {
             for (player in players.iterator()) {
-                player.plane.writeToBody();
+                player.writeToNape();
             }
             space.step(delta / 1000); 
-            for (plane in planes.iterator()) {
-                plane.readFromBody();
-                plane.tick(delta);
+            for (player in players.iterator()) {
+                player.readFromNape();
+                player.tick(delta);
             }
         }
         return [];

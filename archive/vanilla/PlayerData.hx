@@ -7,8 +7,7 @@ import solemnsky.engine.Plane;
  * Object representing a player.
  */
 
-class Player {
-    public var plane:Null<Plane>;
+class PlayerData {
     public var name:String;
 
     public function new(name:String) {

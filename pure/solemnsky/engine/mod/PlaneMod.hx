@@ -1,11 +1,11 @@
-package solemnsky.engine.tune;
+package solemnsky.engine.mod;
 
 /**
- * solemnsky.engine.tune.EngineTuning;
+ * solemnsky.engine.mod.PlaneMod:
  * Object with values and callbacks to influence a plane's behaviour.
  */
 
-class PlaneTuning {
+class PlaneMod {
     // stalled
     public var planeMaxRotationStalled:Float; // Math.PI * 1.5
     public var planeMaxVelocityStalled:Float = 300;

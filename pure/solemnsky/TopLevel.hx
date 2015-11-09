@@ -1,8 +1,8 @@
 package solemnsky;
 
-import solemnsky.core.Core;
-import solemnsky.core.vanilla.Vanilla;
-import solemnsky.ui.Demo;
+// import solemnsky.core.Core;
+// import solemnsky.core.vanilla.Vanilla;
+// import solemnsky.ui.Demo;
 import solemnsky.tutorial.Tutorial;
 
 /**
@@ -11,14 +11,6 @@ import solemnsky.tutorial.Tutorial;
  */
 
 class TopLevel {
-    /**
-     * Simple offline demo of the Vanilla core.
-     */
-    public static function offlineDemo() {
-        var core = new Vanilla();
-        return Demo.run(core);
-    }
-
     public static function tutorial() {
         return Tutorial.run();
     };

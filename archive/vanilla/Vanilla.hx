@@ -2,6 +2,7 @@ package solemnsky.core.vanilla;
 
 import control.Event;
 import control.Scene;
+import control.Noise;
 import haxe.io.Bytes;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
@@ -25,8 +26,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /* constructor
     /*************************************************************************/
 
-    private var engine:Engine;
-    private var players:Map<Int, Player>;
+    private var engine:Engine<PlayerData>;
 
     public function makeEnvironment():Environment {
         var environment = new Environment();   
@@ -37,8 +37,6 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     public function new() {
         engine = new Engine(makeEngineTuning());
         engine.loadEnvironment(makeEnvironment());
-
-        players = new Map();
     }
 
     /*************************************************************************/
@@ -57,25 +55,15 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /*************************************************************************/
 
     public function join(sig:Int, name:String) {
-        players.set(sig, new Player(name));
     }
 
     public function quit(sig:Int) {
-        players.remove(sig);
     }
 
     public function loadPlayers(a:Array<{sig:Int, name:String}>) {
-        for (i in a) {
-            players.set(i.sig, new Player(i.name));
-        }
     }
 
     public function listPlayers():Array<{sig:Int, name:String}> {
-        var arr = [];
-        for (i in players.keys()) {
-            arr.push({sig:i, name:players.get(i).name});
-        }
-        return arr;
     }
 
     /************************************************************/
