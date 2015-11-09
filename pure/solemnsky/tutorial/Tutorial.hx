@@ -48,6 +48,21 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
+    private static function renderVector(vec:Vector):Scene {
+        var scene = new Scene();
+
+        scene.prims = [
+            SetColor(0, 255, 0, 255)
+            , DrawRect(new Vector(-2, 20), new Vector(2, 20))
+        ];
+
+        scene.trans = Transform.translation(800, 700)
+            .multmat(Transform.rotation(vec.angle()))
+            .multmat(Transform.scale(vec.length(), vec.length()));
+
+        return scene;
+    }
+
     private static function renderPlayer(
         player:Player<PlayerData>
     ): Scene {
@@ -55,13 +70,12 @@ class TutorialMain implements Control<Noise> {
 
         if (player.plane != null) {
             var state:PlaneState = player.plane.state;
-            // the is a plane to draw
 
             scene.prims = [
                 // SetColor(255, 0, 0, 255)
                 // , DrawCircle(Vector.zero, 15)
                 SetColor(0, 255, 0, 255)
-                , DrawRect(new Vector(-15, 2), new Vector(15, -2))
+                , DrawRect(new Vector(-15, -2), new Vector(15, 2))
             ];
 
             scene.trans = Transform.translation(state.pos.x, state.pos.y)
@@ -71,12 +85,28 @@ class TutorialMain implements Control<Noise> {
         return scene;
     }
 
+    private static function renderPlayerDebug(
+        player:Player<PlayerData>
+    ): Scene {
+        var scene = new Scene();
+
+        if (player.plane != null) {
+            var state:PlaneState = player.plane.state;
+
+            var debugVec = function(vec) 
+                scene.children.push(renderVector(vec));
+
+            debugVec(state.leftoverVel);
+        }
+
+        return scene;
+    }
+
     public function render(delta:Float):Scene {
         var scene = new Scene();
 
-        for (player in engine.players.iterator()) {
-            scene.children.push(renderPlayer(player));
-        }
+        scene.children.push(renderPlayer(player));
+        scene.children.push(renderPlayerDebug(player));
 
         return scene;
     }
