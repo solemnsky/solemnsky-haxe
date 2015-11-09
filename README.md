@@ -13,22 +13,16 @@ Here's a quick overview of the way I have things set up...
 I have chosen the [Haxe language](http://haxe.org) for core development. Its virtues include:
 
 - Transpilation to many targets (javascript, flash, C++ to name a few)
-- Generally good OOP-based design, with a powerful type system and GADTs.
+- Generally good OOP-based design, with a powerful type system and GADTs (yay).
 - A small history of being used for indie game development.
-
-To turn our code into interactive content on the target platforms, there are many haxe-based frameworks to choose from. I wrote a simple API that our code runs through (/pure/control), which can then be implemented in many ways; currently we are using Kha.
 
 ### interfaces
 
-There are two important interfaces through with our code passes:
+There are two important interfaces through with our code passes along its way to become a thing you can play:
 
-#### Control (/pure/control/)
+Core: This is an interface representing a game mode, with networking functions and a whole load of stuff. It's turned into a Control through one of our UIs in solemnsky.ui.
 
-This is an interface representing an interactive user interface or server. It's turned into a tangible export through one of our export media.
-
-#### Core (/pure/solemnsky/core/)
-
-This is an interface representing a game mode, with networking functions and a whole load of stuff. It's turned into a Control through one of our UIs in solemnsky.ui.
+Control: This is an interface representing an interactive user interface or server. It's turned into a tangible export through one of our export media. By the power of haxe, the exact same Control object can be turned into a Flash .swf file, a html5 game, or a C++ executible.
 
 ### the engine
 
@@ -45,12 +39,12 @@ Goal 3 | Demonstrate the Control framework by creating a demo in it (using the p
 Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
 Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
 Goal 6 | Conclude the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | In progress
-Milestone 1 | Add graphics to the demo, make presentable, add it to solemnsky.com. | None
+Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | None
 Goal 7 | Integrate network sync functionalities into the game engine. | None
 Goal 8 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched
 Goal 9 | Find or create UDP utilities. | None
 Goal 10 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
-Milestone 2 | Add functionality to the client-server pair, make Vanilla playable | None
+Milestone | Add functionality to the client-server pair, make Vanilla playable | None
 
 ## build instructions
 
