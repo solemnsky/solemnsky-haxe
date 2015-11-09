@@ -20,7 +20,7 @@ To turn our code into interactive content on the target platforms, there are man
 
 ### interfaces
 
-There are two important interfaces through with our core passes:
+There are two important interfaces through with our code passes:
 
 #### Control (/pure/control/)
 
@@ -37,6 +37,7 @@ Using [the nape physics engine](http://napephys.com) for the heavy lifting, I de
 ## roadmap
 
 Name | Description | Completion 
+---- | ----------- | ---------
 Goal 1 | Investigate Haxe and interactive frameworks. | Completed 
 Goal 2 | Create a project-specific API (Control) to write our interactive code in function of, implement it in Kha. | Completed 
 Goal 3 | Create dockerized build system, organise project file structure, find a satisfactory physics engine. | Completed
