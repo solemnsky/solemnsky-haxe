@@ -23,6 +23,16 @@
 			"file": "player.png",
 			"name": "player"
 		}
+		,{
+			"type": "image",
+			"file": "player-speed.png",
+			"name": "player-speed"
+		}
+		,{
+			"type": "image",
+			"file": "player-thrust.png",
+			"name": "player-thrust"
+		}
 	],
 	"rooms": [
 		{
@@ -32,7 +42,9 @@
 			"assets": [
 				"Arial14.kravur",
 				"title",
-                                "player"
+                                "player",
+                                "player-speed",
+                                "player-thrust"
 			]
 		}
 	]

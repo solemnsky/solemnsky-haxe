@@ -8,6 +8,7 @@ import solemnsky.engine.Plane;
 /**
  * solemnsky.engine.Graphics:
  * Universally useful graphics functions.
+ * Some basic graphics is also managed by the Engine system.
  */
 
 class Graphics {
@@ -33,37 +34,21 @@ class Graphics {
 
         if (player.plane != null) {
             var state:PlaneState = player.plane.state;
+            var gfxState:PlaneGraphicsState = player.plane.gfxState;
 
-            if (! state.stalled) 
-                scene.prims = [
-                    SetColor(0, 255, 0, 255)
-                    , DrawRect(new Vector(-15, -2), new Vector(15, 2))
-                ];
-            else
-                scene.prims = [
-                    SetColor(255, 0, 0, 255)
-                    , DrawRect(new Vector(-15, -2), new Vector(15, 2))
-                ];
+            // we have to make sure the player sprite
+            // is centered on the COM of the player... 
+            scene.prims = [
+                SetColor(255, 255, 255, 255)
+                , SetAlpha(1)
+                , DrawImage(new Vector(-200, -100), "player")
+                , SetAlpha(gfxState.burnFade)
+                , DrawImage(new Vector(-400, -100), "player-thrust")
+            ];
 
             scene.trans = Transform.translation(state.pos.x, state.pos.y)
-                .multmat(Transform.rotation(state.rot));
-        }
-
-        return scene;
-    }
-
-    public static function renderPlayerDebug<D>(
-        player:Player<D>
-    ): Scene {
-        var scene = new Scene();
-
-        if (player.plane != null) {
-            var state:PlaneState = player.plane.state;
-
-            var debugVec = function(vec) 
-                scene.children.push(renderVector(vec));
-
-            debugVec(state.leftoverVel);
+                .multmat(Transform.rotation(state.rot))
+                .multmat(Transform.scale(1/5, 1/5));
         }
 
         return scene;

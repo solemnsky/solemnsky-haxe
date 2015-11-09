@@ -15,7 +15,7 @@ class EngineMod {
     public var planeHeight:Float = 30;
 
     // acceleration of gravity 
-    public var gravity:Float = 500;
+    public var gravity:Float = 300;
 
     // contact
     public var minimumContactDamage:Float = 0.02;

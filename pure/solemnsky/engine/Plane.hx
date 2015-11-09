@@ -10,7 +10,7 @@ import nape.geom.Vec2;
 
 /**
  * solemnsky.engine.Plane:
- * Represents a plane in the game. Is an object,
+ * Represents a plane in the game. It is simply an object,
  * not linked to any particular player.
  */
 
@@ -62,6 +62,16 @@ class PlaneState {
     }
 }
 
+/**
+ * Animation values related to the plane; they have no effect on 
+ * anything besides aesthetics.
+ */
+class PlaneGraphicsState {
+    public var burnFade:Float = 1;
+
+    public function new() {}
+}
+
 class Plane<D> {
     /*************************************************************************/
     /* private state variables
@@ -73,6 +83,7 @@ class Plane<D> {
     private var mod:PlaneMod;
 
     public var state:PlaneState;
+    public var gfxState:PlaneGraphicsState;
     public var body:Body;
 
     /*************************************************************************/
@@ -84,6 +95,7 @@ class Plane<D> {
         pos:Vector, rot:Float
     ):Void {
         this.state = new PlaneState(pos, rot);
+        this.gfxState = new PlaneGraphicsState();
         this.parent = parent;
         this.mod = mod;
 
@@ -91,6 +103,7 @@ class Plane<D> {
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
         body.shapes.add(new Circle(parent.mod.planeRadius));
         body.setShapeMaterials(nape.phys.Material.rubber());
+        body.align();
         body.space = parent.space;
         writeToNape();
     }
@@ -116,6 +129,16 @@ class Plane<D> {
     /*************************************************************************/
     /* simulation
     /*************************************************************************/
+
+    /**
+     * Tick the plane's gfxState forward.
+     */
+    public function tickGraphics(delta:Float):Void {
+        if (state.afterburner) gfxState.burnFade += delta / 200;
+        else gfxState.burnFade -= delta / 200;
+        gfxState.burnFade = Math.max(0, gfxState.burnFade);
+        gfxState.burnFade = Math.min(1, gfxState.burnFade);
+    }
 
     /**
      * Mutate the plane's state value; this works hand in hand

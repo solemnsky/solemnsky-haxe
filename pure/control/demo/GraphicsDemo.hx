@@ -95,7 +95,7 @@ class GraphicsDemo implements Control<DemoSelect> {
         scene.children = [renderFront(delta)];
 
         scene.prims = [
-            SetColor(0, 0, 255, 255)
+            SetColor(255, 255, 255, 255)
             , DrawImage(new Vector(0, 0), "title")
             , SetColor(0, 0, 0, 255)
             , SetFont("Arial", 14)

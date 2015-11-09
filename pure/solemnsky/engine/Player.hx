@@ -49,5 +49,10 @@ class Player<D> {
         if (this.plane != null)
             this.plane.tick(delta);
     }
+
+    public function tickGraphics(delta:Float) {
+        if (this.plane != null)
+            this.plane.tickGraphics(delta);
+    }
 }
 

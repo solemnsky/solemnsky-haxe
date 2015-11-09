@@ -24,6 +24,10 @@ class Render {
                 gr.color = Color.fromBytes(r, g, b, a);
             }
 
+            case SetAlpha(a): {
+                gr.opacity = a;
+            }
+
             case SetFont(name, size): {
                 gr.font = Loader.the.loadFont(
                     name, new FontStyle(false, false, false), size);

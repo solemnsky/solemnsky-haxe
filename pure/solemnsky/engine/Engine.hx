@@ -87,6 +87,12 @@ class Engine<D> {
         return [];
     }
 
+    public function tickGraphics(delta:Float) {
+        for (player in players.iterator()) {
+            player.tickGraphics(delta);
+        }
+    }
+
     public function hasEnded():Bool {
         return false;
     }

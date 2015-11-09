@@ -13,6 +13,7 @@ enum TextAlign { CenterText; LeftText; RightText; }
 enum DrawPrim {
     // setting state
     SetColor   (r:Int, g:Int, b:Int, a:Int);
+    SetAlpha   (a:Float);
     SetFont    (name:String, size:Int);
 
     // drawing primitives

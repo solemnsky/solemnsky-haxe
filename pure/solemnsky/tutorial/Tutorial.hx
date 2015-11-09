@@ -50,10 +50,15 @@ class TutorialMain implements Control<Noise> {
     /***************************************************************/
 
     public function render(delta:Float):Scene {
+        engine.tickGraphics(delta);
+
         var scene = new Scene();
 
+        scene.prims = [
+            SetColor(20, 20, 50, 255)
+            , DrawRect(Vector.zero, new Vector(1600, 900))
+        ];
         scene.children.push(Graphics.renderPlayer(player));
-        scene.children.push(Graphics.renderPlayerDebug(player));
 
         return scene;
     }
