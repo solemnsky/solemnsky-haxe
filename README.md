@@ -26,7 +26,7 @@ Control: This is an interface representing an interactive user interface or serv
 
 ### the engine
 
-Using [the nape physics engine](http://napephys.com) for the heavy lifting, I define a central game engine, universally useful across our code. It's used directly in the gameplay tutorial (solemnsky.ui.Tutorial.run()) and in the various Cores. It should itself manage state and network syncing as well as gameplay mechanics, delegating only more meaningful tasks to its user.
+Using [the nape physics engine](http://napephys.com) for the heavy lifting, I define a central game engine, universally useful across our code. It's used directly in the gameplay tutorial (solemnsky.tutorial.Tutorial.run()) and in the various Cores. It should itself manage state and network syncing as well as gameplay mechanics, delegating only more meaningful tasks to its user.
 
 ## roadmap
 
@@ -38,7 +38,7 @@ Goal 3 | Create dockerized build system, organise project file structure, find a
 Goal 3 | Demonstrate the Control framework by creating a demo in it (using the physics engine), account for possible performance pitfalls. | Completed
 Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
 Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
-Goal 6 | Conclude the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | In progress
+Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | In progress
 Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | None
 Goal 7 | Integrate network sync functionalities into the game engine. | None
 Goal 8 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched

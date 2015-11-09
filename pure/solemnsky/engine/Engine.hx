@@ -18,14 +18,33 @@ import util.Util;
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
-class Engine {
+class Player<D> {
+    public var data:D;
+
+    public var plane:Null<Plane>;
+
+    public function new(data:D) {
+        this.data = data;
+        plane = null;
+    }
+
+    public function kill() {
+        this.plane = null;
+    }
+
+    public function spawn() {
+        
+    }
+}
+
+class Engine<D> {
     /*************************************************************************/
     /* variables
     /*************************************************************************/
 
     public var tuning:EngineTuning;
 
-    public var planes:Map<Int, Plane>;
+    public var players:Map<Int, Player<D>>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 
@@ -63,20 +82,14 @@ class Engine {
             new Polygon(Polygon.rect(50, (900 - 50), (1600 - 100), 1))
         );
         floor.space = space;
-        floor.setShapeMaterials(nape.phys.Material.rubber());
     }
 
     /*************************************************************************/
-    /* planes
+    /* players
     /*************************************************************************/
 
-    private function doForPlane(f:Plane->Void, id:Int):Bool {
-        var plane = planes.get(id);
-        if (plane != null) {
-            f(plane);
-            return true;                    
-        }
-        return false;
+    public function addPlayer(sig:Int, data:D) {
+        players.set(sig, new Player(data));
     }
 
     /*************************************************************************/
@@ -85,8 +98,8 @@ class Engine {
 
     public function tick(delta:Float):Array<String> {
         if (space != null) {
-            for (plane in planes.iterator()) {
-                plane.writeToBody();
+            for (player in players.iterator()) {
+                player.plane.writeToBody();
             }
             space.step(delta / 1000); 
             for (plane in planes.iterator()) {

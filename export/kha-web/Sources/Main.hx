@@ -11,7 +11,7 @@ import solemnsky.TopLevel;
 class Main {
   public static function main() {
     // create control
-    var control = TopLevel.offlineDemo();
+    var control = TopLevel.tutorial();
 
     // run control
     var starter = new Starter(); 

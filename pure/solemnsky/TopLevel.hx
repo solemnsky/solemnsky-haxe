@@ -3,6 +3,7 @@ package solemnsky;
 import solemnsky.core.Core;
 import solemnsky.core.vanilla.Vanilla;
 import solemnsky.ui.Demo;
+import solemnsky.tutorial.Tutorial;
 
 /**
  * solemnsky.TopLevel:
@@ -17,4 +18,8 @@ class TopLevel {
         var core = new Vanilla();
         return Demo.run(core);
     }
+
+    public static function tutorial() {
+        return Tutorial.run();
+    };
 }

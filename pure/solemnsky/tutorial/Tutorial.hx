@@ -1,18 +1,27 @@
-package solemnsky.ui;
+package solemnsky.tutorial;
 
 import solemnsky.engine.Engine;
 import solemnsky.engine.tune.EngineTuning;
+import solemnsky.engine.tune.PlaneTuning;
+import control.Control;
+import control.Noise;
+import control.Event;
+import control.Scene;
+import control.Profile;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
  */
 
 class TutorialMain implements Control<Noise> {
-    private var engine:
+    private var engine:Engine;
 
     public function new() {
         engine = new Engine(makeEngineTuning());
+        engine.loadEnvironment(new Environment());
     }
+
+    public function init(_) {}
 
     /***************************************************************/
     /* control interface
@@ -22,7 +31,7 @@ class TutorialMain implements Control<Noise> {
     }
 
     public function render(delta:Float):Scene {
-        return core.render(delta);
+        return new Scene();
     }
 
     public function profiling(profile:Profile):Void {
@@ -30,20 +39,6 @@ class TutorialMain implements Control<Noise> {
     }
 
     public function handle(e:Event):Void {
-        var control:CoreControl;
-        switch (e) {
-        KbEvent(key, state) {
-            var match = function(pat) return Type.enumEq(key, pat);
-
-            if (match(CharKey('i'))) control = CCUp(state);
-            if (match(CharKey('j'))) control = CCLeft(state);
-            if (match(CharKey('l'))) control = CCRight(state);
-            if (match(CharKey('k'))) control = CCDown(state);
-            if (match(CharKey('f'))) control = CCFire(state);
-            if (match(CharKey('d'))) control = CCSecondary(state);
-        }
-        }
-        core.handle(myId, e);
     }
 
     public function conclude():Null<Noise> {
@@ -67,7 +62,7 @@ class TutorialMain implements Control<Noise> {
 }
 
 class Tutorial {
-    static function run():Control<Noise> {
+    public static function run():Control<Noise> {
         return new TutorialMain();
     }
 }
