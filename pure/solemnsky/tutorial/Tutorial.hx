@@ -9,6 +9,7 @@ import control.Scene;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import solemnsky.engine.Player;
+import solemnsky.engine.Plane;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PlaneMod;
 
@@ -39,10 +40,39 @@ class TutorialMain implements Control<Noise> {
     /***************************************************************/
 
     public function tick(delta:Float):Void {
+        engine.tick(delta);
+    }
+
+    /***************************************************************/
+    /* rendering
+    /***************************************************************/
+
+    private static function renderPlayer(
+        player:Player<PlayerData>
+    ): Scene {
+        var scene = new Scene();
+
+        if (player.plane != null) {
+            var state:PlaneState = player.plane.state;
+            // the is a plane to draw
+
+            scene.prims = [
+                SetColor(255, 0, 0, 255)
+                , DrawCircle(state.pos, 5)
+            ];
+        }
+
+        return scene;
     }
 
     public function render(delta:Float):Scene {
-        return new Scene();
+        var scene = new Scene();
+
+        for (player in engine.players.iterator()) {
+            scene.children.push(renderPlayer(player));
+        }
+
+        return scene;
     }
 
     public function profiling(profile:Profile):Void {

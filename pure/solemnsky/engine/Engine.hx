@@ -69,10 +69,6 @@ class Engine<D> {
         return player;
     }
 
-    public function findPlayer(sig:Int):Null<Player<D>> {
-        return players.get(sig);
-    }
-
     /*************************************************************************/
     /* simulation
     /*************************************************************************/

@@ -9,8 +9,8 @@ import nape.shape.Circle;
 
 /**
  * solemnsky.engine.Plane:
- * Represents a plane in the game; are destroyed and recreated a
- * bunch (deaths, environment changes, etc).
+ * Represents a plane in the game. Is an object,
+ * not linked to any particular player.
  */
 
 /**
@@ -90,6 +90,7 @@ class Plane<D> {
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
         body.shapes.add(new Circle(parent.mod.planeRadius));
         body.setShapeMaterials(nape.phys.Material.rubber());
+        body.space = parent.space;
         writeToNape();
     }
 
