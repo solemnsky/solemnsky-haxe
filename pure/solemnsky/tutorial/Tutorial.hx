@@ -1,6 +1,7 @@
 package solemnsky.tutorial;
 
 import util.Vector;
+import util.Transform;
 import control.Control;
 import control.Event;
 import control.Noise;
@@ -57,9 +58,14 @@ class TutorialMain implements Control<Noise> {
             // the is a plane to draw
 
             scene.prims = [
-                SetColor(255, 0, 0, 255)
-                , DrawCircle(state.pos, 5)
+                // SetColor(255, 0, 0, 255)
+                // , DrawCircle(Vector.zero, 15)
+                SetColor(0, 255, 0, 255)
+                , DrawRect(new Vector(-15, 2), new Vector(15, -2))
             ];
+
+            scene.trans = Transform.translation(state.pos.x, state.pos.y)
+                .multmat(Transform.rotation(state.rot));
         }
 
         return scene;
@@ -80,6 +86,26 @@ class TutorialMain implements Control<Noise> {
     }
 
     public function handle(e:Event):Void {
+        if (player.plane != null) {
+            var state:PlaneState = player.plane.state;
+            // there is a plane to control
+
+            switch (e) {
+            case KbEvent(key, kstate): {
+                var isKey = function(k) return Type.enumEq(key, k);
+
+                if (isKey(CharKey('i'))) 
+                    state.movement.forward = kstate;
+                if (isKey(CharKey('j'))) 
+                    state.movement.left = kstate;
+                if (isKey(CharKey('l'))) 
+                    state.movement.right = kstate;
+                if (isKey(CharKey('k'))) 
+                    state.movement.backward = kstate;
+            }
+            default: {}
+            }
+        }
     }
 
     public function conclude():Null<Noise> {

@@ -53,7 +53,7 @@ class PlaneState {
         this.rotvel = 0;
 
         // flight mechanics
-        this.stalled = true;
+        this.stalled = false;
         this.leftoverVel = new Vector(0, 0);
         this.speed = 0;
         this.throttle = 0;
@@ -206,6 +206,27 @@ class Plane<D> {
             state.vel = Vector.fromAngle(state.rot)
                 .mult(targetSpeed)
                 .add(state.leftoverVel);
+        }
+
+        // stall singularities 
+        if (state.stalled) {
+            if (forwardVel > mod.planeExitStallThreshold) {
+                state.stalled = false;
+                state.leftoverVel = new Vector(
+                    state.vel.x - forwardVel * Math.cos(state.rot)
+                    , state.vel.y - forwardVel * Math.sin(state.rot)
+                );
+                state.speed =
+                    forwardVel / mod.planeMaxSpeed;
+                state.throttle = 
+                    state.speed / mod.speedThrottleInfluence;
+            }
+        } else {
+            if (forwardVel < mod.planeEnterStallThreshold) {
+                state.stalled = true;
+                state.throttle = 1;
+                state.speed = 0;
+            }
         }
     }
 }
