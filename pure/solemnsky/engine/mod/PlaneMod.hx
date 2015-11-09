@@ -34,6 +34,7 @@ class PlaneMod {
     public var planeThrottleSpeed:Float = 1.5;
 
     public function new() {
+        planeMaxRotationStalled = Math.PI * 1.5;
         planeMaxRotation = Math.PI * 1.2;
     }
 }
