@@ -18,6 +18,11 @@
 			"file": "title.png",
 			"name": "title"
 		}
+		,{
+			"type": "image",
+			"file": "player.png",
+			"name": "player"
+		}
 	],
 	"rooms": [
 		{
@@ -26,7 +31,8 @@
 			"neighbours": [],
 			"assets": [
 				"Arial14.kravur",
-				"title"
+				"title",
+                                "player"
 			]
 		}
 	]
