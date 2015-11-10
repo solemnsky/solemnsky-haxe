@@ -117,8 +117,8 @@ class TutorialMain implements Control<Noise> {
 
     private function pewpewMadafacka() {
         var propMod = new PropMod();
-        var data = new
-        engine.spawnProp(0, )
+        var custom = new TutPlayer();
+        engine.spawnProp(0, custom)
     }
 
     /***************************************************************/

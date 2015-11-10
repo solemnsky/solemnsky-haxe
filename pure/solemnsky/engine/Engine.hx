@@ -97,10 +97,11 @@ class Engine<D,P> {
 
     public function spawnProp(
         blame:Int, data:P, mod:PropMod
-    ):Int {
-        var newId = Util.allocNewId(props.keys());
-        props.set(newId, new Prop(this, blame, data, mod));
-        return newId;
+    ):Prop<D,P> {
+        var id = Util.allocNewId(props.keys(), prop);
+        var prop = new Prop(this, id, blame, data, mod);
+        props.set(id, prop);
+        return prop;
     }
 
     /*************************************************************************/

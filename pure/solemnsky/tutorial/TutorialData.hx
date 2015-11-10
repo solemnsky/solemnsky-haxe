@@ -5,8 +5,16 @@ package solemnsky.tutorial;
  * Datatype for props and players in the tutorial.
  */
 
-typedef TutPlayer {
-    name:String
+class TutPlayer {
+    public var name:String;
+
+    public function new(name:String) {
+        this.name = name;
+    }
+
+    public function pewpewMadafacka() {
+        
+    }
 }
 
 enum PropType {
