@@ -24,15 +24,19 @@ typedef PlayerData = {
 }
 
 class TutorialMain implements Control<Noise> {
+    private var background:TutorialBackground;
+
     private var engine:Engine<PlayerData>;
     private var player:Player<PlayerData>;
 
     public function new() {
+        background = new TutorialBackground(3200, 1800);
+
         engine = new Engine(myEngineMod());
         engine.loadEnvironment(new Environment(3200, 1800));
 
         player = engine.addPlayer(0, {name:"offline player"});
-        player.spawn(myPlaneMod(), new Vector(500, 500), 0);
+        player.spawn(myPlaneMod(), new Vector(1600, 900), 0);
     }
 
     public function init(_) {}
@@ -49,23 +53,10 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
-    public function renderBackground(delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.prims = [
-            SetColor(20, 20, 50, 255)
-            , DrawImage(new Vector(0, 0), "title")
-        ];
-
-        scene.trans = Transform.scale(2, 2);
-
-        return scene;
-    }
-
     public function renderGame(delta:Float):Scene {
         var scene = new Scene();
 
-        scene.children.push(renderBackground(delta));
+        scene.children.push(background.render(delta));
         scene.children.push(Graphics.renderDebugPlayer(player));
         // scene.children.push(Graphics.renderPlayer(player));
 

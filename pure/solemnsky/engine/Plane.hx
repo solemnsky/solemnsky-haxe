@@ -74,7 +74,7 @@ class PlaneGraphicsState {
 
 class Plane<D> {
     /*************************************************************************/
-    /* private state variables
+    /* constructor
     /*************************************************************************/
 
     // we're using an active object pattern here; the plane object
@@ -86,10 +86,6 @@ class Plane<D> {
     public var state:PlaneState;
     public var gfxState:PlaneGraphicsState;
     public var body:Body;
-
-    /*************************************************************************/
-    /* constructor
-    /*************************************************************************/
 
     public function new(
         mod:PlaneMod, parent:Engine<D>,

@@ -14,12 +14,12 @@ import solemnsky.engine.mod.EngineMod;
 
 class Engine<D> {
     /*************************************************************************/
-    /* variables
+    /* constructor
     /*************************************************************************/
-
     public var mod:EngineMod;
 
     public var players:Map<Int, Player<D>>;
+    public var props:Array<Prop>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 
@@ -32,6 +32,10 @@ class Engine<D> {
 
         debugTrace('engine instantiated');
     }
+
+    /*************************************************************************/
+    /* misc helpers
+    /*************************************************************************/
 
     private inline function debugTrace(str:String) {
         mod.debugTrace(str);
@@ -77,6 +81,14 @@ class Engine<D> {
         players.set(sig, player);
         return player;
     }
+
+    public function removePlayer(sig:Int) {
+        players.remove(sig);
+    }
+
+    /*************************************************************************/
+    /* props
+    /*************************************************************************/
 
     /*************************************************************************/
     /* simulation

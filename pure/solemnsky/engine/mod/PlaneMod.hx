@@ -7,7 +7,7 @@ package solemnsky.engine.mod;
 
 class PlaneMod {
     // physical dimensions
-    public var length:Float = 60;
+    public var length:Float = 80;
     public var width:Float = 20;
 
     // mechanics when stalled

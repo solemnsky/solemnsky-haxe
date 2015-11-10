@@ -43,12 +43,23 @@ class Graphics {
             var state = player.plane.state;
             var mod = player.plane.mod;
 
-            scene.prims = [
-                SetColor(255, 255, 255, 255)
+            var bodyColor = SetColor(255, 255, 255, 255);
+            if (state.stalled) 
+                bodyColor = SetColor(200, 200, 200, 255);
+
+            var headColor = SetColor(255, 0, 0, 255);
+            if (! state.afterburner)
+                headColor = SetColor(200, 0, 0, 255);
+
+            scene.prims = 
+                [ bodyColor
                 , DrawRect(
                     new Vector(-mod.length / 2, -mod.width / 2)
                     , new Vector(mod.length / 2, mod.width / 2))
-            ];
+                , headColor
+                , DrawRect(
+                    new Vector(mod.length / 3, -mod.width / 2)
+                    , new Vector(mod.length / 2, mod.width / 2)) ];
 
             scene.trans = planeTrans(player.plane);
         }
