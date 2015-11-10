@@ -10,12 +10,12 @@ import util.Vector;
 
 class Player<D,P> {
     public var parent:Engine<D,P>;
-    public var data:D;
+    public var custom:D;
     public var plane:Null<Plane<D,P>>;
 
-    public function new(parent:Engine<D,P>, data:D) {
+    public function new(parent:Engine<D,P>, custom:D) {
         this.parent = parent;
-        this.data = data;
+        this.custom = data;
         plane = null;
     }
 
@@ -28,7 +28,7 @@ class Player<D,P> {
     }
 
     public function spawn(mod:PlaneMod, pos:Vector, rot:Float) {
-        plane = new Plane(mod, parent, pos, rot);
+        plane = new Plane(parent, mod, pos, rot);
     }
 
     /*************************************************************************/

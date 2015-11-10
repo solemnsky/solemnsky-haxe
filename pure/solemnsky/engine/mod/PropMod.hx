@@ -7,5 +7,7 @@ package solemnsky.engine.mod;
  */
 
 class PropMod {
+    public function new() {
 
+    }
 }

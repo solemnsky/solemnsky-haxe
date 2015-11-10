@@ -13,27 +13,12 @@ import solemnsky.engine.Graphics;
 import solemnsky.engine.Player;
 import solemnsky.engine.Plane;
 import solemnsky.engine.mod.EngineMod;
+import solemnsky.engine.mod.PropMod;
 import solemnsky.engine.mod.PlaneMod;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
  */
-
-/****************************************************************/
-/* periphiary data (player, props)
-/****************************************************************/
-
-typedef PlayerData = {
-    name:String
-}
-
-enum PropType {
-    DeadlyMissle;
-}
-
-typedef PropData = {
-    type:PropType
-}
 
 /****************************************************************/
 /* TutorialMain
@@ -42,8 +27,8 @@ typedef PropData = {
 class TutorialMain implements Control<Noise> {
     private var background:TutorialBackground;
 
-    private var engine:Engine<PlayerData,PropData>;
-    private var player:Player<PlayerData,PropData>;
+    private var engine:Engine<TutPlayer,TutProp>;
+    private var player:Player<TutPlayer,TutProp>;
 
     public function new() {
         background = new TutorialBackground(3200, 1800);
@@ -103,6 +88,7 @@ class TutorialMain implements Control<Noise> {
             case KbEvent(key, kstate): {
                 var isKey = function(k) return Type.enumEq(key, k);
 
+                // movement keys
                 if (isKey(CharKey('i'))) 
                     state.movement.forward = kstate;
                 if (isKey(CharKey('j'))) 
@@ -111,6 +97,10 @@ class TutorialMain implements Control<Noise> {
                     state.movement.right = kstate;
                 if (isKey(CharKey('k'))) 
                     state.movement.backward = kstate;
+
+                // movement keys
+                if (isKey(CharKey('f')))
+                    pewpewMadafacka();
             }
             default: {}
             }
@@ -119,6 +109,16 @@ class TutorialMain implements Control<Noise> {
 
     public function conclude():Null<Noise> {
         return null;
+    }
+
+    /***************************************************************/
+    /* pewpew madafacka
+    /***************************************************************/
+
+    private function pewpewMadafacka() {
+        var propMod = new PropMod();
+        var data = new
+        engine.spawnProp(0, )
     }
 
     /***************************************************************/

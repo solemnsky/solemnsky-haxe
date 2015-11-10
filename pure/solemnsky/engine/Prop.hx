@@ -1,5 +1,7 @@
 package solemnsky.engine;
 
+import solemnsky.engine.mod.PropMod;
+
 /**
  * solemnsky.engine.Prop:
  * Object for a thing a player can create (missle, bullet, laser,
@@ -10,13 +12,17 @@ package solemnsky.engine;
 
 class Prop<D,P> {
     public var parent:Engine<D,P>;
+    public var blame:Int;
     public var mod:PropMod;
-    public var data:P;
+    public var custom:P;
 
     public function new(
-        parent:Engine<D,P>, mod:PropMod 
+        parent:Engine<D,P>, blame:Int
+        , custom:P, mod:PropMod 
     ) {
         this.parent = parent;
+        this.blame = blame;
         this.mod = mod;
+        this.custom = custom;
     } 
 }

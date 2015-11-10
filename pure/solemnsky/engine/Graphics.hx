@@ -108,8 +108,8 @@ class Graphics {
         return (viewTarget - (viewWidth / 2));
     }
 
-    public static function getPlayerView<D>(
-        player:Player<D>
+    public static function getPlayerView<D,P>(
+        player:Player<D,P>
     ): Transform {
         var edim = player.parent.environment.dimensions;
         var pos = player.plane.state.pos;

@@ -5,7 +5,9 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
 import nape.space.Space;
+import util.Util;
 import solemnsky.engine.mod.EngineMod;
+import solemnsky.engine.mod.PropMod;
 
 /**
  * solemnsky.engine.Engine:
@@ -13,16 +15,16 @@ import solemnsky.engine.mod.EngineMod;
  */
 
 class Engine<D,P> {
-    // D: player data
-    // P: prop data
+    // D: player custom container
+    // P: prop custom container
 
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
     public var mod:EngineMod;
 
-    public var players:Map<Int, Player<D,D>>;
-    public var props:Array<Prop<D,P>>;
+    public var players:Map<Int, Player<D,P>>;
+    public var props:Map<Int, Prop<D,P>>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 
@@ -79,7 +81,7 @@ class Engine<D,P> {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int, data:D):Player<D> {
+    public function addPlayer(sig:Int, data:D):Player<D,P> {
         var player = new Player(this, data);
         players.set(sig, player);
         return player;
@@ -92,6 +94,14 @@ class Engine<D,P> {
     /*************************************************************************/
     /* props
     /*************************************************************************/
+
+    public function spawnProp(
+        blame:Int, data:P, mod:PropMod
+    ):Int {
+        var newId = Util.allocNewId(props.keys());
+        props.set(newId, new Prop(this, blame, data, mod));
+        return newId;
+    }
 
     /*************************************************************************/
     /* simulation
