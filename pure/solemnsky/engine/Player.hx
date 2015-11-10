@@ -8,12 +8,12 @@ import util.Vector;
  * Represents a player in the game.
  */
 
-class Player<D> {
-    public var parent:Engine<D>;
+class Player<D,P> {
+    public var parent:Engine<D,P>;
     public var data:D;
-    public var plane:Null<Plane<D>>;
+    public var plane:Null<Plane<D,P>>;
 
-    public function new(parent:Engine<D>, data:D) {
+    public function new(parent:Engine<D,P>, data:D) {
         this.parent = parent;
         this.data = data;
         plane = null;

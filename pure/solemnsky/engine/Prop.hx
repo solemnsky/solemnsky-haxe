@@ -8,8 +8,15 @@ package solemnsky.engine;
  * are uniform across all props however.
  */
 
-class Prop {
-    public function new() {
-        
+class Prop<D,P> {
+    public var parent:Engine<D,P>;
+    public var mod:PropMod;
+    public var data:P;
+
+    public function new(
+        parent:Engine<D,P>, mod:PropMod 
+    ) {
+        this.parent = parent;
+        this.mod = mod;
     } 
 }

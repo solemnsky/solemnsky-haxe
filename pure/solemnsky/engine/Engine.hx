@@ -12,14 +12,17 @@ import solemnsky.engine.mod.EngineMod;
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
-class Engine<D> {
+class Engine<D,P> {
+    // D: player data
+    // P: prop data
+
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
     public var mod:EngineMod;
 
-    public var players:Map<Int, Player<D>>;
-    public var props:Array<Prop>;
+    public var players:Map<Int, Player<D,D>>;
+    public var props:Array<Prop<D,P>>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 

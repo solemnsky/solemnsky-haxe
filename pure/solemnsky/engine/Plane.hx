@@ -72,7 +72,7 @@ class PlaneGraphicsState {
     public function new() {}
 }
 
-class Plane<D> {
+class Plane<D,P> {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -80,7 +80,7 @@ class Plane<D> {
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
     // (other methods such at those in Graphics also do)
-    public var parent:Engine<D>;
+    public var parent:Engine<D,P>;
     public var mod:PlaneMod;
 
     public var state:PlaneState;
@@ -88,7 +88,7 @@ class Plane<D> {
     public var body:Body;
 
     public function new(
-        mod:PlaneMod, parent:Engine<D>,
+        parent:Engine<D,P>, mod:PlaneMod, 
         pos:Vector, rot:Float
     ):Void {
         this.state = new PlaneState(pos, rot);

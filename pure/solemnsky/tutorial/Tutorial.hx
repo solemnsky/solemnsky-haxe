@@ -19,15 +19,31 @@ import solemnsky.engine.mod.PlaneMod;
  * Tutorial for solemnsky, using merely the engine.
  */
 
+/****************************************************************/
+/* periphiary data (player, props)
+/****************************************************************/
+
 typedef PlayerData = {
     name:String
 }
 
+enum PropType {
+    DeadlyMissle;
+}
+
+typedef PropData = {
+    type:PropType
+}
+
+/****************************************************************/
+/* TutorialMain
+/****************************************************************/
+
 class TutorialMain implements Control<Noise> {
     private var background:TutorialBackground;
 
-    private var engine:Engine<PlayerData>;
-    private var player:Player<PlayerData>;
+    private var engine:Engine<PlayerData,PropData>;
+    private var player:Player<PlayerData,PropData>;
 
     public function new() {
         background = new TutorialBackground(3200, 1800);
