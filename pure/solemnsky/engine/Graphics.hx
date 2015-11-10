@@ -27,6 +27,13 @@ class Graphics {
         return scene;
     }
 
+    public static function renderDebugPlayer<D>(
+        player:Player<D>
+    ): Scene {
+        var scene = new Scene();
+        return scene;
+    }
+
     public static function renderPlayer<D>(
         player:Player<D>
     ): Scene {
@@ -52,5 +59,34 @@ class Graphics {
         }
 
         return scene;
+    }
+
+    /*************************************************************************/
+    /* player view
+    /*************************************************************************/
+
+    private static function putView(
+        viewWidth:Float, totalWidth:Float, viewTarget:Float
+    ):Float {
+        if (totalWidth < viewWidth) 
+            return (totalWidth / 2) - viewWidth;
+        if (viewTarget - (viewWidth / 2) < 0) 
+            return 0;
+        if (viewTarget + (viewWidth / 2) > totalWidth)
+            return (totalWidth - viewWidth);
+        return (viewTarget - (viewWidth / 2));
+    }
+
+    public static function getPlayerView<D>(
+        player:Player<D>
+    ): Transform {
+        var edim = player.parent.environment.dimensions;
+        var pos = player.plane.state.pos;
+        // lol the OOP
+
+        return Transform.translation(
+            -putView(1600, edim.x, pos.x)
+            , -putView(900, edim.y, pos.y)
+        );
     }
 }

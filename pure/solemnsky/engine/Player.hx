@@ -9,7 +9,7 @@ import util.Vector;
  */
 
 class Player<D> {
-    private var parent:Engine<D>;
+    public var parent:Engine<D>;
     public var data:D;
     public var plane:Null<Plane<D>>;
 

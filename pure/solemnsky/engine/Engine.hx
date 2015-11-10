@@ -52,11 +52,13 @@ class Engine<D> {
     ) {
         space = new Space(new Vec2(0, 0));
 
+        var edim = environment.dimensions;
+
         var dims = 
-            [ {x:0, y:900, w:1600, h:1}
-            , {x:0, y:0, w:1600, h:1} 
-            , {x:1600, y:0, w:1, h:900}
-            , {x:0, y:0, w:1, h:900} ];
+            [ {x:0, y:edim.y, w:edim.x, h:1}
+            , {x:0, y:0, w:edim.x, h:1} 
+            , {x:edim.x, y:0, w:1, h:edim.y}
+            , {x:0, y:0, w:1, h:edim.y} ];
         for (dim in dims) {
             var floor = new Body(BodyType.STATIC);
             floor.shapes.add(new Polygon(Polygon.rect(

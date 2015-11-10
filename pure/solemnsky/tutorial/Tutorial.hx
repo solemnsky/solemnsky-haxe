@@ -29,7 +29,7 @@ class TutorialMain implements Control<Noise> {
 
     public function new() {
         engine = new Engine(myEngineMod());
-        engine.loadEnvironment(new Environment(1600, 900));
+        engine.loadEnvironment(new Environment(3200, 1800));
 
         player = engine.addPlayer(0, {name:"offline player"});
         player.spawn(myPlaneMod(), new Vector(500, 500), 0);
@@ -49,16 +49,36 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
-    public function render(delta:Float):Scene {
-        engine.tickGraphics(delta);
-
+    public function renderBackground(delta:Float):Scene {
         var scene = new Scene();
 
         scene.prims = [
             SetColor(20, 20, 50, 255)
-            , DrawRect(Vector.zero, new Vector(1600, 900))
+            , DrawImage(new Vector(0, 0), "title")
         ];
+
+        scene.trans = Transform.scale(2, 2);
+
+        return scene;
+    }
+
+    public function renderGame(delta:Float):Scene {
+        var scene = new Scene();
+
+        scene.children.push(renderBackground(delta));
         scene.children.push(Graphics.renderPlayer(player));
+        scene.children.push(Graphics.renderPlayer(player));
+
+        scene.trans = Graphics.getPlayerView(player);
+
+        return scene;
+    }
+
+    public function render(delta:Float):Scene {
+        engine.tickGraphics(delta);
+        var scene = new Scene();
+
+        scene.children.push(renderGame(delta));
 
         return scene;
     }
