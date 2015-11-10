@@ -27,10 +27,31 @@ class Graphics {
         return scene;
     }
 
+    private inline static function planeTrans<D>(
+        plane:Plane<D>
+    ): Transform {
+        var state = plane.state;
+        return Transform.translation(state.pos.x, state.pos.y)
+            .multmat(Transform.rotation(state.rot));
+    }
+
     public static function renderDebugPlayer<D>(
         player:Player<D>
     ): Scene {
         var scene = new Scene();
+        if (player.plane != null) {
+            var state = player.plane.state;
+            var mod = player.plane.mod;
+
+            scene.prims = [
+                SetColor(255, 255, 255, 255)
+                , DrawRect(
+                    new Vector(-mod.length / 2, -mod.width / 2)
+                    , new Vector(mod.length / 2, mod.width / 2))
+            ];
+
+            scene.trans = planeTrans(player.plane);
+        }
         return scene;
     }
 
@@ -40,7 +61,6 @@ class Graphics {
         var scene = new Scene();
 
         if (player.plane != null) {
-            var state:PlaneState = player.plane.state;
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
 
             // we have to make sure the player sprite
@@ -51,10 +71,10 @@ class Graphics {
                 , DrawImage(new Vector(-200, -100), "player")
                 , SetAlpha(gfxState.burnFade)
                 , DrawImage(new Vector(-400, -100), "player-thrust")
+                , SetAlpha(1)
             ];
 
-            scene.trans = Transform.translation(state.pos.x, state.pos.y)
-                .multmat(Transform.rotation(state.rot))
+            scene.trans = planeTrans(player.plane)
                 .multmat(Transform.scale(1/5, 1/5));
         }
 

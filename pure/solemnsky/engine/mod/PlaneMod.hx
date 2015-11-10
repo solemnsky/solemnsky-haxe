@@ -7,8 +7,8 @@ package solemnsky.engine.mod;
 
 class PlaneMod {
     // physical dimensions
-    public var length:Float = 30;
-    public var width:Float = 10;
+    public var length:Float = 60;
+    public var width:Float = 20;
 
     // mechanics when stalled
     public var maxRotationStalled:Float; // Math.PI * 1

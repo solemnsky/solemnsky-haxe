@@ -79,8 +79,9 @@ class Plane<D> {
 
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
-    private var parent:Engine<D>;
-    private var mod:PlaneMod;
+    // (other methods such at those in Graphics also do)
+    public var parent:Engine<D>;
+    public var mod:PlaneMod;
 
     public var state:PlaneState;
     public var gfxState:PlaneGraphicsState;

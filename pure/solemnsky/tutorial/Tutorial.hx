@@ -66,8 +66,8 @@ class TutorialMain implements Control<Noise> {
         var scene = new Scene();
 
         scene.children.push(renderBackground(delta));
-        scene.children.push(Graphics.renderPlayer(player));
-        scene.children.push(Graphics.renderPlayer(player));
+        scene.children.push(Graphics.renderDebugPlayer(player));
+        // scene.children.push(Graphics.renderPlayer(player));
 
         scene.trans = Graphics.getPlayerView(player);
 
