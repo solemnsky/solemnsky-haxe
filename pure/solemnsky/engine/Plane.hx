@@ -5,7 +5,7 @@ import util.Util;
 import solemnsky.engine.mod.PlaneMod;
 import nape.phys.Body;
 import nape.phys.BodyType;
-import nape.shape.Circle;
+import nape.shape.Polygon;
 import nape.geom.Vec2;
 
 /**
@@ -101,7 +101,12 @@ class Plane<D> {
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
-        body.shapes.add(new Circle(parent.mod.planeRadius));
+        body.shapes.add(new Polygon(Polygon.rect(
+            -mod.length / 2
+            , -mod.width / 20
+            , mod.length
+            , mod.width
+        )));
         body.setShapeMaterials(nape.phys.Material.rubber());
         body.align();
         body.space = parent.space;
@@ -153,15 +158,15 @@ class Plane<D> {
 
         // rotation
         var maxRotation = 
-            if (state.stalled) mod.planeMaxRotationStalled 
-                else mod.planeMaxRotation;
+            if (state.stalled) mod.maxRotationStalled 
+                else mod.maxRotation;
         var targetRotVel:Float = 0;
         if (state.movement.left) targetRotVel = -maxRotation;
         if (state.movement.right) targetRotVel += maxRotation;
 
-        state.rotvel +=
-            (targetRotVel - state.rotvel) 
-                / Math.pow(mod.planeAngularDamping, delta);
+        state.rotvel = targetRotVel;
+            // (targetRotVel - state.rotvel) 
+            //     / Math.pow(mod.angularDamping, delta);
 
         state.afterburner = false;            
 
@@ -172,30 +177,30 @@ class Plane<D> {
                 state.afterburner = true;
                 state.vel = Vector.fromAngle(state.rot)
                     .mult(
-                        delta / 1000 * mod.planeAfterburnerStalled
+                        delta / 1000 * mod.afterburnerStalled
                     )
                     .add(state.vel);
             }
 
-            // apply damping when over planeMaxVelocityStalled
-            var excessVel = speed - mod.planeMaxVelocityStalled;
+            // apply damping when over maxVelocityStalled
+            var excessVel = speed - mod.maxVelocityStalled;
             var dampingFactor = 
-                mod.planeMaxVelocityStalled / speed;
+                mod.maxVelocityStalled / speed;
             if (excessVel > 0)
                 state.vel.y =
                    state.vel.y * dampingFactor 
                         * Math.pow(
-                            mod.planeStallDamping
+                            mod.stallDamping
                             , delta / 1000);
 
         // motion when not stalled                        
         } else {
             // modify throttle and afterburner according to controls
             if (state.movement.forward && state.throttle < 1)
-                state.throttle += mod.planeThrottleSpeed *
+                state.throttle += mod.throttleSpeed *
                     (delta / 1000);
             if (state.movement.backward && state.throttle > 0)
-                state.throttle -= mod.planeThrottleSpeed *
+                state.throttle -= mod.throttleSpeed *
                     (delta / 1000);
             state.throttle = Math.min(state.throttle, 1);
             state.throttle = Math.max(state.throttle, 0);
@@ -204,9 +209,9 @@ class Plane<D> {
 
             // pick away at leftover velocity
             state.leftoverVel.x = state.leftoverVel.x 
-                * Math.pow(mod.planeLeftoverVelDamping, delta / 1000);
+                * Math.pow(mod.leftoverVelDamping, delta / 1000);
             state.leftoverVel.y = state.leftoverVel.y 
-                * Math.pow(mod.planeLeftoverVelDamping, delta / 1000);
+                * Math.pow(mod.leftoverVelDamping, delta / 1000);
 
             // speed modifiers
             if (state.speed > state.throttle * mod.speedThrottleInfluence) {
@@ -226,7 +231,7 @@ class Plane<D> {
             state.speed = Math.min(state.speed, 1);
             state.speed = Math.max(state.speed, 0);
 
-            var targetSpeed = state.speed * mod.planeMaxSpeed;
+            var targetSpeed = state.speed * mod.speed;
 
             // set velocity, according to target speed, rotation, 
             // and leftoverVel
@@ -237,7 +242,7 @@ class Plane<D> {
 
         // stall singularities 
         if (state.stalled) {
-            if (forwardVel > mod.planeExitStallThreshold) {
+            if (forwardVel > mod.exitStallThreshold) {
                 state.stalled = false;
                 body.force = new Vec2(0, 0);
                 state.leftoverVel = new Vector(
@@ -245,12 +250,12 @@ class Plane<D> {
                     , state.vel.y - forwardVel * Math.sin(state.rot)
                 );
                 state.speed =
-                    forwardVel / mod.planeMaxSpeed;
+                    forwardVel / mod.speed;
                 state.throttle = 
                     state.speed / mod.speedThrottleInfluence;
             }
         } else {
-            if (forwardVel < mod.planeEnterStallThreshold) {
+            if (forwardVel < mod.enterStallThreshold) {
                 body.force = new Vec2(0, parent.mod.gravity);
                 state.stalled = true;
                 state.throttle = 1;

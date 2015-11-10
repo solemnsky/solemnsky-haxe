@@ -6,15 +6,19 @@ package solemnsky.engine.mod;
  */
 
 class PlaneMod {
-    // stalled
-    public var planeMaxRotationStalled:Float; // Math.PI * 1.5
-    public var planeMaxVelocityStalled:Float = 300;
-    public var planeAfterburnerStalled:Float = 200;
-    public var planeExitStallThreshold:Float = 130;
+    // physical dimensions
+    public var length:Float = 30;
+    public var width:Float = 10;
 
-    // not stalled
-    public var planeMaxRotation:Float; // Math.PI * 1.2
-    public var planeMaxSpeed:Float = 300;
+    // mechanics when stalled
+    public var maxRotationStalled:Float; // Math.PI * 1
+    public var maxVelocityStalled:Float = 300;
+    public var afterburnerStalled:Float = 500;
+    public var exitStallThreshold:Float = 130;
+
+    // mechanics when not stalled
+    public var maxRotation:Float; // Math.PI * 0.8
+    public var speed:Float = 300;
     public var speedThrottleInfluence:Float = 0.7 ;
         // max speed achievable with throttle
     public var speedThrottleForce:Float = 0.3;
@@ -23,18 +27,18 @@ class PlaneMod {
         // speed per second that the throttle can take away
         // when the speed is higher than the throttle
     public var speedGravityForce:Float = 0.5;
-            // speed per second that gravity can influence
+        // speed per second that gravity can influence
     public var speedAfterburnForce:Float = 0.6;
-    public var planeEnterStallThreshold:Float = 100;
+    public var enterStallThreshold:Float = 100;
 
     // misc values and damping
-    public var planeAngularDamping:Float = 1.05;
-    public var planeStallDamping:Float = 1.5;
-    public var planeLeftoverVelDamping:Float = 0.10;
-    public var planeThrottleSpeed:Float = 1.5;
+    public var angularDamping:Float = 1.05;
+    public var stallDamping:Float = 1.5;
+    public var leftoverVelDamping:Float = 0.10;
+    public var throttleSpeed:Float = 1.5;
 
     public function new() {
-        planeMaxRotationStalled = Math.PI * 1;
-        planeMaxRotation = Math.PI * 0.8;
+        maxRotationStalled = Math.PI * 1;
+        maxRotation = Math.PI * 0.8;
     }
 }

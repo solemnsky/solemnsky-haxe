@@ -8,14 +8,12 @@ package solemnsky.engine.mod;
 class EngineMod {
     public var debugTrace:String->Void;
 
-    public var planeRadius:Float = 20; // lol
-
     // dimensions of the simple plane rectangle
     public var planeWidth:Float = 60;
     public var planeHeight:Float = 30;
 
     // acceleration of gravity 
-    public var gravity:Float = 300;
+    public var gravity:Float = 170;
 
     // contact
     public var minimumContactDamage:Float = 0.02;
