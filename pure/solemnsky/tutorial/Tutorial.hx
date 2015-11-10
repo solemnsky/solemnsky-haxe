@@ -29,7 +29,7 @@ class TutorialMain implements Control<Noise> {
 
     public function new() {
         engine = new Engine(myEngineMod());
-        engine.loadEnvironment(new Environment());
+        engine.loadEnvironment(new Environment(1600, 900));
 
         player = engine.addPlayer(0, {name:"offline player"});
         player.spawn(myPlaneMod(), new Vector(0, 0), 0);

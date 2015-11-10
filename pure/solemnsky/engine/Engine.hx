@@ -52,11 +52,18 @@ class Engine<D> {
     ) {
         space = new Space(new Vec2(0, 0));
 
-        var floor = new Body(BodyType.STATIC);
-        floor.shapes.add(
-            new Polygon(Polygon.rect(50, (900 - 50), (1600 - 100), 1))
-        );
-        floor.space = space;
+        var dims = 
+            [ {x:0, y:900, w:1600, h:1}
+            , {x:0, y:0, w:1600, h:1} 
+            , {x:1600, y:0, w:1, h:900}
+            , {x:0, y:0, w:1, h:900} ];
+        for (dim in dims) {
+            var floor = new Body(BodyType.STATIC);
+            floor.shapes.add(new Polygon(Polygon.rect(
+                dim.x, dim.y, dim.w, dim.h
+            )));
+            floor.space = space;
+        }
     }
 
     /*************************************************************************/
