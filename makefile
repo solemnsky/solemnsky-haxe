@@ -21,8 +21,14 @@ kha-web:
 	rm -rf dist/kha-web/ ; mkdir -p dist/kha-web/
 	cp -r export/kha-web/build/html5/* ./dist/kha-web/ 
 	
-	closure --compilation_level SIMPLE dist/kha-web/kha.js > dist/kha-web/kha.min.js 
-	mv dist/kha-web/kha.min.js dist/kha-web/kha.js 
+
+kha-web-compiled: kha-web
+	### KHA-WEB-COMPILED ###
+	rm -rf dist/kha-web-compiled/ ; mkdir -p dist/kha-web-compiled/
+	cp -r dist/kha-web/* ./dist/kha-web-compiled
+
+	closure --compilation_level SIMPLE dist/kha-web-compiled/kha.js > dist/kha-web-compiled/kha.min.js 
+	mv dist/kha-web-compiled/kha.min.js dist/kha-web-compiled/kha.js 
 
 kha-native:
 	### KHA-NATIVE ###
