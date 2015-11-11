@@ -15,7 +15,7 @@ class Player<D,P> {
 
     public function new(parent:Engine<D,P>, custom:D) {
         this.parent = parent;
-        this.custom = data;
+        this.custom = custom;
         plane = null;
     }
 

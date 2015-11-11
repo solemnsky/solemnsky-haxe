@@ -21,6 +21,8 @@ enum PropType {
     LittleBox;
 }
 
-typedef TutProp {
-    type:PropType
+class TutProp {
+    public function new() {
+
+    }
 }

@@ -15,6 +15,7 @@ import solemnsky.engine.Plane;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
 import solemnsky.engine.mod.PlaneMod;
+import solemnsky.tutorial.TutorialData;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
@@ -36,7 +37,8 @@ class TutorialMain implements Control<Noise> {
         engine = new Engine(myEngineMod());
         engine.loadEnvironment(new Environment(3200, 1800));
 
-        player = engine.addPlayer(0, {name:"offline player"});
+        player = 
+            engine.addPlayer(0, new TutPlayer("offline player"));
         player.spawn(myPlaneMod(), new Vector(1600, 900), 0);
     }
 
@@ -118,7 +120,7 @@ class TutorialMain implements Control<Noise> {
     private function pewpewMadafacka() {
         var propMod = new PropMod();
         var custom = new TutProp();
-        engine.spawnProp(0, custom)
+        engine.spawnProp(0, custom, myPropMod());
     }
 
     /***************************************************************/
@@ -126,14 +128,19 @@ class TutorialMain implements Control<Noise> {
     /***************************************************************/
 
     public function myEngineMod():EngineMod {
-        var tuning = new EngineMod();
-        tuning.debugTrace = function(str){trace('engine log: '+str);};
-        return tuning;
+        var mod = new EngineMod();
+        mod.debugTrace = function(str){trace('engine log: '+str);};
+        return mod;
     }
 
     public function myPlaneMod():PlaneMod {
-        var tuning = new PlaneMod();
-        return tuning;
+        var mod = new PlaneMod();
+        return mod;
+    }
+
+    public function myPropMod():PropMod {
+        var mod = new PropMod();
+        return mod;
     }
 }
 

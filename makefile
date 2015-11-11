@@ -19,7 +19,10 @@ kha-web:
 	node Kha/make html5
 
 	rm -rf dist/kha-web/ ; mkdir -p dist/kha-web/
-	cp -r export/kha-web/build/html5/* ./dist/kha-web/
+	cp -r export/kha-web/build/html5/* ./dist/kha-web/ 
+	
+	closure --compilation_level SIMPLE dist/kha-web/kha.js > dist/kha-web/kha.min.js 
+	mv dist/kha-web/kha.min.js dist/kha-web/kha.js 
 
 kha-native:
 	### KHA-NATIVE ###
