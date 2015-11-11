@@ -4,6 +4,8 @@ import util.Vector;
 import util.Transform;
 import control.Scene;
 import solemnsky.engine.Plane;
+import solemnsky.engine.custom.PlayerCustom;
+import solemnsky.engine.custom.PropCustom;
 
 /**
  * solemnsky.engine.Graphics:
@@ -27,7 +29,8 @@ class Graphics {
         return scene;
     }
 
-    private inline static function planeTrans<D,P>(
+    private inline static function planeTrans
+    <D:PlayerCustom<D,P>,P:PropCustom<D,P>>(
         plane:Plane<D,P>
     ): Transform {
         var state = plane.state;
@@ -35,7 +38,8 @@ class Graphics {
             .multmat(Transform.rotation(state.rot));
     }
 
-    public static function renderDebugPlayer<D,P>(
+    public static function renderDebugPlayer
+    <D:PlayerCustom<D,P>,P:PropCustom<D,P>>(
         player:Player<D,P>
     ): Scene {
         var scene = new Scene();
@@ -66,7 +70,8 @@ class Graphics {
         return scene;
     }
 
-    public static function renderPlayer<D,P>(
+    public static function renderPlayer
+    <D:PlayerCustom<D,P>,P:PropCustom<D,P>>(
         player:Player<D,P>
     ): Scene {
         var scene = new Scene();
@@ -108,7 +113,8 @@ class Graphics {
         return (viewTarget - (viewWidth / 2));
     }
 
-    public static function getPlayerView<D,P>(
+    public static function getPlayerView
+    <D:PlayerCustom<D,P>,P:PropCustom<D,P>>(
         player:Player<D,P>
     ): Transform {
         var edim = player.parent.environment.dimensions;
