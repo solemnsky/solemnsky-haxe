@@ -3,6 +3,7 @@ package solemnsky.tutorial;
 import solemnsky.engine.Player;
 import solemnsky.engine.custom.PlayerCustom;
 import solemnsky.engine.mod.PropMod;
+import util.Util;
 
 /**
  * solemnsky.tutorial.TutPlayer:
@@ -29,6 +30,8 @@ class TutPlayer implements PlayerCustom<TutPlayer,TutProp> {
         var propMod = new PropMod();
         var custom = new TutProp();
         player.parent.spawnProp(0, custom, myPropMod());
+        trace('pewpew');
+        trace(Util.mapLength(player.parent.props));
     }
 
     public function myPropMod():PropMod {

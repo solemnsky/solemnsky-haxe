@@ -2,13 +2,15 @@ package solemnsky.engine;
 
 import solemnsky.engine.mod.PlaneMod;
 import util.Vector;
+import solemnsky.engine.custom.PlayerCustom;
+import solemnsky.engine.custom.PropCustom;
 
 /**
  * solemnsky.engine.Player:
  * Represents a player in the game.
  */
 
-class Player<D,P> {
+class Player<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     public var parent:Engine<D,P>;
     public var custom:D;
     public var plane:Null<Plane<D,P>>;

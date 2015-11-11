@@ -7,6 +7,8 @@ import nape.shape.Polygon;
 import solemnsky.engine.mod.PlaneMod;
 import util.Util;
 import util.Vector;
+import solemnsky.engine.custom.PlayerCustom;
+import solemnsky.engine.custom.PropCustom;
 
 /**
  * solemnsky.engine.Plane:
@@ -72,7 +74,7 @@ class PlaneGraphicsState {
     public function new() {}
 }
 
-class Plane<D,P> {
+class Plane<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/

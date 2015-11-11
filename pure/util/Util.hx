@@ -33,4 +33,10 @@ class Util {
 
         return next;
     }
+
+    public static function mapLength<A,B>(map:Map<A,B>):Int {
+        var len = 0;
+        for (k in map.keys()) len++;
+        return len;
+    }
 } 
