@@ -5,16 +5,20 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
 import nape.space.Space;
-import util.Util;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
+import solemnsky.engine.custom.PlayerCustom;
+import solemnsky.engine.custom.PropCustom;
+import util.Util;
+import util.Util;
 
 /**
  * solemnsky.engine.Engine:
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
-class Engine<D,P> {
+ // holy shit
+class Engine<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     // D: player custom container
     // P: prop custom container
 

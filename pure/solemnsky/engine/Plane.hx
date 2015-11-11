@@ -1,12 +1,12 @@
 package solemnsky.engine;
 
-import util.Vector;
-import util.Util;
-import solemnsky.engine.mod.PlaneMod;
+import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.shape.Polygon;
-import nape.geom.Vec2;
+import solemnsky.engine.mod.PlaneMod;
+import util.Util;
+import util.Vector;
 
 /**
  * solemnsky.engine.Plane:

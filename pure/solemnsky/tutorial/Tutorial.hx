@@ -1,7 +1,5 @@
 package solemnsky.tutorial;
 
-import util.Vector;
-import util.Transform;
 import control.Control;
 import control.Event;
 import control.Noise;
@@ -10,12 +8,12 @@ import control.Scene;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import solemnsky.engine.Graphics;
-import solemnsky.engine.Player;
 import solemnsky.engine.Plane;
+import solemnsky.engine.Player;
 import solemnsky.engine.mod.EngineMod;
-import solemnsky.engine.mod.PropMod;
 import solemnsky.engine.mod.PlaneMod;
-import solemnsky.tutorial.TutorialData;
+import solemnsky.engine.mod.PropMod;
+import util.Vector;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
@@ -83,8 +81,8 @@ class TutorialMain implements Control<Noise> {
 
     public function handle(e:Event):Void {
         if (player.plane != null) {
-            var state:PlaneState = player.plane.state;
-            // there is a plane to control
+            var plane:Plane<TutPlayer,TutProp> = player.plane;
+            var state = plane.state;
 
             switch (e) {
             case KbEvent(key, kstate): {
@@ -102,7 +100,7 @@ class TutorialMain implements Control<Noise> {
 
                 // movement keys
                 if (isKey(CharKey('f')))
-                    pewpewMadafacka();
+                    player.custom.pewpewMadafacka();
             }
             default: {}
             }
@@ -111,16 +109,6 @@ class TutorialMain implements Control<Noise> {
 
     public function conclude():Null<Noise> {
         return null;
-    }
-
-    /***************************************************************/
-    /* pewpew madafacka
-    /***************************************************************/
-
-    private function pewpewMadafacka() {
-        var propMod = new PropMod();
-        var custom = new TutProp();
-        engine.spawnProp(0, custom, myPropMod());
     }
 
     /***************************************************************/
@@ -135,11 +123,6 @@ class TutorialMain implements Control<Noise> {
 
     public function myPlaneMod():PlaneMod {
         var mod = new PlaneMod();
-        return mod;
-    }
-
-    public function myPropMod():PropMod {
-        var mod = new PropMod();
         return mod;
     }
 }
