@@ -60,7 +60,7 @@ class TutorialMain implements Control<Noise> {
 
         scene.prims = [
             SetColor(255, 255, 255, 255)
-            , DrawCircle(new Vector(0, 0), 40)
+            , DrawCircle(new Vector(0, 0), 10)
         ];
 
         var pos = prop.getPos();

@@ -35,4 +35,8 @@ class Prop {
     public function getPos():Vector {
         return mod.getPos();
     }
+
+    public function tick(delta:Float) {
+        mod.tick(delta);
+    }
 }

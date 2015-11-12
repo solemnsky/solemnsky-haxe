@@ -122,6 +122,10 @@ class Engine {
                 player.readFromNape();
                 player.tick(delta);
             }
+
+            for (prop in props.iterator()) {
+                prop.tick(delta);
+            }
         }
         return [];
     }

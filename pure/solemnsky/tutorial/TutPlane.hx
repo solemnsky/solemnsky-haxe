@@ -17,9 +17,11 @@ class TutPlane extends PlaneMod {
         var state = plane.state;
 
         engine.spawnProp(plane.id, new TutBullet(
-            state.pos
+            state.pos.add(
+                Vector.fromAngle(state.rot).mult(length/2 + 10)
+            )
             , state.vel.add(
-                Vector.fromAngle(state.rot).mult(20)
+                Vector.fromAngle(state.rot).mult(200)
             )
         ));
     }

@@ -20,6 +20,8 @@ class TutBullet extends PropMod {
 
     private var body:Body;
 
+    private var life:Float = 2000;
+
     public function new(pos:Vector, vel:Vector) {
         super();
         this.pos = pos;
@@ -31,7 +33,7 @@ class TutBullet extends PropMod {
         engine = prop.parent;
 
         body = new Body(BodyType.DYNAMIC);
-        body.shapes.add(new Circle(40));
+        body.shapes.add(new Circle(10));
         body.position.setxy(pos.x, pos.y);
         body.velocity.setxy(vel.x, vel.y);
         body.space = engine.space;
@@ -43,5 +45,10 @@ class TutBullet extends PropMod {
 
     override function deleteHook() {
         body.space = null;
+    }
+
+    override function tick(delta:Float) {
+        life -= delta;
+        if (life < 0) prop.delete();
     }
 }
