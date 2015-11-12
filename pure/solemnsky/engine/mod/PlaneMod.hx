@@ -1,6 +1,7 @@
 package solemnsky.engine.mod;
 
 import solemnsky.engine.Plane;
+import solemnsky.engine.Engine;
 
 /**
  * solemnsky.engine.mod.PlaneMod:
@@ -53,9 +54,11 @@ class PlaneMod {
     /**************************************************************/
 
     private var plane:Plane;
+    private var engine:Engine;
 
     public function attach(plane:Plane) { 
         this.plane = plane;
+        engine = plane.parent;
     }
 
     public function tick(delta:Float) {
@@ -63,6 +66,6 @@ class PlaneMod {
     }
 
     public function pewpew() {
-        
+
     }
 }

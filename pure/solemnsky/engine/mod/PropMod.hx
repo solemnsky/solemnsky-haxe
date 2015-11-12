@@ -1,6 +1,8 @@
 package solemnsky.engine.mod;
 
+import util.Vector;
 import solemnsky.engine.Prop;
+import solemnsky.engine.Engine;
 
 /**
  * solemnsky.engine.mod.PropMod:
@@ -10,14 +12,24 @@ import solemnsky.engine.Prop;
 
 class PropMod {
     private var prop:Prop;
+    private var engine:Engine;
 
     public function new() {}
 
     public function attach(prop:Prop) {
         this.prop = prop;
+        engine = prop.parent;
     }
 
     public function tick(delta) {
         // do something with prop
+    }
+
+    public function deleteHook() {
+
+    }
+
+    public function getPos():Vector {
+        return null;
     }
 }

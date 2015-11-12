@@ -1,6 +1,7 @@
 package solemnsky.engine;
 
 import solemnsky.engine.mod.PropMod;
+import util.Vector;
 
 /**
  * solemnsky.engine.Prop:
@@ -27,6 +28,11 @@ class Prop {
     } 
 
     public function delete() {
+        mod.deleteHook();
         parent.props.remove(id);
+    }
+
+    public function getPos():Vector {
+        return mod.getPos();
     }
 }

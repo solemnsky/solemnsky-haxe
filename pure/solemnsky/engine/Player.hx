@@ -11,8 +11,10 @@ import util.Vector;
 class Player {
     public var parent:Engine;
     public var plane:Null<Plane>;
+    public var id:Int;
 
-    public function new(parent:Engine) {
+    public function new(parent:Engine, id:Int) {
+        this.id = id;
         this.parent = parent;
         plane = null;
     }
@@ -26,7 +28,7 @@ class Player {
     }
 
     public function spawn(mod:PlaneMod, pos:Vector, rot:Float) {
-        plane = new Plane(parent, mod, pos, rot);
+        plane = new Plane(parent, id, mod, pos, rot);
     }
 
     /*************************************************************************/

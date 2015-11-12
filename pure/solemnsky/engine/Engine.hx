@@ -84,7 +84,7 @@ class Engine {
     /*************************************************************************/
 
     public function addPlayer(sig:Int):Player {
-        var player = new Player(this);
+        var player = new Player(this, sig);
         players.set(sig, player);
         return player;
     }
@@ -104,6 +104,8 @@ class Engine {
         var prop = new Prop(this, id, blame, mod);
         props.set(id, prop);
         return prop;
+        trace('pewpew');
+        trace(Util.mapLength(props));
     }
 
     /*************************************************************************/

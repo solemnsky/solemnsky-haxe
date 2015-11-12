@@ -82,19 +82,22 @@ class Plane {
     // (other methods such at those in Graphics also do)
     public var parent:Engine;
     public var mod:PlaneMod;
+    public var id:Int;
 
     public var state:PlaneState;
     public var gfxState:PlaneGraphicsState;
     public var body:Body;
 
     public function new(
-        parent:Engine, mod:PlaneMod, 
+        parent:Engine, id:Int, mod:PlaneMod, 
         pos:Vector, rot:Float
     ):Void {
-        this.state = new PlaneState(pos, rot);
-        this.gfxState = new PlaneGraphicsState();
         this.parent = parent;
         this.mod = mod;
+        this.id = id;
+
+        this.state = new PlaneState(pos, rot);
+        this.gfxState = new PlaneGraphicsState();
         mod.attach(this);
 
         // initialise body

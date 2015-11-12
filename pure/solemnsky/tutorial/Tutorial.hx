@@ -10,10 +10,12 @@ import solemnsky.engine.Environment;
 import solemnsky.engine.Graphics;
 import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
+import solemnsky.engine.Prop;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PlaneMod;
 import solemnsky.engine.mod.PropMod;
 import util.Vector;
+import util.Transform;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
@@ -53,12 +55,30 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
+    private static function renderProp(prop:Prop):Scene {
+        var scene = new Scene();
+
+        scene.prims = [
+            SetColor(255, 255, 255, 255)
+            , DrawCircle(new Vector(0, 0), 40)
+        ];
+
+        var pos = prop.getPos();
+        scene.trans = Transform.translation(pos.x, pos.y);
+
+        return scene;
+    }
+
     public function renderGame(delta:Float):Scene {
         var scene = new Scene();
 
         scene.children.push(background.render(delta));
         scene.children.push(Graphics.renderDebugPlayer(player));
         // scene.children.push(Graphics.renderPlayer(player));
+
+        for (prop in engine.props.iterator()) {
+            scene.children.push(renderProp(prop));
+        }
 
         scene.trans = Graphics.getPlayerView(player);
 
