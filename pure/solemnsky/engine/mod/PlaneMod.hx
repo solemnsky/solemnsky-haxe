@@ -61,4 +61,8 @@ class PlaneMod {
     public function tick(delta:Float) {
         // do something with plane
     }
+
+    public function pewpew() {
+        
+    }
 }

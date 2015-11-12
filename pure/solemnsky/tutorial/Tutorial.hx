@@ -32,12 +32,11 @@ class TutorialMain implements Control<Noise> {
     public function new() {
         background = new TutorialBackground(3200, 1800);
 
-        engine = new Engine(myEngineMod());
+        engine = new Engine(myEngine());
         engine.loadEnvironment(new Environment(3200, 1800));
 
-        player = 
-            engine.addPlayer(0, new TutPlayer("offline player"));
-        player.spawn(myPlaneMod(), new Vector(1600, 900), 0);
+        player = engine.addPlayer(0);
+        player.spawn(myPlane(), new Vector(1600, 900), 0);
     }
 
     public function init(_) {}
@@ -81,7 +80,7 @@ class TutorialMain implements Control<Noise> {
 
     public function handle(e:Event):Void {
         if (player.plane != null) {
-            var plane:Plane<TutPlayer,TutProp> = player.plane;
+            var plane:Plane = player.plane;
             var state = plane.state;
 
             switch (e) {
@@ -100,7 +99,7 @@ class TutorialMain implements Control<Noise> {
 
                 // movement keys
                 if (isKey(CharKey('f')) && kstate)
-                    player.custom.pewpewMadafacka();
+                    player.plane.mod.pewpew();
             }
             default: {}
             }
@@ -115,19 +114,14 @@ class TutorialMain implements Control<Noise> {
     /* tuning
     /***************************************************************/
 
-    public function myEngineMod():EngineMod {
+    public function myEngine():EngineMod {
         var mod = new EngineMod();
         mod.debugTrace = function(str){trace('engine log: '+str);};
         return mod;
     }
 
-    public function myPlaneMod():PlaneMod {
-        var mod = new PlaneMod();
-        return mod;
-    }
-
-    public function myPropMod():PropMod {
-        var mod = new PropMod();
+    public function myPlane():TutPlane {
+        var mod = new TutPlane();
         return mod;
     }
 }
