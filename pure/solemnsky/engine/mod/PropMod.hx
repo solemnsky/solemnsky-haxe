@@ -1,5 +1,7 @@
 package solemnsky.engine.mod;
 
+import solemnsky.engine.Prop;
+
 /**
  * solemnsky.engine.mod.PropMod:
  * Object with values and callbacks to influence the behaviour
@@ -7,9 +9,15 @@ package solemnsky.engine.mod;
  */
 
 class PropMod {
-    public var tick:Float->Void;
+    private var prop:Prop;
 
-    public function new() {
-        tick = function(_) {}
+    public function new() {}
+
+    public function attach(prop:Prop) {
+        this.prop = prop;
+    }
+
+    public function tick(delta) {
+        // do something with prop
     }
 }

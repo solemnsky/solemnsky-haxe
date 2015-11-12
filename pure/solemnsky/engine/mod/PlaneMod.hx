@@ -6,6 +6,10 @@ package solemnsky.engine.mod;
  */
 
 class PlaneMod {
+    /**************************************************************/
+    /* tuning variables
+    /**************************************************************/
+
     // physical dimensions
     public var length:Float = 80;
     public var width:Float = 20;
@@ -40,5 +44,19 @@ class PlaneMod {
     public function new() {
         maxRotationStalled = Math.PI * 1;
         maxRotation = Math.PI * 0.8;
+    }
+
+    /**************************************************************/
+    /* callbacks
+    /**************************************************************/
+
+    private var plane;
+
+    public function attach(plane:Plane) { 
+        this.plane = plane;
+    }
+
+    public function tick(delta:Delta) {
+        // do something with plane
     }
 }
