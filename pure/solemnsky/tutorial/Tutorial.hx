@@ -99,7 +99,7 @@ class TutorialMain implements Control<Noise> {
                     state.movement.backward = kstate;
 
                 // movement keys
-                if (isKey(CharKey('f')))
+                if (isKey(CharKey('f')) && kstate)
                     player.custom.pewpewMadafacka();
             }
             default: {}

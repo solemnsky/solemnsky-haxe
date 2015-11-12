@@ -17,7 +17,6 @@ import util.Util;
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
- // holy shit
 class Engine<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     // D: player custom container
     // P: prop custom container
@@ -36,6 +35,7 @@ class Engine<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
         this.mod = mod;
 
         players = new Map();
+        props = new Map();
         environment = null;
         space = null;
 

@@ -7,7 +7,9 @@ package solemnsky.engine.mod;
  */
 
 class PropMod {
-    public function new() {
+    public var tick:Float->Void;
 
+    public function new() {
+        tick = function(_) {}
     }
 }
