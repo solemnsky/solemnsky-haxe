@@ -7,8 +7,6 @@ import nape.shape.Polygon;
 import nape.space.Space;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
-import solemnsky.engine.custom.PlayerCustom;
-import solemnsky.engine.custom.PropCustom;
 import util.Util;
 import util.Util;
 
@@ -85,8 +83,8 @@ class Engine {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int, custom:D):Player {
-        var player = new Player(this, custom);
+    public function addPlayer(sig:Int):Player {
+        var player = new Player(this);
         players.set(sig, player);
         return player;
     }
@@ -100,10 +98,10 @@ class Engine {
     /*************************************************************************/
 
     public function spawnProp(
-        blame:Int, custom:P, mod:PropMod
+        blame:Int, mod:PropMod
     ):Prop {
         var id = Util.allocNewId(props.keys());
-        var prop = new Prop(this, id, blame, custom, mod);
+        var prop = new Prop(this, id, blame, mod);
         props.set(id, prop);
         return prop;
     }

@@ -1,5 +1,7 @@
 package solemnsky.engine.mod;
 
+import solemnsky.engine.Plane;
+
 /**
  * solemnsky.engine.mod.PlaneMod:
  * Object with values and callbacks to influence a plane's behaviour.
@@ -50,13 +52,13 @@ class PlaneMod {
     /* callbacks
     /**************************************************************/
 
-    private var plane;
+    private var plane:Plane;
 
     public function attach(plane:Plane) { 
         this.plane = plane;
     }
 
-    public function tick(delta:Delta) {
+    public function tick(delta:Float) {
         // do something with plane
     }
 }

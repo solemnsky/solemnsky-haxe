@@ -26,8 +26,8 @@ import util.Vector;
 class TutorialMain implements Control<Noise> {
     private var background:TutorialBackground;
 
-    private var engine:Engine<TutPlayer,TutProp>;
-    private var player:Player<TutPlayer,TutProp>;
+    private var engine:Engine;
+    private var player:Player;
 
     public function new() {
         background = new TutorialBackground(3200, 1800);
@@ -123,6 +123,11 @@ class TutorialMain implements Control<Noise> {
 
     public function myPlaneMod():PlaneMod {
         var mod = new PlaneMod();
+        return mod;
+    }
+
+    public function myPropMod():PropMod {
+        var mod = new PropMod();
         return mod;
     }
 }

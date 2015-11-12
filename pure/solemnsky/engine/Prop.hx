@@ -1,8 +1,6 @@
 package solemnsky.engine;
 
 import solemnsky.engine.mod.PropMod;
-import solemnsky.engine.custom.PlayerCustom;
-import solemnsky.engine.custom.PropCustom;
 
 /**
  * solemnsky.engine.Prop:
@@ -12,23 +10,20 @@ import solemnsky.engine.custom.PropCustom;
  * are uniform across all props however.
  */
 
-class Prop<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
-    public var parent:Engine<D,P>;
+class Prop {
+    public var parent:Engine;
     public var id:Int;
     public var blame:Int;
     public var mod:PropMod;
-    public var custom:P;
-
 
     public function new(
-        parent:Engine<D,P>, id:Int, blame:Int
-        , custom:P, mod:PropMod
+        parent:Engine, id:Int, blame:Int, mod:PropMod
     ) {
         this.parent = parent;
         this.id = id;
         this.blame = blame;
         this.mod = mod;
-        this.custom = custom;
+        mod.attach(this);
     } 
 
     public function delete() {

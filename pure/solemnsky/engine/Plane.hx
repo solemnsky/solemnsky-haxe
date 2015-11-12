@@ -7,8 +7,6 @@ import nape.shape.Polygon;
 import solemnsky.engine.mod.PlaneMod;
 import util.Util;
 import util.Vector;
-import solemnsky.engine.custom.PlayerCustom;
-import solemnsky.engine.custom.PropCustom;
 
 /**
  * solemnsky.engine.Plane:
@@ -74,7 +72,7 @@ class PlaneGraphicsState {
     public function new() {}
 }
 
-class Plane<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
+class Plane {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -82,7 +80,7 @@ class Plane<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
     // (other methods such at those in Graphics also do)
-    public var parent:Engine<D,P>;
+    public var parent:Engine;
     public var mod:PlaneMod;
 
     public var state:PlaneState;
@@ -90,13 +88,14 @@ class Plane<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
     public var body:Body;
 
     public function new(
-        parent:Engine<D,P>, mod:PlaneMod, 
+        parent:Engine, mod:PlaneMod, 
         pos:Vector, rot:Float
     ):Void {
         this.state = new PlaneState(pos, rot);
         this.gfxState = new PlaneGraphicsState();
         this.parent = parent;
         this.mod = mod;
+        mod.attach(this);
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
@@ -150,6 +149,8 @@ class Plane<D:PlayerCustom<D,P>,P:PropCustom<D,P>> {
      * plane.writeToNape and plane.readFromNape.
      */
     public function tick(delta:Float):Void {
+        mod.tick(delta);
+
         // synonyms
         var forwardVel:Float = 
             state.vel.length() * Math.cos(state.rot - state.vel.angle());
