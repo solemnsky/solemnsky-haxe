@@ -63,12 +63,15 @@ class TutorialMain implements Control<Noise> {
     private static function renderProp(prop:MyProp):Scene {
         var scene = new Scene();
 
+        var custom = prop.custom;
+
         scene.prims = [
             SetColor(255, 255, 255, 255)
-            , DrawCircle(new Vector(0, 0), 10)
+            , DrawCircle(new Vector(0, 0), 
+                custom.lifeFactor() * 10)
         ];
 
-        var pos = prop.mod.custom.pos;
+        var pos = custom.pos;
         scene.trans = Transform.translation(pos.x, pos.y);
 
         return scene;
@@ -123,8 +126,8 @@ class TutorialMain implements Control<Noise> {
                     state.movement.backward = kstate;
 
                 // movement keys
-                if (isKey(CharKey('f')) && kstate)
-                    player.plane.mod.custom.pewpew();
+                if (isKey(CharKey('f')))
+                    player.plane.mod.custom.pewpew(kstate);
             }
             default: {}
             }

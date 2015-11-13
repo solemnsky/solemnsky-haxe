@@ -16,6 +16,12 @@ class Prop<D,P> {
     public var id:Int;
     public var blame:Int;
     public var mod:PropMod<D,P>;
+    
+    public var custom(get,set):P;
+    public function get_custom() return mod.custom;
+    public function set_custom(x:P) {
+        mod.custom = x; return mod.custom;
+    }
 
     public function new(
         parent:Engine<D,P>, id:Int, blame:Int

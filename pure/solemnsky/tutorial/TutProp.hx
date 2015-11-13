@@ -18,7 +18,11 @@ class TutProp {
     public var life:Float;
 
     public function new() {
-        life = 2000;
+        life = 1000;
+    }
+
+    public function lifeFactor():Float {
+        return life / 1000;
     }
 }
 
