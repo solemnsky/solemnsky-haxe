@@ -34,6 +34,10 @@ class TutGraphics {
     public static function renderGame(
         cont:Continuity
     ):Scene {
+        var engine = cont.engine;
+        var player = cont.player;
+        var background = cont.background;
+        
         engine.tickGraphics(delta);
 
         var scene = new Scene();

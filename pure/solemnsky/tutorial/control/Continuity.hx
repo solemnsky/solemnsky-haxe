@@ -3,7 +3,9 @@ package solemnsky.tutorial.control;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import solemnsky.engine.mod.EngineMod;
+import solemnsky.tutorial.engine.TutPlane;
 import util.Vector;
+import solemnsky.tutorial.engine.Synonyms;
 
 /**
  * solemnsky.tutorial.control.Continuity:
@@ -12,9 +14,9 @@ import util.Vector;
  */
 
 class Continuity {
-    private var background:TutBackground;
-    private var engine:MyEngine;
-    private var player:MyPlayer;
+    public var background:TutBackground;
+    public var engine:MyEngine;
+    public var player:MyPlayer;
 
     public function new() {
         background = new TutBackground(3200, 1800);

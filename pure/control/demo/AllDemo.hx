@@ -96,11 +96,11 @@ class SelectionScreen implements Control<DemoSelect> {
 class AllDemo {
     public static function run():Control<Noise> {
         return Combinator.network(
-            moveThrough
+            stepThrough
             , new SelectionScreen() );
     }
 
-    private static function moveThrough(r:DemoSelect):Control<DemoSelect> {
+    private static function stepThrough(r:DemoSelect):Control<DemoSelect> {
         var ctrl:Control<DemoSelect>;
 
         switch (r) {

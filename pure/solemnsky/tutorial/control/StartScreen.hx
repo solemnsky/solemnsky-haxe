@@ -1,15 +1,17 @@
 package solemnsky.tutorial.control;
 
 import control.Control;
+import control.Event;
+import control.Noise;
+import control.Profile;
 import control.Scene;
-import solemnsky.tutorial.TutBackground;
 
 /**
  * solemnsky.tutorial.control.StartScreen:
  * The beginning.
  */
 
-class StartScreen implements Control<Noise> {
+class StartScreen implements Control<TutStep> {
     private var pressed:Bool; // if the user wants to go on
 
     private var cont:Continuity;
@@ -23,7 +25,7 @@ class StartScreen implements Control<Noise> {
     public function tick(delta:Float):Void {}
 
     public function render(delta:Float):Scene {
-        return background.render(delta);
+        return cont.background.render(delta);
     }
 
     public function profiling(data:Profile):Void {
@@ -38,7 +40,7 @@ class StartScreen implements Control<Noise> {
     }
 
     public function conclude():Null<Noise> {
-        if (pressed)
-            return new Phase1(cont);
+        if (pressed) return Phase1Step(cont);
+        return null;
     }
 }
