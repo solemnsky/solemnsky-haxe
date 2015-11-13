@@ -18,15 +18,15 @@ class PlaneMod<D,P> {
     public var width:Float = 20;
 
     // mechanics when stalled
-    public var maxRotationStalled:Float; // Math.PI * 1
+    public var maxRotationStalled:Float; 
     public var maxVelocityStalled:Float = 300;
     public var afterburnerStalled:Float = 500;
     public var exitStallThreshold:Float = 130;
 
     // mechanics when not stalled
-    public var maxRotation:Float; // Math.PI * 0.8
-    public var speed:Float = 300;
-    public var speedThrottleInfluence:Float = 0.7 ;
+    public var maxRotation:Float; 
+    public var speed:Float = 330;
+    public var speedThrottleInfluence:Float = 0.6 ;
         // max speed achievable with throttle
     public var speedThrottleForce:Float = 0.3;
         // speed per second that throttle can influence
@@ -34,8 +34,7 @@ class PlaneMod<D,P> {
         // speed per second that the throttle can take away
         // when the speed is higher than the throttle
     public var speedGravityForce:Float = 0.5;
-        // speed per second that gravity can influence
-    public var speedAfterburnForce:Float = 0.6;
+    public var speedAfterburnForce:Float = 0.9;
     public var enterStallThreshold:Float = 100;
 
     // misc values and damping
@@ -45,8 +44,8 @@ class PlaneMod<D,P> {
     public var throttleSpeed:Float = 1.5;
 
     public function new(plane:Plane<D,P>) {
-        maxRotationStalled = Math.PI * 1;
-        maxRotation = Math.PI * 0.8;
+        maxRotationStalled = Math.PI * 1.2;
+        maxRotation = Math.PI * 1;
 
         this.plane = plane;
         engine = plane.parent;
