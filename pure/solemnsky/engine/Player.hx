@@ -17,6 +17,7 @@ class Player<D,P> {
         this.id = id;
         this.parent = parent;
         plane = null;
+        simulating = false;
     }
 
     /*************************************************************************/
@@ -24,6 +25,7 @@ class Player<D,P> {
     /*************************************************************************/
 
     public function kill() {
+        this.plane.onKill();
         this.plane = null;
     }
 
@@ -31,6 +33,9 @@ class Player<D,P> {
         modConstruct:Plane<D,P>->PlaneMod<D,P>, pos:Vector, rot:Float
     ) {
         plane = new Plane(parent, id, modConstruct, pos, rot);
+        set_simulating(simulating); // make the body's entry into
+        // the parent space consistent with whether we're
+        // simulating
     }
 
     /*************************************************************************/
@@ -48,13 +53,28 @@ class Player<D,P> {
     }
 
     public function tick(delta:Float) {
-        if (plane != null)
+        if (plane != null && simulating)
             plane.tick(delta);
     }
 
     public function tickGraphics(delta:Float) {
-        if (plane != null)
+        if (plane != null && simulating)
             plane.tickGraphics(delta);
+    }
+
+    /*************************************************************************/
+    /* simulation state
+    /*************************************************************************/
+
+    public var simulating(default,set):Bool;   
+
+    public function set_simulating(val:Bool):Bool {
+        if (plane != null) {
+            simulating = val;
+            if (val) plane.body.space = parent.space;
+            else plane.body.space = null;
+        }
+        return simulating;
     }
 }
 

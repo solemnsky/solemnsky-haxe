@@ -72,6 +72,8 @@ class Graphics {
         var scene = new Scene();
 
         if (player.plane != null) {
+            trace('rendering player');
+            
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
 
             // we have to make sure the player sprite
@@ -112,12 +114,16 @@ class Graphics {
         player:Player<D,P>
     ): Transform {
         var edim = player.parent.environment.dimensions;
-        var pos = player.plane.state.pos;
-        // lol the OOP
 
-        return Transform.translation(
-            -putView(1600, edim.x, pos.x)
-            , -putView(900, edim.y, pos.y)
-        );
+        if (player.plane != null) {
+            var pos = player.plane.state.pos;
+
+            return Transform.translation(
+                -putView(1600, edim.x, pos.x)
+                , -putView(900, edim.y, pos.y)
+            );
+        }
+
+        return Transform.translation(-edim.x / 2, -edim.y / 2);
     }
 }

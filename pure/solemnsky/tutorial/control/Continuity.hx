@@ -27,7 +27,6 @@ class Continuity {
         var planeModConstruct = function (plane) return
             new TutPlaneMod(plane);
         player = engine.addPlayer(0);
-        player.spawn(planeModConstruct, new Vector(1600, 900), 0);
     }
 
     private static function myEngineMod():EngineMod {

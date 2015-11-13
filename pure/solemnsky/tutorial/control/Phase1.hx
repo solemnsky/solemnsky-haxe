@@ -41,6 +41,8 @@ class Phase1 implements Control<TutStep> {
 
         engine = cont.engine;
         player = cont.player;
+
+        player.simulating = true;
     }
 
     public function init(_) {}
@@ -86,7 +88,7 @@ class Phase1 implements Control<TutStep> {
 
                 // movement keys
                 if (isKey(CharKey('f')))
-                    player.plane.mod.custom.pewpew(kstate);
+                    player.plane.custom.pewpew(kstate);
             }
             default: {}
             }
