@@ -67,7 +67,7 @@ class PlaneState {
  * anything besides aesthetics.
  */
 class PlaneGraphicsState {
-    public var burnFade:Float = 1;
+    public var burnFade:Float = 0;
 
     public function new() {}
 }

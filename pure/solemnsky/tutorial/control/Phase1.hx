@@ -1,28 +1,11 @@
 package solemnsky.tutorial.control;
 
 import control.Control;
-import control.Scene;
-import solemnsky.tutorial.TutBackground;
-import solemnsky.tutorial.TutGraphics;
-import control.Control;
 import control.Event;
-import control.Noise;
 import control.Profile;
 import control.Scene;
-import solemnsky.engine.Engine;
-import solemnsky.engine.Environment;
-import solemnsky.engine.Graphics;
-import solemnsky.engine.Plane;
-import solemnsky.engine.Player;
-import solemnsky.engine.Prop;
-import solemnsky.engine.mod.EngineMod;
-import solemnsky.engine.mod.PlaneMod;
-import solemnsky.engine.mod.PropMod;
-import util.Vector;
-import util.Transform;
-import solemnsky.tutorial.engine.TutProp;
-import solemnsky.tutorial.engine.TutPlane;
 import solemnsky.tutorial.engine.Synonyms;
+import solemnsky.tutorial.TutGraphics;
 
 /**
  * solemnsky.tutorial.control.Phase1:
@@ -86,9 +69,9 @@ class Phase1 implements Control<TutStep> {
                 if (isKey(CharKey('k'))) 
                     state.movement.backward = kstate;
 
-                // // movement keys
-                // if (isKey(CharKey('f')))
-                //     player.plane.custom.pewpew(kstate);
+                // movement keys
+                if (isKey(CharKey('f')))
+                    player.plane.custom.pewpew(kstate);
             }
             default: {}
             }

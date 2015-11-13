@@ -38,12 +38,13 @@ Goal 3 | Create dockerized build system, organise project file structure, find a
 Goal 3 | Demonstrate the Control framework by creating a demo in it (using the physics engine), account for possible performance pitfalls. | Completed
 Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
 Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
-Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | In progress
-Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | None
-Goal 7 | Integrate network sync functionalities into the game engine. | In deliberate consideration
-Goal 8 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched
-Goal 9 | Find or create UDP utilities. | Researched
-Goal 10 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
+Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | Completed
+Goal 7 | Mature the tutorial flow, adding features. | In progress
+Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | Waiting on grape for the graphics
+Goal 8 | Integrate network sync functionalities into the game engine. | In deliberate consideration
+Goal 9 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched
+Goal 10 | Find or create UDP utilities. | Researched
+Goal 11 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
 Milestone | Add functionality to the client-server pair, make Vanilla playable | None
 
 ## build instructions
