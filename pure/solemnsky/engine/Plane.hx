@@ -160,8 +160,6 @@ class Plane<D,P> {
      * plane.writeToNape and plane.readFromNape.
      */
     public function tick(delta:Float):Void {
-        mod.tick(delta);
-
         // synonyms
         var forwardVel:Float = 
             state.vel.length() * Math.cos(state.rot - state.vel.angle());
@@ -273,5 +271,9 @@ class Plane<D,P> {
                 state.speed = 0;
             }
         }
+    }
+
+    public function applyImpulse(vec:Vector) {
+        // stub
     }
 }

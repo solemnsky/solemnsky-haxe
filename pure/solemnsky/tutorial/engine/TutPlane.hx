@@ -45,6 +45,11 @@ class TutPlane {
             );
 
         engine.spawnProp(plane.id, modConstruct);
+
+        // recoil
+        plane.applyImpulse(
+            Vector.fromAngle(state.rot).mult(-200)
+        );
     }
 
     public function tick(delta:Float) {

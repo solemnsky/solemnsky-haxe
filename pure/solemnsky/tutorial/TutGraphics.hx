@@ -4,6 +4,7 @@ import control.Scene;
 import solemnsky.engine.Prop;
 import solemnsky.engine.Graphics;
 import solemnsky.tutorial.engine.Synonyms;
+import solemnsky.tutorial.control.Continuity;
 import util.Transform;
 import util.Vector;
 
@@ -31,8 +32,7 @@ class TutGraphics {
     }
 
     public static function renderGame(
-        background:TutBackground, player:MyPlayer
-        , engine:MyEngine, delta:Float
+        cont:Continuity
     ):Scene {
         engine.tickGraphics(delta);
 
@@ -49,5 +49,4 @@ class TutGraphics {
 
         return scene;
     }
-
 }

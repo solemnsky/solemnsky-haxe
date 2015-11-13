@@ -16,7 +16,7 @@ class TutBackground {
     /* constructor
     /*************************************************************************/
 
-    private var dims:Vector;
+    public var dims:Vector;
 
     public function new(x:Float, y:Float) {
         dims = new Vector(x, y);
