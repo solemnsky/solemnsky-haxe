@@ -17,6 +17,7 @@ class Render {
     private static function renderPrim(
         gr:Graphics
         ,prim:DrawPrim
+        ,parentAlpha:Float 
     ){
         switch (prim) {
             // setting state
@@ -25,7 +26,7 @@ class Render {
             }
 
             case SetAlpha(a): {
-                gr.opacity = a;
+                gr.opacity = a * parentAlpha;
             }
 
             case SetFont(name, size): {
@@ -78,21 +79,22 @@ class Render {
         ,g:Graphics
         ,scene:Scene
     ):Int {
-        var prims = scene.prims.length;
+        var primCnt = scene.prims.length;
 
         var resultTrans = pTrans.multmat(scene.trans);
         var resultOpacity = pOpacity * scene.alpha;
 
         g.transformation = matrixFromTrans(resultTrans);
-        g.opacity = (resultOpacity);
+        g.opacity = resultOpacity;
+
         for (prim in scene.prims){
-            renderPrim(g, prim);
+            renderPrim(g, prim, resultOpacity);
         }
         for (child in scene.children){
-            prims += renderNoInit(resultTrans, resultOpacity, g, child);
+            primCnt += renderNoInit(resultTrans, resultOpacity, g, child);
         }
         
-        return prims;
+        return primCnt;
     }
 
     public static function render(g:Graphics, scene:Scene):Int {

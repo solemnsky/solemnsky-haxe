@@ -26,7 +26,7 @@ import solemnsky.tutorial.engine.Synonyms;
 
 /**
  * solemnsky.tutorial.control.Phase1:
- * First phase of the tutorial.
+ * First phase of the tutorial: the player learns to turn the plane.
  */
 
 class Phase1 implements Control<TutStep> {
@@ -86,9 +86,9 @@ class Phase1 implements Control<TutStep> {
                 if (isKey(CharKey('k'))) 
                     state.movement.backward = kstate;
 
-                // movement keys
-                if (isKey(CharKey('f')))
-                    player.plane.custom.pewpew(kstate);
+                // // movement keys
+                // if (isKey(CharKey('f')))
+                //     player.plane.custom.pewpew(kstate);
             }
             default: {}
             }

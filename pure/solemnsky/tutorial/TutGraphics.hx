@@ -37,7 +37,7 @@ class TutGraphics {
         var engine = cont.engine;
         var player = cont.player;
         var background = cont.background;
-        
+
         engine.tickGraphics(delta);
 
         var scene = new Scene();
@@ -50,6 +50,19 @@ class TutGraphics {
         }
 
         scene.trans = Graphics.getPlayerView(player);
+
+        return scene;
+    }
+
+    public static function renderTutText(text:String):Scene {
+        var scene = new Scene();
+
+        scene.prims = 
+            [ SetColor(255, 255, 255, 255)
+            , SetFont("Arial", 14)
+            , DrawText(new Vector(0, 0), CenterText, text) ];
+        scene.trans = Transform.translation(900, 20)
+            .multmat(Transform.scale(3, 3));
 
         return scene;
     }

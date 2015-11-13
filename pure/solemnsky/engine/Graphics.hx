@@ -73,7 +73,7 @@ class Graphics {
 
         if (player.plane != null) {
             trace('rendering player');
-            
+
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
 
             // we have to make sure the player sprite
@@ -124,6 +124,9 @@ class Graphics {
             );
         }
 
-        return Transform.translation(-edim.x / 2, -edim.y / 2);
+        return Transform.translation(
+            -putView(1600, edim.x, edim.x / 2)
+            , -putView(900, edim.y, edim.y / 2)
+        );
     }
 }

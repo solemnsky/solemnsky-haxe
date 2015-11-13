@@ -40,26 +40,39 @@ class StartScreen implements Control<TutStep> {
     }
 
 
-    private function renderPlayer(delta:Float):Scene {
+    private function renderPlayerFade(delta:Float):Scene {
         var scene = new Scene();
 
         if (pressed) {
             scene.children.push(Graphics.renderPlayer(cont.player));
-            scene.prims = [
-                SetAlpha(animTime / animDur)
-            ];
+            scene.alpha = animTime / animDur;
         }
+
+        return scene;
+    }
+
+    public function renderInstructions():Scene {
+        var scene = new Scene();
+        scene.children.push(TutGraphics.renderTutText(
+            "press f to start the tutorial!"));
+        scene.alpha = 1 - (animTime / animDur);
+        return scene;
+    }
+
+    public function renderGame(delta:Float):Scene {
+        var scene = new Scene();
+
+        scene.children.push(cont.background.render(delta));
+        scene.children.push(renderPlayerFade(delta));
+        scene.trans = Graphics.getPlayerView(cont.player);
 
         return scene;
     }
 
     public function render(delta:Float):Scene {
         var scene = new Scene();
-
-        scene.children.push(cont.background.render(delta));
-        scene.children.push(renderPlayer(delta));
-        scene.trans = Graphics.getPlayerView(cont.player);
-
+        scene.children.push(renderGame(delta));
+        scene.children.push(renderInstructions());
         return scene;
     }
 
