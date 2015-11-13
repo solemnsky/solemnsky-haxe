@@ -11,29 +11,25 @@ import util.Vector;
  * are uniform across all props however.
  */
 
-class Prop {
-    public var parent:Engine;
+class Prop<D,P> {
+    public var parent:Engine<D,P>;
     public var id:Int;
     public var blame:Int;
-    public var mod:PropMod;
+    public var mod:PropMod<D,P>;
 
     public function new(
-        parent:Engine, id:Int, blame:Int, mod:PropMod
+        parent:Engine<D,P>, id:Int, blame:Int
+        , modConstruct:Prop<D,P>->PropMod<D,P>
     ) {
         this.parent = parent;
         this.id = id;
         this.blame = blame;
-        this.mod = mod;
-        mod.attach(this);
+        this.mod = modConstruct(this);
     } 
 
     public function delete() {
         mod.deleteHook();
         parent.props.remove(id);
-    }
-
-    public function getPos():Vector {
-        return mod.getPos();
     }
 
     public function tick(delta:Float) {

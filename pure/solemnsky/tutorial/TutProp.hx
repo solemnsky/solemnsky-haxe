@@ -13,34 +13,36 @@ import util.Vector;
  * Simple prop, just a slow bullet that doesn't hurt anybody.
  */
 
-class TutBullet extends PropMod {
-    // constructor vars
-    private var pos:Vector;
-    private var vel:Vector;
+class TutProp {
+    public var pos:Vector;
+    public var life:Float;
 
+    public function new() {
+        life = 2000;
+    }
+}
+
+class TutPropMod extends PropMod<TutPlane,TutProp>
+{
     private var body:Body;
 
-    private var life:Float = 2000;
-
-    public function new(pos:Vector, vel:Vector) {
-        super();
-        this.pos = pos;
-        this.vel = vel;
-    } 
-
-    override function attach(prop:Prop) {
-        this.prop = prop;
-        engine = prop.parent;
+    public function new(
+        prop:Prop<TutPlane,TutProp>, pos:Vector, vel:Vector
+    ) {
+        super(prop);
 
         body = new Body(BodyType.DYNAMIC);
         body.shapes.add(new Circle(10));
         body.position.setxy(pos.x, pos.y);
         body.velocity.setxy(vel.x, vel.y);
         body.space = engine.space;
-    }
 
-    override function getPos():Vector {
-        return Util.vectorFromNape(body.position);
+        custom = new TutProp();
+        writeToData();
+    } 
+
+    private function writeToData() {
+        custom.pos = Util.vectorFromNape(body.position);
     }
 
     override function deleteHook() {
@@ -48,7 +50,9 @@ class TutBullet extends PropMod {
     }
 
     override function tick(delta:Float) {
-        life -= delta;
-        if (life < 0) prop.delete();
+        custom.life -= delta;
+        if (custom.life < 0) prop.delete();
+
+        writeToData();
     }
 }

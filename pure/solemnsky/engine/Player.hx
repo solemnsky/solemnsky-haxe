@@ -8,12 +8,12 @@ import util.Vector;
  * Represents a player in the game.
  */
 
-class Player {
-    public var parent:Engine;
-    public var plane:Null<Plane>;
+class Player<D,P> {
+    public var parent:Engine<D,P>;
+    public var plane:Null<Plane<D,P>>;
     public var id:Int;
 
-    public function new(parent:Engine, id:Int) {
+    public function new(parent:Engine<D,P>, id:Int) {
         this.id = id;
         this.parent = parent;
         plane = null;
@@ -27,8 +27,10 @@ class Player {
         this.plane = null;
     }
 
-    public function spawn(mod:PlaneMod, pos:Vector, rot:Float) {
-        plane = new Plane(parent, id, mod, pos, rot);
+    public function spawn(
+        modConstruct:Plane<D,P>->PlaneMod<D,P>, pos:Vector, rot:Float
+    ) {
+        plane = new Plane(parent, id, modConstruct, pos, rot);
     }
 
     /*************************************************************************/

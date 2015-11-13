@@ -10,15 +10,15 @@ import solemnsky.engine.Engine;
  * of a Prop. Props are.. rather extensible.
  */
 
-class PropMod {
-    private var prop:Prop;
-    private var engine:Engine;
+class PropMod<D,P> {
+    private var prop:Prop<D,P>;
+    private var engine:Engine<D,P>;
 
-    public function new() {}
+    public var custom:P;
 
-    public function attach(prop:Prop) {
+    public function new(prop:Prop<D,P>) {
         this.prop = prop;
-        engine = prop.parent;
+        engine = prop.parent; 
     }
 
     public function tick(delta) {
@@ -27,9 +27,5 @@ class PropMod {
 
     public function deleteHook() {
 
-    }
-
-    public function getPos():Vector {
-        return null;
     }
 }

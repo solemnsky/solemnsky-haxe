@@ -8,7 +8,7 @@ import solemnsky.engine.Engine;
  * Object with values and callbacks to influence a plane's behaviour.
  */
 
-class PlaneMod {
+class PlaneMod<D,P> {
     /**************************************************************/
     /* tuning variables
     /**************************************************************/
@@ -44,28 +44,24 @@ class PlaneMod {
     public var leftoverVelDamping:Float = 0.10;
     public var throttleSpeed:Float = 1.5;
 
-    public function new() {
+    public function new(plane:Plane<D,P>) {
         maxRotationStalled = Math.PI * 1;
         maxRotation = Math.PI * 0.8;
+
+        this.plane = plane;
+        engine = plane.parent;
     }
+
+    private var plane:Plane<D,P>;
+    private var engine:Engine<D,P>;
+
+    public var custom:D;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
-    private var plane:Plane;
-    private var engine:Engine;
-
-    public function attach(plane:Plane) { 
-        this.plane = plane;
-        engine = plane.parent;
-    }
-
     public function tick(delta:Float) {
         // do something with plane
-    }
-
-    public function pewpew() {
-
     }
 }

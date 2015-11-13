@@ -15,7 +15,7 @@ import util.Util;
  * The vanilla core game logic for our cute multiplane plane game.
  */
 
-class Engine {
+class Engine<D,P> {
     // D: player custom container
     // P: prop custom container
 
@@ -24,8 +24,8 @@ class Engine {
     /*************************************************************************/
     public var mod:EngineMod;
 
-    public var players:Map<Int, Player>;
-    public var props:Map<Int, Prop>;
+    public var players:Map<Int, Player<D,P>>;
+    public var props:Map<Int, Prop<D,P>>;
     public var environment:Null<Environment>;
     public var space:Null<Space>;
 
@@ -83,7 +83,7 @@ class Engine {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int):Player {
+    public function addPlayer(sig:Int):Player<D,P> {
         var player = new Player(this, sig);
         players.set(sig, player);
         return player;
@@ -98,10 +98,10 @@ class Engine {
     /*************************************************************************/
 
     public function spawnProp(
-        blame:Int, mod:PropMod
-    ):Prop {
+        blame:Int, modConstruct:Prop<D,P>->PropMod<D,P>
+    ):Prop<D,P> {
         var id = Util.allocNewId(props.keys());
-        var prop = new Prop(this, id, blame, mod);
+        var prop = new Prop(this, id, blame, modConstruct);
         props.set(id, prop);
         return prop;
         trace('pewpew');

@@ -72,7 +72,7 @@ class PlaneGraphicsState {
     public function new() {}
 }
 
-class Plane {
+class Plane<D,P> {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -80,25 +80,26 @@ class Plane {
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
     // (other methods such at those in Graphics also do)
-    public var parent:Engine;
-    public var mod:PlaneMod;
+    public var parent:Engine<D,P>;
     public var id:Int;
+    public var mod:PlaneMod<D,P>;
 
     public var state:PlaneState;
     public var gfxState:PlaneGraphicsState;
     public var body:Body;
 
     public function new(
-        parent:Engine, id:Int, mod:PlaneMod, 
-        pos:Vector, rot:Float
+        parent:Engine<D,P>, id:Int
+        , modConstruct:Plane<D,P>->PlaneMod<D,P>
+        , pos:Vector, rot:Float
     ):Void {
         this.parent = parent;
-        this.mod = mod;
         this.id = id;
 
         this.state = new PlaneState(pos, rot);
         this.gfxState = new PlaneGraphicsState();
-        mod.attach(this);
+        
+        this.mod = modConstruct(this);
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
@@ -112,6 +113,7 @@ class Plane {
         body.align();
         body.space = parent.space;
         writeToNape();
+
     }
 
     /*************************************************************************/

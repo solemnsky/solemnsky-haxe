@@ -16,6 +16,9 @@ import solemnsky.engine.mod.PlaneMod;
 import solemnsky.engine.mod.PropMod;
 import util.Vector;
 import util.Transform;
+import solemnsky.tutorial.TutProp;
+import solemnsky.tutorial.TutPlane;
+import solemnsky.tutorial.Synonyms;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
@@ -28,17 +31,19 @@ import util.Transform;
 class TutorialMain implements Control<Noise> {
     private var background:TutorialBackground;
 
-    private var engine:Engine;
-    private var player:Player;
+    private var engine:MyEngine;
+    private var player:MyPlayer;
 
     public function new() {
         background = new TutorialBackground(3200, 1800);
 
-        engine = new Engine(myEngine());
+        engine = new Engine(myEngineMod());
         engine.loadEnvironment(new Environment(3200, 1800));
 
+        var planeModConstruct = function (plane) return
+            new TutPlaneMod(plane);
         player = engine.addPlayer(0);
-        player.spawn(myPlane(), new Vector(1600, 900), 0);
+        player.spawn(planeModConstruct, new Vector(1600, 900), 0);
     }
 
     public function init(_) {}
@@ -55,7 +60,7 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
-    private static function renderProp(prop:Prop):Scene {
+    private static function renderProp(prop:MyProp):Scene {
         var scene = new Scene();
 
         scene.prims = [
@@ -63,7 +68,7 @@ class TutorialMain implements Control<Noise> {
             , DrawCircle(new Vector(0, 0), 10)
         ];
 
-        var pos = prop.getPos();
+        var pos = prop.mod.custom.pos;
         scene.trans = Transform.translation(pos.x, pos.y);
 
         return scene;
@@ -100,7 +105,7 @@ class TutorialMain implements Control<Noise> {
 
     public function handle(e:Event):Void {
         if (player.plane != null) {
-            var plane:Plane = player.plane;
+            var plane = player.plane;
             var state = plane.state;
 
             switch (e) {
@@ -119,7 +124,7 @@ class TutorialMain implements Control<Noise> {
 
                 // movement keys
                 if (isKey(CharKey('f')) && kstate)
-                    player.plane.mod.pewpew();
+                    player.plane.mod.custom.pewpew();
             }
             default: {}
             }
@@ -130,18 +135,9 @@ class TutorialMain implements Control<Noise> {
         return null;
     }
 
-    /***************************************************************/
-    /* tuning
-    /***************************************************************/
-
-    public function myEngine():EngineMod {
+    public function myEngineMod():EngineMod {
         var mod = new EngineMod();
         mod.debugTrace = function(str){trace('engine log: '+str);};
-        return mod;
-    }
-
-    public function myPlane():TutPlane {
-        var mod = new TutPlane();
         return mod;
     }
 }

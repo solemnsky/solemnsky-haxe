@@ -27,16 +27,16 @@ class Graphics {
         return scene;
     }
 
-    private inline static function planeTrans(
-        plane:Plane
+    private inline static function planeTrans<D,P>(
+        plane:Plane<D,P>
     ): Transform {
         var state = plane.state;
         return Transform.translation(state.pos.x, state.pos.y)
             .multmat(Transform.rotation(state.rot));
     }
 
-    public static function renderDebugPlayer(
-        player:Player
+    public static function renderDebugPlayer<D,P>(
+        player:Player<D,P>
     ): Scene {
         var scene = new Scene();
         if (player.plane != null) {
@@ -66,8 +66,8 @@ class Graphics {
         return scene;
     }
 
-    public static function renderPlayer(
-        player:Player
+    public static function renderPlayer<D,P>(
+        player:Player<D,P>
     ): Scene {
         var scene = new Scene();
 
@@ -108,8 +108,8 @@ class Graphics {
         return (viewTarget - (viewWidth / 2));
     }
 
-    public static function getPlayerView(
-        player:Player
+    public static function getPlayerView<D,P>(
+        player:Player<D,P>
     ): Transform {
         var edim = player.parent.environment.dimensions;
         var pos = player.plane.state.pos;
