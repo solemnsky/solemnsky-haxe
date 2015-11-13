@@ -5,12 +5,13 @@ import util.Transform;
 import util.Vector;
 
 /**
+ * solemnsky.tutorial.TutBackground:
  * Renders the large background for the tutorial.
  * Let's make this exciting later...
  * You know, make it 'pop'...
  */
 
-class TutorialBackground {
+class TutBackground {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/

@@ -1,4 +1,4 @@
-package solemnsky.tutorial;
+package solemnsky.tutorial.engine;
 
 import nape.phys.Body;
 import nape.phys.BodyType;
@@ -9,7 +9,7 @@ import util.Util;
 import util.Vector;
 
 /**
- * solemnsky.engine.TutBullet:
+ * solemnsky.tutorial.engine.TutProp:
  * Simple prop, just a slow bullet that doesn't hurt anybody.
  */
 

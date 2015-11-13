@@ -1,14 +1,14 @@
-package solemnsky.tutorial;
+package solemnsky.tutorial.engine;
 
 import solemnsky.engine.Engine;
 import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
 import solemnsky.engine.Prop;
-import solemnsky.tutorial.TutPlane;
-import solemnsky.tutorial.TutProp;
+import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.TutProp;
 
 /**
- * solemnsky.tutorial.Synonyms:
+ * solemnsky.tutorial.engine.Synonyms:
  * Engine-related type synonyms parameterized on our custom classes.
  */
 

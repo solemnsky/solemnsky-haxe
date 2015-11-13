@@ -16,9 +16,9 @@ import solemnsky.engine.mod.PlaneMod;
 import solemnsky.engine.mod.PropMod;
 import util.Vector;
 import util.Transform;
-import solemnsky.tutorial.TutProp;
-import solemnsky.tutorial.TutPlane;
-import solemnsky.tutorial.Synonyms;
+import solemnsky.tutorial.engine.TutProp;
+import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.Synonyms;
 
 /**
  * Tutorial for solemnsky, using merely the engine.
@@ -29,13 +29,13 @@ import solemnsky.tutorial.Synonyms;
 /****************************************************************/
 
 class TutorialMain implements Control<Noise> {
-    private var background:TutorialBackground;
+    private var background:TutBackground;
 
     private var engine:MyEngine;
     private var player:MyPlayer;
 
     public function new() {
-        background = new TutorialBackground(3200, 1800);
+        background = new TutBackground(3200, 1800);
 
         engine = new Engine(myEngineMod());
         engine.loadEnvironment(new Environment(3200, 1800));

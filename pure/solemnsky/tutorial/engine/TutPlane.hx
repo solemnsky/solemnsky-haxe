@@ -1,12 +1,12 @@
-package solemnsky.tutorial;
+package solemnsky.tutorial.engine;
 
 import util.Vector;
 import solemnsky.engine.mod.PlaneMod;
-import solemnsky.tutorial.TutProp;
-import solemnsky.tutorial.Synonyms;
+import solemnsky.tutorial.engine.TutProp;
+import solemnsky.tutorial.engine.Synonyms;
 
 /**
- * solemnsky.tutorial.TutPlane:
+ * solemnsky.tutorial.engine.TutPlane:
  * Our own plane mod with some extra functions.
  */
 
