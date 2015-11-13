@@ -60,46 +60,9 @@ class TutorialMain implements Control<Noise> {
     /* rendering
     /***************************************************************/
 
-    private static function renderProp(prop:MyProp):Scene {
-        var scene = new Scene();
-
-        var custom = prop.custom;
-
-        scene.prims = [
-            SetColor(255, 255, 255, 255)
-            , DrawCircle(new Vector(0, 0), 
-                custom.lifeFactor() * 10)
-        ];
-
-        var pos = custom.pos;
-        scene.trans = Transform.translation(pos.x, pos.y);
-
-        return scene;
-    }
-
-    public function renderGame(delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.children.push(background.render(delta));
-        scene.children.push(Graphics.renderDebugPlayer(player));
-        // scene.children.push(Graphics.renderPlayer(player));
-
-        for (prop in engine.props.iterator()) {
-            scene.children.push(renderProp(prop));
-        }
-
-        scene.trans = Graphics.getPlayerView(player);
-
-        return scene;
-    }
-
     public function render(delta:Float):Scene {
-        engine.tickGraphics(delta);
-        var scene = new Scene();
-
-        scene.children.push(renderGame(delta));
-
-        return scene;
+        return TutGraphics.renderGame(
+            background, player, engine, delta);
     }
 
     public function profiling(profile:Profile):Void {
