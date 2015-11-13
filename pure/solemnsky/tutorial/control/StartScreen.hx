@@ -39,7 +39,7 @@ class StartScreen implements Control<TutStep> {
         }
     }
 
-    public function conclude():Null<Noise> {
+    public function conclude():Null<TutStep> {
         if (pressed) return Phase1Step(cont);
         return null;
     }

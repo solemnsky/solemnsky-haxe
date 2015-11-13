@@ -32,7 +32,7 @@ class TutGraphics {
     }
 
     public static function renderGame(
-        cont:Continuity
+        cont:Continuity, delta:Float
     ):Scene {
         var engine = cont.engine;
         var player = cont.player;

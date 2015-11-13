@@ -58,7 +58,7 @@ class Phase1 implements Control<TutStep> {
     /***************************************************************/
 
     public function render(delta:Float):Scene {
-        return TutGraphics.renderGame(cont);
+        return TutGraphics.renderGame(cont, delta);
     }
 
     public function profiling(profile:Profile):Void {
@@ -93,7 +93,7 @@ class Phase1 implements Control<TutStep> {
         }
     }
 
-    public function conclude():Null<Noise> {
+    public function conclude():Null<TutStep> {
         return null;
     }
 }

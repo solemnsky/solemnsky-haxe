@@ -17,18 +17,19 @@ import control.Combinator;
 
 class Tutorial {
     public static function run():Control<Noise> {
-        Combinator.network(
+        return Combinator.network(
             stepThrough
             , new StartScreen()
         );
     }
 
-    function stepThrough(tutStep:TutStep) {
+    private static function stepThrough(tutStep:TutStep
+    ):Control<TutStep> {
         switch (tutStep) {
         case (StartScreenStep(cont)): 
             return new StartScreen();
         case (Phase1Step(cont)):
-            return new Phase1Step(cont);
+            return new Phase1(cont);
         }
     }
 }
