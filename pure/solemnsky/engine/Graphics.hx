@@ -72,8 +72,6 @@ class Graphics {
         var scene = new Scene();
 
         if (player.plane != null) {
-            trace('rendering player');
-
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
 
             // we have to make sure the player sprite

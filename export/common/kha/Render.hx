@@ -22,7 +22,8 @@ class Render {
         switch (prim) {
             // setting state
             case SetColor(r, g, b, a): {
-                gr.color = Color.fromBytes(r, g, b, a);
+                gr.color = Color.fromBytes(r, g, b, 
+                    Math.round(a * parentAlpha));
             }
 
             case SetAlpha(a): {

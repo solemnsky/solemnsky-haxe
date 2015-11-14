@@ -1,6 +1,7 @@
 package solemnsky.tutorial.control;
 
 import control.Control;
+import util.Vector;
 import control.Event;
 import control.Profile;
 import control.Scene;
@@ -9,15 +10,21 @@ import solemnsky.tutorial.TutGraphics;
 
 /**
  * solemnsky.tutorial.control.Phase1:
- * First phase of the tutorial: the player learns to turn the plane.
+ * First phase of the tutorial: the plane starts falling
+ * and we display some help information.
  */
 
 class Phase1 implements Control<TutStep> {
     private var cont:Continuity;
 
+    private var time:Float = 0;
+
     // utility
     private var engine:MyEngine;
     private var player:MyPlayer;
+
+    private var boxPos = new Vector(2230, 820);
+    private var boxDim = new Vector(30, 30);
 
     public function new(cont:Continuity) {
         this.cont = cont;
@@ -36,14 +43,36 @@ class Phase1 implements Control<TutStep> {
 
     public function tick(delta:Float):Void {
         engine.tick(delta);
+        time += delta;
     }
 
     /***************************************************************/
     /* rendering
     /***************************************************************/
 
+    public function renderGameLayer(delta:Float):Scene {
+        var scene = new Scene();
+        scene.prims = [
+            DrawRect(
+                boxPos.sub(boxDim.mult(0.5))
+                , boxPos.add(boxDim.mult(0.5)))
+        ];
+        return scene; 
+    }
+
     public function render(delta:Float):Scene {
-        return TutGraphics.renderGame(cont, delta);
+        var scene = new Scene();
+
+        scene.children.push(TutGraphics.renderGame
+            ( cont
+            , renderGameLayer(delta)
+            , delta )
+        );
+        scene.children.push(TutGraphics.renderTutText(
+            "using the ijkl keys, fly into the white box over the 'y'"
+        ));
+
+        return scene;
     }
 
     public function profiling(profile:Profile):Void {

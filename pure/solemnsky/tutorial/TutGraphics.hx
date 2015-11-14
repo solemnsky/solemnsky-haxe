@@ -32,7 +32,7 @@ class TutGraphics {
     }
 
     public static function renderGame(
-        cont:Continuity, delta:Float
+        cont:Continuity, gameLayer:Scene, delta:Float
     ):Scene {
         var engine = cont.engine;
         var player = cont.player;
@@ -44,6 +44,7 @@ class TutGraphics {
 
         scene.children.push(background.render(delta));
         scene.children.push(Graphics.renderPlayer(player));
+        scene.children.push(gameLayer);
 
         for (prop in engine.props.iterator()) {
             scene.children.push(TutGraphics.renderProp(prop));
@@ -58,10 +59,10 @@ class TutGraphics {
         var scene = new Scene();
 
         scene.prims = 
-            [ SetColor(255, 255, 255, 255)
+            [ SetColor(255, 255, 255, 225)
             , SetFont("Arial", 14)
             , DrawText(new Vector(0, 0), CenterText, text) ];
-        scene.trans = Transform.translation(900, 20)
+        scene.trans = Transform.translation(800, 20)
             .multmat(Transform.scale(3, 3));
 
         return scene;
