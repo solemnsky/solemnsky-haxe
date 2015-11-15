@@ -41,7 +41,7 @@ Goal 5 | Port code from the old javascript repository, begin writing a central g
 Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | Completed
 Goal 7 | Mature the tutorial flow, adding features. | Basically done for now
 Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | Working with Grape for graphics
-Goal 8 | Integrate network sync functionalities into the game engine. | Processing...
+Goal 8 | Integrate network functionalities into the game engine. | In progress
 Goal 9 | Implement a Core (Vanilla) with networking, and make a Demo UI to test it. | Sketched
 Goal 10 | Find or create UDP utilities. | Researched
 Goal 11 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
@@ -83,10 +83,13 @@ Inside the development environment, the standard makefile is used to compile tar
 
 ## credits
 
-The Nape physics engine is sourced in /lib/, licensed under BSD.
+The Nape physics engine (by Luca Deltodesco) is sourced in /lib/ (https://github.com/deltaluca/nape).
 
-I intend to use Kha as well as possibly Flambe for the backends. Kha is sourced in /export/.
+The haxe-msgpack library (by Achmad Aulia Noorhakim) is sourced in /lib/ (https://github.com/aaulia/msgpack-haxe).
 
-The logical core of the project is written in the Haxe (v3) language.
+The Kha framework (by KTX Software Development) is sourced in /export/common/kha/Kha (https://github.com/KTXSoftware/Kha).
+
+The logical core of the project is written in the Haxe language (http://haxe.org).
 
 All development besides the aforementioned utilities was done by myself, Chris Gadzinski. 
+
