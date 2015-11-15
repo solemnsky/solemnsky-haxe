@@ -2,6 +2,7 @@ package solemnsky.tutorial;
 
 import solemnsky.tutorial.control.StartScreen;
 import solemnsky.tutorial.control.Phase1;
+import solemnsky.tutorial.control.Phase2;
 import solemnsky.tutorial.control.TutStep;
 import control.Control;
 import control.Noise;
@@ -31,7 +32,7 @@ class Tutorial {
         case (Phase1Step(cont)):
             return new Phase1(cont);
         case (Phase2Step(cont)):
-            return new Phase1(cont);
+            return new Phase2(cont);
         }
     }
 }
