@@ -53,13 +53,19 @@ class Phase1 implements Control<TutStep> {
         objectives = 
             [{ boxPos : new Vector(1200, 1300) 
              , boxDim : new Vector(30, 30)
-             , helpText : "use the ijkl keys to reach the white box" }
+             , helpText : "Use the 'j' and 'l' keys to turn. Make your way to the white box, without loosing too much altitude!" }
+            ,{ boxPos : new Vector(1200, 1800) 
+             , boxDim : new Vector(30, 30)
+             , helpText : "Good, get to the one on the ground now. You can use the 'k' key to slow down if you need to." }
+            ,{ boxPos : new Vector(1500, 1500) 
+             , boxDim : new Vector(30, 30)
+             , helpText : "We've equipped you with thrusters, use the 'i' key to activate." }
             ,{ boxPos : new Vector(2230, 820)
              , boxDim : new Vector(30, 30)
-             , helpText : "come back up now, something's appeared above the 'y'" }
+             , helpText : "Come back up to the 'y' in 'SolemnSky' for the next box..." }
             ,{ boxPos : new Vector(1600, 900)
              , boxDim : new Vector(30, 30)
-             , helpText : "you seem to be getting the hang of this" }
+             , helpText : "You're almost done! We've hidden this one well." }
             ];
         curObjective = 0;
         updateShape();
@@ -135,7 +141,7 @@ class Phase1 implements Control<TutStep> {
             ));
         } else {
             scene.children.push(TutGraphics.renderTutText(
-                "good, press f to continue"
+                "You're a capable pilot. We've installed a gun on your plane, press f to fire."
             ));
         }
 
