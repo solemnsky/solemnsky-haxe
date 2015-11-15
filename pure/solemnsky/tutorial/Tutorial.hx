@@ -30,6 +30,8 @@ class Tutorial {
             return new StartScreen();
         case (Phase1Step(cont)):
             return new Phase1(cont);
+        case (Phase2Step(cont)):
+            return new Phase1(cont);
         }
     }
 }

@@ -27,6 +27,9 @@ class Phase1 implements Control<TutStep> {
     private var cont:Continuity;
 
     private var time:Float = 0;
+    private var endReady:Bool = false;
+    private var concluded:Bool = false;
+
 
     // utility
     private var engine:MyEngine;
@@ -56,7 +59,7 @@ class Phase1 implements Control<TutStep> {
              , helpText : "come back up now, something's appeared above the 'y'" }
             ,{ boxPos : new Vector(1600, 900)
              , boxDim : new Vector(30, 30)
-             , helpText : "" }
+             , helpText : "you seem to be getting the hang of this" }
             ];
         curObjective = 0;
         updateShape();
@@ -84,8 +87,13 @@ class Phase1 implements Control<TutStep> {
         if (plane != null) {
             if (boxReached) {
                 // bump objective
-                curObjective++;
-                updateShape();
+                if ((curObjective + 1) < objectives.length) {
+                    curObjective++;
+                    updateShape();
+                } else {
+                    player.simulating = false; 
+                    endReady = true;
+                }
             }
         }
     }
@@ -120,9 +128,16 @@ class Phase1 implements Control<TutStep> {
             , renderGameLayer(delta)
             , delta )
         );
-        scene.children.push(TutGraphics.renderTutText(
-            objectives[curObjective].helpText
-        ));
+
+        if (!endReady) {
+            scene.children.push(TutGraphics.renderTutText(
+                objectives[curObjective].helpText
+            ));
+        } else {
+            scene.children.push(TutGraphics.renderTutText(
+                "good, press f to continue"
+            ));
+        }
 
         return scene;
     }
@@ -154,9 +169,8 @@ class Phase1 implements Control<TutStep> {
                 if (isKey(CharKey('k'))) 
                     state.movement.backward = kstate;
 
-                // movement keys
-                if (isKey(CharKey('f')))
-                    player.plane.custom.pewpew(kstate);
+                if (endReady && isKey(CharKey('f')))
+                    concluded = true;
             }
             default: {}
             }
@@ -164,6 +178,8 @@ class Phase1 implements Control<TutStep> {
     }
 
     public function conclude():Null<TutStep> {
+        if (concluded)
+            return Phase2Step(cont);
         return null;
     }
 
@@ -179,7 +195,8 @@ class Phase1 implements Control<TutStep> {
         body.position.setxy(o.boxPos.x, o.boxPos.y);
 
         var shape = new Polygon(Polygon.rect(
-            0, 0, o.boxDim.x, o.boxDim.y));
+            -o.boxDim.x / 2, -o.boxDim.y / 2
+            , o.boxDim.x, o.boxDim.y));
 
         body.shapes.add(shape);
 

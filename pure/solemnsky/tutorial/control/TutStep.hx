@@ -8,4 +8,5 @@ package solemnsky.tutorial.control;
 enum TutStep {
     StartScreenStep(cont:Continuity);
     Phase1Step(cont:Continuity);
+    Phase2Step(cont:Continuity);
 }
