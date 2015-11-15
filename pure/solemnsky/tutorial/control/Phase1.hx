@@ -74,10 +74,15 @@ class Phase1 implements Control<TutStep> {
 
         var plane = player.plane;
 
+        var boxReached:Bool = false;
+        if (player.plane != null)
+            if (engine.space.bodiesInShape(objectiveShape).has(
+                player.plane.body)) {
+                boxReached = true;
+            }
+
         if (plane != null) {
-            if (objectiveShape.contains(
-                Util.napeFromVector(plane.state.pos))) 
-            {
+            if (boxReached) {
                 // bump objective
                 curObjective++;
                 updateShape();
