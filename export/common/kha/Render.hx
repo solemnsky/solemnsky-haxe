@@ -71,6 +71,16 @@ class Render {
                 var image = Loader.the.getImage(image);
                 gr.drawImage(image, pos.x, pos.y);
             }
+
+            // images
+            case DrawImageCrop(pos, imgPos, cropDims, image): {
+                var image = Loader.the.getImage(image);
+                gr.drawImage(
+                    image
+                    , pos.x, pos.y
+                    , imgPos.x, imgPos.y 
+                    , cropDims.x, cropDims.y );
+            }
         }
     }
 

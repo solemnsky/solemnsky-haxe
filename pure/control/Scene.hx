@@ -23,6 +23,10 @@ enum DrawPrim {
 
     // images
     DrawImage  (pos:Vector, image:String);
+    DrawImageCrop(
+        pos:Vector, imgPos:Vector
+        , cropDims:Vector, image:String
+    );
 }
 
 /**
