@@ -3,6 +3,7 @@ package solemnsky.engine;
 import util.Vector;
 import util.Transform;
 import control.Scene;
+import solemnsky.engine.mod.PlaneMod;
 import solemnsky.engine.Plane;
 
 /**
@@ -91,6 +92,8 @@ class Graphics {
 
         if (player.plane != null) {
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
+            var state:PlaneState = player.plane.state;
+            var mod:PlaneMod<D,P> = player.plane.mod;
 
             // we have to make sure the player sprite
             // is centered on the COM of the player... 
@@ -103,7 +106,11 @@ class Graphics {
                 , SetAlpha(1)
             ];
 
-            scene.children.push(playerSheet(0));
+            scene.children.push(playerSheet(
+                Math.floor(
+                    4.5 + 4 * (state.rotvel / mod.maxRotationStalled)
+                )
+            ));
 
             scene.trans = planeTrans(player.plane)
                 .multmat(Transform.scale(1/5, 1/5));
