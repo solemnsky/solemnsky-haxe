@@ -75,7 +75,7 @@ class Render {
             // images
             case DrawImageCrop(pos, imgPos, cropDims, image): {
                 var image = Loader.the.getImage(image);
-                gr.drawImage(
+                gr.drawSubImage(
                     image
                     , pos.x, pos.y
                     , imgPos.x, imgPos.y 
