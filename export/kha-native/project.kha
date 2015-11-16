@@ -9,13 +9,13 @@
 	"assets": [
 		{
 			"type": "font",
-			"file": "arial.ttf",
+			"file": "media/fonts/arial.ttf",
 			"size": 14,
 			"name": "Arial"
 		}
 		,{
 			"type": "image",
-			"file": "title.png",
+			"file": "media/render-2d/placeholder/title.png",
 			"name": "title"
 		}
 	],

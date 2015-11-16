@@ -9,28 +9,28 @@
 	"assets": [
 		{
 			"type": "font",
-			"file": "arial.ttf",
+			"file": "media/fonts/arial.ttf",
 			"size": 14,
 			"name": "Arial"
 		}
 		,{
 			"type": "image",
-			"file": "title.png",
+			"file": "media/render-2d/placeholder/title.png",
 			"name": "title"
 		}
 		,{
 			"type": "image",
-			"file": "player.png",
+			"file": "media/render-2d/placeholder/player.png",
 			"name": "player"
 		}
 		,{
 			"type": "image",
-			"file": "player-speed.png",
+			"file": "media/render-2d/placeholder/player-speed.png",
 			"name": "player-speed"
 		}
 		,{
 			"type": "image",
-			"file": "player-thrust.png",
+			"file": "media/render-2d/placeholder/player-thrust.png",
 			"name": "player-thrust"
 		}
 	],
