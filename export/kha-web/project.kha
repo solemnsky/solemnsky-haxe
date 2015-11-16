@@ -33,6 +33,11 @@
 			"file": "media/render-2d/placeholder/player-thrust.png",
 			"name": "player-thrust"
 		}
+		,{
+			"type": "image",
+			"file": "media/render-2d/placeholder/player-sheet.png",
+			"name": "player-sheet"
+		}
 	],
 	"rooms": [
 		{
@@ -42,9 +47,10 @@
 			"assets": [
 				"Arial14.kravur",
 				"title",
-                                "player",
-                                "player-speed",
-                                "player-thrust"
+                "player",
+                "player-speed",
+                "player-thrust",
+                "player-sheet"
 			]
 		}
 	]

@@ -66,6 +66,24 @@ class Graphics {
         return scene;
     }
 
+    /**
+     * Get one index of player-sheet.png
+     */
+    public static function playerSheet(i:Int) {
+        var scene = new Scene();
+
+        scene.prims = [
+            DrawImageCrop(
+                new Vector(-200, -100)
+                , new Vector(0, i * 200)
+                , new Vector(400, 200)
+                , "player-sheet"
+            )
+        ];
+
+        return scene;
+    }
+
     public static function renderPlayer<D,P>(
         player:Player<D,P>
     ): Scene {
@@ -84,6 +102,8 @@ class Graphics {
                 , DrawImage(new Vector(-400, -100), "player-thrust")
                 , SetAlpha(1)
             ];
+
+            scene.children.push(playerSheet(0));
 
             scene.trans = planeTrans(player.plane)
                 .multmat(Transform.scale(1/5, 1/5));
