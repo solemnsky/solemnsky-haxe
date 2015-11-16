@@ -10,7 +10,7 @@ import solemnsky.tutorial.control.Continuity;
 import solemnsky.tutorial.engine.Synonyms;
 import solemnsky.tutorial.engine.TutPlane;
 import util.Vector;
-import solemnsky.engine.Serial;
+import util.Rename;
 
 /**
  * solemnsky.ui.OfflinePackets:
@@ -22,7 +22,7 @@ class OfflinePackets implements Control<Noise> {
     private var engine:MyEngine;
     private var player:MyPlayer;
 
-    private var serialRules:SerialRules;
+    private var serialRules:RenameRules;
 
     public function new() {
         this.cont = new Continuity();
@@ -36,7 +36,7 @@ class OfflinePackets implements Control<Noise> {
             planeModConstruct, new Vector(1600, 900), 0);
         player.simulating = true;
 
-        serialRules = Serial.genRules(
+        serialRules = Rename.makeRules(
             [ "pos", "rot", "vel", "rotvel" ]);
     }
 
@@ -49,10 +49,10 @@ class OfflinePackets implements Control<Noise> {
     public function tick(delta:Float):Void {
         engine.tick(delta);
 
-        var packed = Serial.pack(serialRules, player.plane.state);
-        trace(packed);
-        var unpacked = Serial.unpack(serialRules, packed);
-        trace(unpacked);
+        var short = Rename.shorten(serialRules, player.plane.state);
+        trace(short);
+        var long = Rename.unshorten(serialRules, short);
+        trace(long);
     }
 
     /***************************************************************/

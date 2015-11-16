@@ -1,23 +1,20 @@
-package solemnsky.engine;
-
-import msgpack.MsgPack;
-import haxe.io.Bytes;
+package util;
 
 /**
- * solemnsky.engine.Serial:
- * Stuff for network serialisation / delta resolving etc.
+ * solemnsky.engine.Rename:
+ * Renaming objects to take up less space when serialised.
  */
 
 /**
- * Rules to serialise an object.
+ * Rules to rename an object.
  */
-typedef SerialRules = 
+typedef RenameRules = 
     { fromFull:Map<String,String>
     , toFull:Map<String,String> };
 
-class Serial {
-    public static function genRules(props:Array<String>):SerialRules {
-        var rules:SerialRules = {fromFull:new Map(), toFull:new Map()};
+class Rename {
+    public static function makeRules(props:Array<String>):RenameRules {
+        var rules:RenameRules = {fromFull:new Map(), toFull:new Map()};
         var i:Int = 0;
         for (prop in props) {
             var abbrev = abbrevFromInt(i);
@@ -34,7 +31,7 @@ class Serial {
         return String.fromCharCode(97 + int);
     }
 
-    public static function pack(rules:SerialRules, signal:Dynamic):Bytes {
+    public static function shorten(rules:RenameRules, signal:Dynamic):Dynamic {
         var carrier:Dynamic = {};
 
         for (field in Reflect.fields(signal)) {
@@ -46,12 +43,13 @@ class Serial {
                 );
         }
 
-        return MsgPack.encode(carrier);
+        return carrier; 
     }
 
-    public static function unpack(rules:SerialRules, packed:Bytes):Dynamic {
+    public static function unshorten(
+        rules:RenameRules, carrier:Dynamic
+    ):Dynamic {
         var signal:Dynamic = {};
-        var carrier:Dynamic = MsgPack.decode(packed);
 
         for (abbrv in Reflect.fields(carrier)) {
             var field = rules.toFull.get(abbrv);
