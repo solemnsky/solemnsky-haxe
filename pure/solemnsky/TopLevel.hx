@@ -1,9 +1,9 @@
 package solemnsky;
 
-// import solemnsky.core.Core;
-// import solemnsky.core.vanilla.Vanilla;
-// import solemnsky.ui.Demo;
+import control.Control;
+import control.Noise;
 import solemnsky.tutorial.Tutorial;
+import solemnsky.ui.OfflinePackets;
 
 /**
  * solemnsky.TopLevel:
@@ -11,7 +11,11 @@ import solemnsky.tutorial.Tutorial;
  */
 
 class TopLevel {
-    public static function tutorial() {
+    public static function tutorial():Control<Noise> {
         return Tutorial.run();
-    };
+    }
+
+    public static function offlinePackets() {
+        return new OfflinePackets();
+    }
 }
