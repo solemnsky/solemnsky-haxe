@@ -107,8 +107,8 @@ class Graphics {
             ];
 
             scene.children.push(playerSheet(
-                Math.floor(
-                    4.5 + 4 * (state.rotvel / mod.maxRotationStalled)
+                Math.round(
+                    5 + 4 * (state.rotvel / mod.maxRotationStalled)
                 )
             ));
 
