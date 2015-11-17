@@ -14,8 +14,6 @@ class PropMod<D,P> {
     private var prop:Prop<D,P>;
     private var engine:Engine<D,P>;
 
-    public var custom:P;
-
     public function new(prop:Prop<D,P>) {
         this.prop = prop;
         engine = prop.parent; 

@@ -16,6 +16,7 @@ class Prop<D,P> {
     public var id:Int;
     public var blame:Int;
     public var mod:PropMod<D,P>;
+    public var custom:P;
     
     public var custom(get,set):P;
     public function get_custom() return mod.custom;

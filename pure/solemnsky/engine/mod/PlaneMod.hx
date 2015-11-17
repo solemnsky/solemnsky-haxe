@@ -5,7 +5,7 @@ import solemnsky.engine.Engine;
 
 /**
  * solemnsky.engine.mod.PlaneMod:
- * Object with values and callbacks to influence a plane's behaviour.
+ * For modifying plane behaviour.
  */
 
 class PlaneMod<D,P> {
@@ -53,8 +53,6 @@ class PlaneMod<D,P> {
 
     private var plane:Plane<D,P>;
     private var engine:Engine<D,P>;
-
-    public var custom:D;
 
     /**************************************************************/
     /* callbacks

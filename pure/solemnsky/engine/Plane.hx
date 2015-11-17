@@ -83,6 +83,7 @@ class Plane<D,P> {
     public var parent:Engine<D,P>;
     public var id:Int;
     public var mod:PlaneMod<D,P>;
+    public var custom:D;
     
     public var custom(get,set):D;
     public function get_custom() return mod.custom;
