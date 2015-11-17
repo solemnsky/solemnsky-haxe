@@ -7,29 +7,31 @@ import nape.shape.Polygon;
 import nape.space.Space;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
-import util.Util;
+import solemnsky.engine.mod.PlayerMod;
 import util.Util;
 
 /**
  * solemnsky.engine.Engine:
- * The vanilla core game logic for our cute multiplane plane game.
+ * Core game engine.
  */
 
-class Engine<D,P> {
-    // D: player custom container
-    // P: prop custom container
+class Engine<A,P> {
+    // A: player custom data (think "avion")
+    // P: prop custom data 
 
     /*************************************************************************/
-    /* constructor
+    /* state and constructor
     /*************************************************************************/
-    public var mod:EngineMod<D,P>;
 
-    public var players:Map<Int, Player<D,P>>;
-    public var props:Map<Int, Prop<D,P>>;
+    public var mod:EngineMod<A,P>;
+
+    public var players:Map<Int, Player<A,P>>;
+    public var props:Map<Int, Prop<A,P>>;
     public var environment:Null<Environment>;
+
     public var space:Null<Space>;
 
-    public function new(mod:EngineMod) {
+    public function new(mod:EngineMod<A,P>) {
         this.mod = mod;
 
         players = new Map();
@@ -83,7 +85,7 @@ class Engine<D,P> {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int):Player<D,P> {
+    public function addPlayer(sig:Int):Player<A,P> {
         var modConstruct = function(plane) return
             mod.planeMod(type, plane);
 
@@ -103,7 +105,7 @@ class Engine<D,P> {
 
     public function spawnProp(
         blame:Int, modType:Int, custom:P
-    ):Prop<D,P> {
+    ):Prop<A,P> {
         var id = Util.allocNewId(props.keys());
         var modConstruct = function(prop) return
             mod.propMod(type, prop);

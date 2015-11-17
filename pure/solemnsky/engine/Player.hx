@@ -8,22 +8,22 @@ import util.Vector;
  * Represents a player in the game.
  */
 
-class Player<D,P> {
+class Player<A,P> {
     /*************************************************************************/
     /* state and constructor
     /*************************************************************************/
 
     public var id:Int;
 
-    public var parent:Engine<D,P>;
-    public var plane:Null<Plane<D,P>>; 
+    public var parent:Engine<A,P>;
+    public var plane:Null<Plane<A,P>>; 
 
-    public var mod:PlayerMod<D,P>;
+    public var mod:PlayerMod<A,P>;
     public var custom:D;
 
     public function new(
-        parent:Engine<D,P>, id:Int
-        , mod:PlaneMod<D,P>
+        parent:Engine<A,P>, id:Int
+        , mod:PlaneMod<A,P>
     ) {
         this.id = id;
 
@@ -61,7 +61,7 @@ class Player<D,P> {
     }
 
     public function spawn(
-        modConstruct:Plane<D,P>->PlaneMod<D,P>, pos:Vector, rot:Float
+        pos:Vector, rot:Float
     ) {
         mod.onSpawn();
 

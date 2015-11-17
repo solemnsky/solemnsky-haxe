@@ -18,7 +18,6 @@ import util.Rename;
  */
 
 class OfflinePackets implements Control<Noise> {
-    private var cont:Continuity;
     private var engine:MyEngine;
     private var player:MyPlayer;
 

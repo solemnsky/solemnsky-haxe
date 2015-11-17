@@ -6,14 +6,14 @@ package solemnsky.engine.mod;
  * functionality.
  */
 
-class EngineMod<D,P> {
+class EngineMod<A,P> {
     /**************************************************************/
     /* misc variables and constructor
     /**************************************************************/
 
     public var debugTrace:String->Void;
 
-    // acceleration of gravity 
+    // acceleration of gravity (px / s^2)
     public var gravity:Float = 250;
 
     public function new() {
@@ -29,8 +29,8 @@ class EngineMod<D,P> {
      * PlaneMod.
      */
     public function planeMod(
-        type:Int, plane:Plane<D,P>
-    ):PlaneMod<D,P> {
+        type:Int, plane:Plane<A,P>
+    ):PlaneMod<A,P> {
         return null;
     }
 
@@ -39,8 +39,8 @@ class EngineMod<D,P> {
      * PropMod.
      */
     public function propMod(
-        type:Int, plane:Prop<D,P>
-    ):PropMod<D,P> {
+        type:Int, plane:Prop<A,P>
+    ):PropMod<A,P> {
         return null;
     }
 
@@ -49,5 +49,6 @@ class EngineMod<D,P> {
     /**************************************************************/
 
     // maybe eventually?
+    // props and players have callbacks as well...
 
 }

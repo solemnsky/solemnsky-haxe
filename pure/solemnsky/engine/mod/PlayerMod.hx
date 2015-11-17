@@ -8,12 +8,12 @@ import solemnsky.engine.Engine;
  * For modifying plane behaviour.
  */
 
-class PlayerMod<D,P> {
+class PlayerMod<A,P> {
     /**************************************************************/
     /* flight mechanics tuning variables
     /**************************************************************/
 
-    // physical dimensions of plane
+    // physical dimensions
     public var length:Float = 80;
     public var width:Float = 20;
 
@@ -27,14 +27,9 @@ class PlayerMod<D,P> {
     public var maxRotation:Float; 
     public var speed:Float = 330;
     public var speedThrottleInfluence:Float = 0.6 ;
-        // max speed achievable with throttle
     public var speedThrottleForce:Float = 0.3;
-        // speed per second that throttle can influence
     public var speedThrottleDeaccForce:Float = 1.1;
-        // speed per second that the throttle can take away
-        // when the speed is higher than the throttle
     public var speedGravityForce:Float = 0.5;
-        // public var speedAfterburnForce:Float = 0.9;
     public var enterStallThreshold:Float = 100;
 
     // misc values and damping
@@ -47,16 +42,18 @@ class PlayerMod<D,P> {
     /* constructor and state
     /**************************************************************/
 
-    public function new(player:Player<D,P>) {
+    private var player:Player<A,P>;
+    private var engine:Engine<A,P>;
+    private var custom:A;
+
+    public function new(player:Player<A,P>) {
         maxRotationStalled = Math.PI * 1.2;
         maxRotation = Math.PI * 1;
 
         this.player = player;
         engine = player.parent;
+        custom = player.custom;
     }
-
-    private var player:Player<D,P>;
-    private var engine:Engine<D,P>;
 
     /**************************************************************/
     /* callbacks
@@ -72,7 +69,7 @@ class PlayerMod<D,P> {
     /**
      * Ticks when the player has control of a plane (is alive).
      */
-    public function onTickPlane(delta:Float, plane:Plane<D,P>) {
+    public function onTickPlane(delta:Float, plane:Plane<A,P>) {
 
     }
 
