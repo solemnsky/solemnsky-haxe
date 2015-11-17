@@ -28,6 +28,10 @@ class Graphics {
         return scene;
     }
 
+    /*************************************************************************/
+    /* planes
+    /*************************************************************************/
+
     private inline static function planeTrans<D,P>(
         plane:Plane<D,P>
     ): Transform {
