@@ -12,9 +12,11 @@ import util.Vector;
  */
 
 class Prop<D,P> {
-    public var parent:Engine<D,P>;
     public var id:Int;
     public var blame:Int;
+
+    public var parent:Engine<D,P>;
+    
     public var mod:PropMod<D,P>;
     public var custom:P;
     

@@ -117,31 +117,19 @@ class Engine<D,P> {
     /* simulation
     /*************************************************************************/
 
-    public function tick(delta:Float):Array<String> {
+    public function tick(delta:Float) {
         if (space != null) {
-            for (player in players.iterator()) {
-                player.writeToNape();
-            }
             space.step(delta / 1000); 
-            for (player in players.iterator()) {
-                player.readFromNape();
+            for (player in players.iterator())
                 player.tick(delta);
-            }
-
-            for (prop in props.iterator()) {
+            for (prop in props.iterator()) 
                 prop.tick(delta);
-            }
         }
-        return [];
     }
 
     public function tickGraphics(delta:Float) {
         for (player in players.iterator()) {
             player.tickGraphics(delta);
         }
-    }
-
-    public function hasEnded():Bool {
-        return false;
     }
 }

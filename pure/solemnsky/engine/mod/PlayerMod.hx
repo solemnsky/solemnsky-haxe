@@ -65,14 +65,22 @@ class PlayerMod<D,P> {
     /**
      * Ticks on every game cycle. Be careful, young modders.
      */
-    public function tick(delta:Float) {
+    public function onTick(delta:Float) {
         // do something with plane
     }
 
     /**
      * Ticks when the player has control of a plane (is alive).
      */
-    public function tickPlane(delta:Float, plane:Plane<D,P>) {
+    public function onTickPlane(delta:Float, plane:Plane<D,P>) {
+
+    }
+
+    public function onSpawn() {
+
+    }
+
+    public function onKill() {
 
     }
 }

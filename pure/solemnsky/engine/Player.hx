@@ -9,58 +9,29 @@ import util.Vector;
  */
 
 class Player<D,P> {
-    public var parent:Engine<D,P>;
-    public var plane:Null<Plane<D,P>>;
-    public var id:Int;
-    public var mod:PlayerMod<D,P>;
+    /*************************************************************************/
+    /* state and constructor
+    /*************************************************************************/
 
-    public function new(parent:Engine<D,P>, id:Int) {
+    public var id:Int;
+
+    public var parent:Engine<D,P>;
+    public var plane:Null<Plane<D,P>>; 
+
+    public var mod:PlayerMod<D,P>;
+    public var custom:D;
+
+    public function new(
+        parent:Engine<D,P>, id:Int
+        , mod:PlaneMod<D,P>
+    ) {
         this.id = id;
+
         this.parent = parent;
         plane = null;
+
+
         simulating = false;
-    }
-
-    /*************************************************************************/
-    /* external API
-    /*************************************************************************/
-
-    public function kill() {
-        this.plane.onKill();
-        this.plane = null;
-    }
-
-    public function spawn(
-        modConstruct:Plane<D,P>->PlaneMod<D,P>, pos:Vector, rot:Float
-    ) {
-        plane = new Plane(parent, id, modConstruct, pos, rot);
-        set_simulating(simulating); // make the body's entry into
-        // the parent space consistent with whether we're
-        // simulating
-    }
-
-    /*************************************************************************/
-    /* simulation
-    /*************************************************************************/
-
-    public function writeToNape() {
-        if (plane != null)
-            plane.writeToNape();
-    }
-
-    public function readFromNape() {
-        if (plane != null)
-            plane.readFromNape();
-    }
-
-    public function tick(delta:Float) {
-        if (plane != null && simulating)
-            plane.tick(delta);
-    }
-
-    public function tickGraphics(delta:Float) {
-        if (plane != null && simulating)
-            plane.tickGraphics(delta);
     }
 
     /*************************************************************************/
@@ -77,5 +48,47 @@ class Player<D,P> {
         }
         return simulating;
     }
+
+    /*************************************************************************/
+    /* tsumego
+    /*************************************************************************/
+
+    public function kill() {
+        mod.onKill();
+
+        plane.onKill();
+        plane = null;
+    }
+
+    public function spawn(
+        modConstruct:Plane<D,P>->PlaneMod<D,P>, pos:Vector, rot:Float
+    ) {
+        mod.onSpawn();
+
+        plane = new Plane(parent, id, modConstruct, pos, rot);
+        set_simulating(simulating); 
+            // needs to be reset when the body is re-allocated
+    }
+
+    /*************************************************************************/
+    /* simulation
+    /*************************************************************************/
+
+    public function tick(delta:Float) {
+        mod.onTick(delta);
+
+        if (plane != null && simulating) {
+            plane.readFromNape();
+            mod.onTickPlane(delta);
+            plane.tick(delta);
+            plane.writeToNape();
+        }
+    }
+
+    public function tickGraphics(delta:Float) {
+        if (plane != null && simulating)
+            plane.tickGraphics(delta);
+    }
+
 }
 
