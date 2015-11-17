@@ -7,29 +7,31 @@ import nape.shape.Polygon;
 import nape.space.Space;
 import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
-import util.Util;
+import solemnsky.engine.mod.PlayerMod;
 import util.Util;
 
 /**
  * solemnsky.engine.Engine:
- * The vanilla core game logic for our cute multiplane plane game.
+ * Core game engine.
  */
 
-class Engine<D,P> {
-    // D: player custom container
-    // P: prop custom container
+class Engine<A,P> {
+    // A: player custom data (think "avion")
+    // P: prop custom data 
 
     /*************************************************************************/
-    /* constructor
+    /* state and constructor
     /*************************************************************************/
-    public var mod:EngineMod;
 
-    public var players:Map<Int, Player<D,P>>;
-    public var props:Map<Int, Prop<D,P>>;
+    public var mod:EngineMod<A,P>;
+
+    public var players:Map<Int, Player<A,P>>;
+    public var props:Map<Int, Prop<A,P>>;
     public var environment:Null<Environment>;
+
     public var space:Null<Space>;
 
-    public function new(mod:EngineMod) {
+    public function new(mod:EngineMod<A,P>) {
         this.mod = mod;
 
         players = new Map();
@@ -83,8 +85,10 @@ class Engine<D,P> {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int):Player<D,P> {
-        var player = new Player(this, sig);
+    public function addPlayer(
+        sig:Int 
+    ):Player<A,P> {
+        var player = new Player(this, sig, mod.playerMod);
         players.set(sig, player);
         return player;
     }
@@ -98,11 +102,11 @@ class Engine<D,P> {
     /*************************************************************************/
 
     public function spawnProp(
-        blame:Int, modConstruct:Prop<D,P>->PropMod<D,P>
-    ):Prop<D,P> {
-        var id = Util.allocNewId(props.keys());
-        var prop = new Prop(this, id, blame, modConstruct);
-        props.set(id, prop);
+        blame:Int 
+    ):Prop<A,P> {
+        var sig = Util.allocNewId(props.keys());
+        var prop = new Prop(this, sig, blame, mod.propMod);
+        props.set(sig, prop);
         return prop;
     }
 
@@ -110,31 +114,19 @@ class Engine<D,P> {
     /* simulation
     /*************************************************************************/
 
-    public function tick(delta:Float):Array<String> {
+    public function tick(delta:Float) {
         if (space != null) {
-            for (player in players.iterator()) {
-                player.writeToNape();
-            }
             space.step(delta / 1000); 
-            for (player in players.iterator()) {
-                player.readFromNape();
+            for (player in players.iterator())
                 player.tick(delta);
-            }
-
-            for (prop in props.iterator()) {
+            for (prop in props.iterator()) 
                 prop.tick(delta);
-            }
         }
-        return [];
     }
 
     public function tickGraphics(delta:Float) {
         for (player in players.iterator()) {
             player.tickGraphics(delta);
         }
-    }
-
-    public function hasEnded():Bool {
-        return false;
     }
 }

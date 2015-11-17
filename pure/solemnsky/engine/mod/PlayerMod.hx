@@ -8,9 +8,9 @@ import solemnsky.engine.Engine;
  * For modifying plane behaviour.
  */
 
-class PlaneMod<D,P> {
+class PlayerMod<A,P> {
     /**************************************************************/
-    /* tuning variables
+    /* flight mechanics tuning variables
     /**************************************************************/
 
     // physical dimensions
@@ -27,14 +27,9 @@ class PlaneMod<D,P> {
     public var maxRotation:Float; 
     public var speed:Float = 330;
     public var speedThrottleInfluence:Float = 0.6 ;
-        // max speed achievable with throttle
     public var speedThrottleForce:Float = 0.3;
-        // speed per second that throttle can influence
     public var speedThrottleDeaccForce:Float = 1.1;
-        // speed per second that the throttle can take away
-        // when the speed is higher than the throttle
     public var speedGravityForce:Float = 0.5;
-    public var speedAfterburnForce:Float = 0.9;
     public var enterStallThreshold:Float = 100;
 
     // misc values and damping
@@ -43,22 +38,46 @@ class PlaneMod<D,P> {
     public var leftoverVelDamping:Float = 0.10;
     public var throttleSpeed:Float = 1.5;
 
-    public function new(plane:Plane<D,P>) {
+    /**************************************************************/
+    /* constructor and state
+    /**************************************************************/
+
+    private var player:Player<A,P>;
+    private var engine:Engine<A,P>;
+    private var custom:A;
+
+    public function new(player:Player<A,P>) {
         maxRotationStalled = Math.PI * 1.2;
         maxRotation = Math.PI * 1;
 
-        this.plane = plane;
-        engine = plane.parent;
+        this.player = player;
+        engine = player.parent;
+        custom = player.custom;
     }
-
-    private var plane:Plane<D,P>;
-    private var engine:Engine<D,P>;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
-    public function tick(delta:Float) {
+    /**
+     * Ticks on every game cycle. Be careful, young modders.
+     */
+    public function onTick(delta:Float) {
         // do something with plane
+    }
+
+    /**
+     * Ticks when the player has control of a plane (is alive).
+     */
+    public function onTickPlane(delta:Float, plane:Plane<A,P>) {
+
+    }
+
+    public function onSpawn() {
+
+    }
+
+    public function onKill() {
+
     }
 }

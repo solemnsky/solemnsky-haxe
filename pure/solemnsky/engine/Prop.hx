@@ -11,22 +11,22 @@ import util.Vector;
  * are uniform across all props however.
  */
 
-class Prop<D,P> {
-    public var parent:Engine<D,P>;
+class Prop<A,P> {
+    /*************************************************************************/
+    /* state and constructor
+    /*************************************************************************/
+
     public var id:Int;
     public var blame:Int;
-    public var mod:PropMod<D,P>;
+
+    public var parent:Engine<A,P>;
+    
+    public var mod:PropMod<A,P>;
     public var custom:P;
     
-    public var custom(get,set):P;
-    public function get_custom() return mod.custom;
-    public function set_custom(x:P) {
-        mod.custom = x; return mod.custom;
-    }
-
     public function new(
-        parent:Engine<D,P>, id:Int, blame:Int
-        , modConstruct:Prop<D,P>->PropMod<D,P>
+        parent:Engine<A,P>, id:Int, blame:Int
+        , modConstruct:Prop<A,P>->PropMod<A,P>
     ) {
         this.parent = parent;
         this.id = id;
@@ -34,12 +34,17 @@ class Prop<D,P> {
         this.mod = modConstruct(this);
     } 
 
+    /*************************************************************************/
+    /* simulation
+    /*************************************************************************/
+
+    public function tick(delta:Float) {
+        mod.tick(delta);
+    }
+    
     public function delete() {
         mod.deleteHook();
         parent.props.remove(id);
     }
 
-    public function tick(delta:Float) {
-        mod.tick(delta);
-    }
 }
