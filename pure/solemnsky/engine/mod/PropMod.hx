@@ -13,6 +13,7 @@ import solemnsky.engine.Engine;
 class PropMod<D,P> {
     private var prop:Prop<D,P>;
     private var engine:Engine<D,P>;
+    private var custom:P;
 
     public function new(prop:Prop<D,P>) {
         this.prop = prop;

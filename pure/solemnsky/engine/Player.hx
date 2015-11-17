@@ -12,6 +12,7 @@ class Player<D,P> {
     public var parent:Engine<D,P>;
     public var plane:Null<Plane<D,P>>;
     public var id:Int;
+    public var mod:PlayerMod<D,P>;
 
     public function new(parent:Engine<D,P>, id:Int) {
         this.id = id;

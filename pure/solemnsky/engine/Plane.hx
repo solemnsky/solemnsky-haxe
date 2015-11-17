@@ -10,8 +10,7 @@ import util.Vector;
 
 /**
  * solemnsky.engine.Plane:
- * Represents a plane in the game. It is simply an object,
- * not linked to any particular player.
+ * Flight gameplay mechanics delegated out from Player.
  */
 
 /**

@@ -7,22 +7,22 @@ package solemnsky.engine.mod;
  */
 
 class EngineMod<D,P> {
-    public var debugTrace:String->Void;
+    /**************************************************************/
+    /* misc variables and constructor
+    /**************************************************************/
 
-    // dimensions of the simple plane rectangle
-    public var planeWidth:Float = 60;
-    public var planeHeight:Float = 30;
+    public var debugTrace:String->Void;
 
     // acceleration of gravity 
     public var gravity:Float = 250;
 
-    // contact
-    public var minimumContactDamage:Float = 0.02;
-    public var contactDamangeMultiplier:Float = 0.01;
-
     public function new() {
         debugTrace = function(_){}
     }
+
+    /**************************************************************/
+    /* mod constructors
+    /**************************************************************/
 
     /**
      * Given a mod type and a plane to attach to, produce a 
@@ -43,4 +43,11 @@ class EngineMod<D,P> {
     ):PropMod<D,P> {
         return null;
     }
+
+    /**************************************************************/
+    /* callbacks
+    /**************************************************************/
+
+    // maybe eventually?
+
 }

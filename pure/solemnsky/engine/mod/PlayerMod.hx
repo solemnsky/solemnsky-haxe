@@ -8,12 +8,12 @@ import solemnsky.engine.Engine;
  * For modifying plane behaviour.
  */
 
-class PlaneMod<D,P> {
+class PlayerMod<D,P> {
     /**************************************************************/
-    /* tuning variables
+    /* flight mechanics tuning variables
     /**************************************************************/
 
-    // physical dimensions
+    // physical dimensions of plane
     public var length:Float = 80;
     public var width:Float = 20;
 
@@ -34,7 +34,7 @@ class PlaneMod<D,P> {
         // speed per second that the throttle can take away
         // when the speed is higher than the throttle
     public var speedGravityForce:Float = 0.5;
-    public var speedAfterburnForce:Float = 0.9;
+        // public var speedAfterburnForce:Float = 0.9;
     public var enterStallThreshold:Float = 100;
 
     // misc values and damping
@@ -43,22 +43,36 @@ class PlaneMod<D,P> {
     public var leftoverVelDamping:Float = 0.10;
     public var throttleSpeed:Float = 1.5;
 
-    public function new(plane:Plane<D,P>) {
+    /**************************************************************/
+    /* constructor and state
+    /**************************************************************/
+
+    public function new(player:Player<D,P>) {
         maxRotationStalled = Math.PI * 1.2;
         maxRotation = Math.PI * 1;
 
-        this.plane = plane;
-        engine = plane.parent;
+        this.player = player;
+        engine = player.parent;
     }
 
-    private var plane:Plane<D,P>;
+    private var player:Player<D,P>;
     private var engine:Engine<D,P>;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
+    /**
+     * Ticks on every game cycle. Be careful, young modders.
+     */
     public function tick(delta:Float) {
         // do something with plane
+    }
+
+    /**
+     * Ticks when the player has control of a plane (is alive).
+     */
+    public function tickPlane(delta:Float, plane:Plane<D,P>) {
+
     }
 }
