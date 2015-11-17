@@ -104,8 +104,6 @@ class Engine<D,P> {
         var prop = new Prop(this, id, blame, modConstruct);
         props.set(id, prop);
         return prop;
-        trace('pewpew');
-        trace(Util.mapLength(props));
     }
 
     /*************************************************************************/
