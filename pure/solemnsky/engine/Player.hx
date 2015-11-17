@@ -1,6 +1,6 @@
 package solemnsky.engine;
 
-import solemnsky.engine.mod.PlaneMod;
+import solemnsky.engine.mod.PlayerMod;
 import util.Vector;
 
 /**
@@ -23,7 +23,7 @@ class Player<A,P> {
     public var custom:D;
 
     public function new(
-        parent:Engine<A,P>, id:Int, 
+        parent:Engine<A,P>, id:Int 
         , modConstruct:Player<A,P>->PlayerMod<A,P>
     ) {
         this.id = id;

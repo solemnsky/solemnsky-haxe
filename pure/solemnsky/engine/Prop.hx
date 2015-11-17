@@ -46,5 +46,4 @@ class Prop<A,P> {
         mod.deleteHook();
         parent.props.remove(id);
     }
-
 }

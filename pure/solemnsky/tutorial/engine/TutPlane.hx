@@ -62,7 +62,7 @@ class TutPlane {
     }
 }
 
-class TutPlaneMod extends PlaneMod<TutPlane,TutProp> {
+class TutPlayerMod extends PlayerMod<TutPlane,TutProp> {
     public function new(prop) {
         super(prop);
 
