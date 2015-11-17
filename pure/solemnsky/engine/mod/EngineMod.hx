@@ -24,22 +24,14 @@ class EngineMod<A,P> {
     /* mod constructors
     /**************************************************************/
 
-    /**
-     * Given a mod type and a plane to attach to, produce a 
-     * PlaneMod.
-     */
-    public function planeMod(
-        type:Int, plane:Plane<A,P>
-    ):PlaneMod<A,P> {
+    public function playerMod(
+        player:Player<A,P>
+    ):PlayerMod<A,P> {
         return null;
     }
 
-    /**
-     * Given a mod type and a prop to attach to, produce a 
-     * PropMod.
-     */
     public function propMod(
-        type:Int, plane:Prop<A,P>
+        plane:Prop<A,P>
     ):PropMod<A,P> {
         return null;
     }
@@ -50,5 +42,4 @@ class EngineMod<A,P> {
 
     // maybe eventually?
     // props and players have callbacks as well...
-
 }

@@ -7,16 +7,12 @@ package solemnsky.engine;
 
 typedef PlayerSnap {
     id: Int
-    , mod: Int
     , state: Null<PlaneState>
-
     , custom: Null<Dynamic>
 }
 
 typedef PropSnap {
     id: Int
-    , mod: Int
-
     , custom: Dynamic
 }
 

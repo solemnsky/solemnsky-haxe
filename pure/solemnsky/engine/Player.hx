@@ -18,18 +18,20 @@ class Player<A,P> {
     public var parent:Engine<A,P>;
     public var plane:Null<Plane<A,P>>; 
 
+    public var modType:Int;
     public var mod:PlayerMod<A,P>;
     public var custom:D;
 
     public function new(
-        parent:Engine<A,P>, id:Int
-        , mod:PlaneMod<A,P>
+        parent:Engine<A,P>, id:Int, 
+        , modConstruct:Player<A,P>->PlayerMod<A,P>
     ) {
         this.id = id;
 
         this.parent = parent;
         plane = null;
 
+        this.mod = modConstruct(this);
 
         simulating = false;
     }

@@ -85,12 +85,10 @@ class Engine<A,P> {
     /* players
     /*************************************************************************/
 
-    public function addPlayer(sig:Int):Player<A,P> {
-        var modConstruct = function(plane) return
-            mod.planeMod(type, plane);
-
-        var player = new Player(this, sig, modConstruct);
-
+    public function addPlayer(
+        sig:Int 
+    ):Player<A,P> {
+        var player = new Player(this, sig, mod.playerMod);
         players.set(sig, player);
         return player;
     }
@@ -104,14 +102,11 @@ class Engine<A,P> {
     /*************************************************************************/
 
     public function spawnProp(
-        blame:Int, modType:Int, custom:P
+        blame:Int 
     ):Prop<A,P> {
-        var id = Util.allocNewId(props.keys());
-        var modConstruct = function(prop) return
-            mod.propMod(type, prop);
-
-        var prop = new Prop(this, id, blame, modConstruct);
-        props.set(id, prop);
+        var sig = Util.allocNewId(props.keys());
+        var prop = new Prop(this, sig, blame, mod.propMod);
+        props.set(sig, prop);
         return prop;
     }
 
