@@ -27,6 +27,28 @@ class Pack {
     }
 
     /**
+     * Packs a typed array, applying a pack rule to every element.
+     */
+     public static function array<T>(
+        rule:PackRule<T>
+    ): PackRule<Array<T>> {
+        return 
+            { pack: mapArray(rule.pack)
+            , unpack: mapArray(rule.unpack) }
+    }
+
+    /**
+     * Don't feel like poking around in Lambda.
+     */
+    private static function mapArray<A,B>(f:A->B):Array<A>->Array<B> {
+        return function(a) {
+            var result:Array<B> = [];
+            for (x in a) result.push(f(x)); 
+            return result;
+        }
+    }
+
+    /**
      * Attends to the specified fields of an object, packing
      * their respective values as well.
      * Does not assume all the fields are always present, so
