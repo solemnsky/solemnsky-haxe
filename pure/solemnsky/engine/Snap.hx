@@ -1,5 +1,6 @@
 package solemnsky.engine;
 
+import solemnsky.engine.Plane;
 import util.Pack;
 
 /**
@@ -26,7 +27,7 @@ typedef Snap = {
 class SnapPack {
     public function new() {}
 
-    private var rules:PackRule<Snap> = Pack.identity;
+    private var rules:PackRule<Snap> = Pack.identity();
 
     public function pack(snap:Snap):Dynamic {
         return rules.pack(snap);

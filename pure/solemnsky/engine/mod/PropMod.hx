@@ -25,10 +25,10 @@ class PropMod<A,P> {
     /* helpful properties
     /**************************************************************/
 
-    private var engine(set,get):Engine<A,P>;
-    private function get_engine() return prop.parent;
-    private function set_engine(n) return prop.parent = n;
-    private var custom(set,get):P;
+    private var engine(get,set):Engine<A,P>;
+    private function get_engine() return prop.engine;
+    private function set_engine(n) return prop.engine = n;
+    private var custom(get,set):P;
     private function get_custom() return prop.custom;
     private function set_custom(n) return prop.custom = n;
 

@@ -28,7 +28,7 @@ class TutPlayer {
 
     public function attach(player:MyPlayer) {
         this.player = player;
-        engine = player.parent;
+        engine = player.engine;
     }
 
     public function pewpew(state:Bool) {

@@ -1,7 +1,7 @@
 package solemnsky.engine;
 
+import solemnsky.engine.Snap;
 import solemnsky.engine.mod.PropMod;
-import util.Vector;
 
 /**
  * solemnsky.engine.Prop:
@@ -53,11 +53,11 @@ class Prop<A,P> {
     /* snaps
     /*************************************************************************/
 
-    public function getSnap():PlayerSnap {
-
+    public function getSnap():PropSnap {
+        return null;
     }    
 
-    public function loadSnap(snap:PlayerSnap) {
+    public function loadSnap(snap:PropSnap) {
         
     }
 }

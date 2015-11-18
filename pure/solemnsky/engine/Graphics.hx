@@ -144,7 +144,7 @@ class Graphics {
     public static function getPlayerView<D,P>(
         player:Player<D,P>
     ): Transform {
-        var edim = player.parent.environment.dimensions;
+        var edim = player.engine.environment.dimensions;
 
         if (player.plane != null) {
             var pos = player.plane.state.pos;

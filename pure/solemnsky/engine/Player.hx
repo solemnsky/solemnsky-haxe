@@ -1,6 +1,7 @@
 package solemnsky.engine;
 
 import solemnsky.engine.mod.PlayerMod;
+import solemnsky.engine.Snap;
 import util.Vector;
 
 /**
@@ -95,7 +96,7 @@ class Player<A,P> {
     /*************************************************************************/
 
     public function getSnap():PlayerSnap {
-
+        return null;
     }    
 
     public function loadSnap(snap:PlayerSnap) {

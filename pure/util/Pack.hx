@@ -20,9 +20,11 @@ class Pack {
     /**
      * Identity transformation.
      */
-    public static var identity<T>:PackRule<T> = 
-        { pack: function(x) return x
-        , unpack: function(x) return x };
+    public static function identity<T>():PackRule<T> {
+        return
+            { pack: function(x) return x
+            , unpack: function(x) return x };
+    }
 
     /**
      * Attends to the specified fields of an object, packing
@@ -31,7 +33,7 @@ class Pack {
      * they must be attributed keys even in their packed state.
      */
     public static function sparseObject<T>(
-        fields:Array<{name:String, rule:PackRule}>
+        fields:Array<{name:String, rule:PackRule<Dynamic>}>
     ): PackRule<T> {
         return null;
     }
@@ -43,7 +45,7 @@ class Pack {
      * into an untyped array.
      */
     public static function object<T>(
-        fields:Array<{name:String, rule:PackRule}>
+        fields:Array<{name:String, rule:PackRule<Dynamic>}>
     ): PackRule<T> {
         return null;
     }

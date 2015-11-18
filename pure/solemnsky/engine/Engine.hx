@@ -89,7 +89,7 @@ class Engine<A,P> {
         sig:Int, custom:A
     ):Player<A,P> {
         var player = 
-            new Player(this, sig, custom, mod.playerMod);
+            new Player(this, sig, custom);
         players.set(sig, player);
         return player;
     }
@@ -106,7 +106,7 @@ class Engine<A,P> {
         blame:Int, custom:P
     ):Prop<A,P> {
         var sig = Util.allocNewId(props.keys());
-        var prop = new Prop(this, sig, blame, custom, mod.propMod);
+        var prop = new Prop(this, sig, blame, custom);
         props.set(sig, prop);
         return prop;
     }
@@ -130,7 +130,7 @@ class Engine<A,P> {
             player.tickGraphics(delta);
         }
     }
-    
+
     /*************************************************************************/
     /* snap
     /*************************************************************************/
@@ -138,8 +138,8 @@ class Engine<A,P> {
     private var packer = new SnapPack();
 
     public function getSnap():Dynamic {
-        var playerSnaps:Array<PlayerSnap>;
-        var propSnaps:Array<PropSnap>;
+        var playerSnaps:Array<PlayerSnap> = [];
+        var propSnaps:Array<PropSnap> = [];
 
         for (player in players) 
             playerSnaps.push(player.getSnap());

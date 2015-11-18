@@ -59,10 +59,10 @@ class PlayerMod<A,P> {
     /* helpful properties
     /**************************************************************/
 
-    private var engine(set,get):Engine<A,P>;
-    private function get_engine() return player.parent;
-    private function set_engine(n) return player.parent = n;
-    private var custom(set,get):A;
+    private var engine(get,set):Engine<A,P>;
+    private function get_engine() return player.engine;
+    private function set_engine(n) return player.engine = n;
+    private var custom(get,set):A;
     private function get_custom() return player.custom;
     private function set_custom(n) return player.custom = n;
 
