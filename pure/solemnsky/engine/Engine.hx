@@ -136,30 +136,18 @@ class Engine<A,P> {
     /* snap
     /*************************************************************************/
 
-    private var snapRules =
-        Rename.makeRules(
-            [ "playerSnaps"
-            , "propSnaps" ]);
-    private var propSnapRules =
-        Rename.makeRules(
-            [ "id"
-            , "custom" ]);
-    private var playerSnapRules =
-        Rename.makeRules(
-            [ "id"
-            , "state"
-            , "custom" ]);
+    private var rules = new SnapRules();
 
     public function getSnap():Dynamic {
         var playerSnaps:Array<PlayerSnap>;
         var propSnaps:Array<PropSnap>;
 
         for (player in players) 
-            playerSnaps.push(Rename.shorten(playerSnapRules,
+            playerSnaps.push(Rename.shorten(rules.snap,
                 player.getSnap()));
 
         for (prop in props)
-            propSnaps.push(Rename.shorten(propSnapRules,
+            propSnaps.push(Rename.shorten(rules.propSnap,
                 prop.getSnap()));
 
         return Rename.shorten(snapRules,
@@ -170,10 +158,10 @@ class Engine<A,P> {
 
     public function loadSnap(snap:Dynamic) {
         for (playerSnap in snap.a) {
-            playerSnap = Rename.unshorten(playerSnapRules(
+            playerSnap = Rename.unshorten(rules.playerSnap,
                 playerSnap
             ));
-            
+
         }
     }
 }
