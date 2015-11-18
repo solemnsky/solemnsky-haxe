@@ -38,50 +38,61 @@ class Pack {
         return null;
     }
 
-    /**
-     * Attends to the specified fields of an object, packing
-     * their respective values as well.
-     * Assume all the fields are always present, so they can be packed
-     * into an untyped array.
-     */
-    public static function object<T>(
-        fields:Array<{name:String, rule:PackRule<Dynamic>}>
-    ): PackRule<T> {
-        return null;
+    /*************************************************************/
+    /* sparseObject
+    /*************************************************************/
+
+    private static function mkRenameMap(
+        props:Array<String>
+    ): {shorten:String->String,unshorten:String->String} {
+        var map = {fromFull:new Map(), toFull:new Map()};
+        var i:Int = 0;
+
+        for (prop in props) {
+            var abbrev = abbrevFromInt(i);
+
+            map.shorten.set(prop, abbrev);
+            map.unshorten.set(abbrev, prop);
+
+            i++;
+        }
+
+        return map;
     }
 
-    // private static function makeRules(props:Array<String>):RenameRules {
-    //     var rules:RenameRules = {fromFull:new Map(), toFull:new Map()};
-    //     var i:Int = 0;
-    //     for (prop in props) {
-    //         var abbrev = abbrevFromInt(i);
+    private static function abbrevFromInt(int:Int) {
+        return String.fromCharCode(97 + int);
+    }
 
-    //         rules.fromFull.set(prop, abbrev);
-    //         rules.toFull.set(abbrev, prop);
+    private static function appRenameMap(
+        map:{shorten:String->String,unshorten:String->String}
+        , packRules:Map<String,PackRule<Dynamic>>
+        , shorten:Bool
+        , input:Dynamic
+    ):Dynamic {
+        var result:Dynamic = {};
 
-    //         i++;
-    //     }
-    //     return rules;
-    // }
+        for (field in Reflect.fields(signal)) {
+            var newField:String;
 
-    // private static function abbrevFromInt(int:Int) {
-    //     return String.fromCharCode(97 + int);
-    // }
+            if (shorten) newField = map.shorten.get(field);
+            else newField = map.unshorten.get(field);
 
-    // private static function shorten(rules:RenameRules, signal:Dynamic):Dynamic {
-    //     var carrier:Dynamic = {};
+            if (newField != null) {
+                var valueTrans:Dynamic->Dynamic;
 
-    //     for (field in Reflect.fields(signal)) {
-    //         var abbrv = rules.fromFull.get(field);
-    //         if (abbrv != null) 
-    //             Reflect.setField(
-    //                 carrier, abbrv
-    //                 , Reflect.field(signal, field)
-    //             );
-    //     }
+                if (shorten) valueTrans = packRules.get(field).pack;
+                else valueTrans = packRules.get(newField).unpack;
 
-    //     return carrier; 
-    // }
+                Reflect.setField(
+                    result, newField
+                    , valueTrans(Reflect.field(input, field))
+                );
+            }
+        }
+
+        return result; 
+    }
 
     // private static function unshorten(
     //     rules:RenameRules, carrier:Dynamic
@@ -95,4 +106,17 @@ class Pack {
 
     //     return signal;
     // }
+
+    /**
+     * Attends to the specified fields of an object, packing
+     * their respective values as well.
+     * Assume all the fields are always present, so they can be packed
+     * into an untyped array.
+     */
+    public static function object<T>(
+        fields:Array<{name:String, rule:PackRule<Dynamic>}>
+    ): PackRule<T> {
+        return null;
+    }
+
 }
