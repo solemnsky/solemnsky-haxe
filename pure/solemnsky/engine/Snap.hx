@@ -11,7 +11,7 @@ import util.Pack;
 typedef PlayerSnap = {
     id: Int
     , custom: Dynamic
-    , state: PlaneState
+    , state: Null<PlaneState>
 }
 
 typedef PropSnap = {
@@ -25,24 +25,42 @@ typedef Snap = {
 }
 
 class SnapPack {
-    public function new() {}
+    private var snap:PackRule<Snap>;
 
-    private var propSnap:PackRule<PropSnap> =
-        Pack.object(
-            [ {name:"id", rule:Pack.identity()}
-            , {name:"custom", rule:Pack.identity()}
-            ]);
+    public function new() {
+        var planeState =
+            Pack.object(
+                [ {name:"pos", rule:Pack.identity()}
+                , {name:"rot", rule:Pack.identity()}
+                , {name:"vel", rule:Pack.identity()}
+                , {name:"rotvel", rule:Pack.identity()}
+                ]);
 
-    private var snap:PackRule<Snap> = 
-        Pack.object(
-            [ {name:"playerSnaps", rule:Pack.array(playerSnap)}
-            , {name:"propSnaps", rule:Pack.array(propSnap)} ])
+        var playerSnap = 
+            Pack.object(
+                [ {name:"id", rule:Pack.identity()}
+                , {name:"custom", rule:Pack.identity()}
+                , {name:"state", rule:Pack.maybe(planeState)}
+                ]);
 
-    public function pack(snap:Snap):Dynamic {
-        return rules.pack(snap);
+        var propSnap = 
+            Pack.object(
+                [ {name:"id", rule:Pack.identity()}
+                , {name:"custom", rule:Pack.identity()}
+                ]);
+
+        snap =
+            Pack.object(
+                [ {name:"playerSnaps", rule:Pack.array(playerSnap)}
+                , {name:"propSnaps", rule:Pack.array(propSnap)} ]);
+
     }
 
-    public function unpack(dyn:Dynamic):Snap {
-        return rules.unpack(dyn);
+    public function pack(x:Snap):Dynamic {
+        return snap.pack(x);
+    }
+
+    public function unpack(x:Dynamic):Snap {
+        return snap.unpack(x);
     }
 }

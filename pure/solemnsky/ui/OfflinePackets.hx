@@ -30,7 +30,6 @@ class OfflinePackets implements Control<Noise> {
 
         player.spawn(new Vector(1600, 900), 0);
         player.simulating = true;
-
     }
 
     public function init(_) {}
@@ -41,6 +40,7 @@ class OfflinePackets implements Control<Noise> {
 
     public function tick(delta:Float):Void {
         engine.tick(delta);
+        trace(engine.getSnap());
     }
 
     /***************************************************************/

@@ -17,6 +17,10 @@ typedef PackRule<T> =
  * PackRule constructors.
  */
 class Pack {
+    /******************************************************************/
+    /* trivial
+    /******************************************************************/
+
     /**
      * Identity transformation.
      */
@@ -27,9 +31,27 @@ class Pack {
     }
 
     /**
+     * Packs a value that can potentiall be null.
+     */
+    public static function maybe<T>(rule:PackRule<T>):PackRule<Null<T>> {
+        return 
+            { pack: function(x) if (x == null) 
+                return null
+                else return rule.pack(x)
+            , unpack: function(x) if (x == null)
+                return null
+                else return rule.unpack(x)
+            } 
+    }
+
+    /******************************************************************/
+    /* array
+    /******************************************************************/
+
+    /**
      * Packs a typed array, applying a pack rule to every element.
      */
-     public static function array<T>(
+    public static function array<T>(
         rule:PackRule<T>
     ): PackRule<Array<T>> {
         return 
@@ -37,9 +59,6 @@ class Pack {
             , unpack: mapArray(rule.unpack) }
     }
 
-    /**
-     * Don't feel like poking around in Lambda.
-     */
     private static function mapArray<A,B>(f:A->B):Array<A>->Array<B> {
         return function(a) {
             var result:Array<B> = [];
@@ -48,6 +67,10 @@ class Pack {
         }
     }
 
+    /******************************************************************/
+    /* object
+    /******************************************************************/
+ 
     /**
      * Attends to the specified fields of an object, packing
      * their respective values as well.
@@ -73,9 +96,6 @@ class Pack {
             }
     }
 
-    /*************************************************************/
-    /* object
-    /*************************************************************/
 
     private static function mkRenameMap(
         props:Array<String>
@@ -84,12 +104,9 @@ class Pack {
         var i:Int = 0;
 
         for (prop in props) {
-            var abbrev = abbrevFromInt(i);
-
+            var abbrev = abbrevFromInt(i++);
             map.shorten.set(prop, abbrev);
             map.unshorten.set(abbrev, prop);
-
-            i++;
         }
 
         return map;
@@ -109,13 +126,11 @@ class Pack {
 
         for (field in Reflect.fields(input)) {
             var newField:String;
-
             if (shorten) newField = map.shorten.get(field);
             else newField = map.unshorten.get(field);
 
             if (newField != null) {
                 var valueTrans:Dynamic->Dynamic;
-
                 if (shorten) valueTrans = packRules.get(field).pack;
                 else valueTrans = packRules.get(newField).unpack;
 

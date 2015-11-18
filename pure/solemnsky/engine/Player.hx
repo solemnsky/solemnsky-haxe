@@ -96,7 +96,10 @@ class Player<A,P> {
     /*************************************************************************/
 
     public function getSnap():PlayerSnap {
-        return null;
+        return
+            { id: id
+            , custom: mod.getSnap()
+            , state: if (plane != null) plane.state else null } 
     }    
 
     public function loadSnap(snap:PlayerSnap) {
