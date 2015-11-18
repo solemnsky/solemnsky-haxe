@@ -11,19 +11,27 @@ import solemnsky.engine.Engine;
  */
 
 class PropMod<D,P> {
+    /**************************************************************/
+    /* constructor and state
+    /**************************************************************/
+
     private var prop:Prop<D,P>;
     private var engine:Engine<D,P>;
+    private var custom:P;
 
     public function new(prop:Prop<D,P>) {
         this.prop = prop;
         engine = prop.parent; 
+        custom = prop.custom;
     }
 
-    public function tick(delta) {
-        // do something with prop
+    /**************************************************************/
+    /* callbacks
+    /**************************************************************/
+
+    public function onTick(delta) {
     }
 
-    public function deleteHook() {
-
+    public function onDelete() {
     }
 }

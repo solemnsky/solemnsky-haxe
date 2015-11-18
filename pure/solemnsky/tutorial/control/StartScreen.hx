@@ -8,7 +8,7 @@ import control.Profile;
 import control.Scene;
 import util.Transform;
 import solemnsky.engine.Graphics;
-import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.TutPlayer;
 
 /**
  * solemnsky.tutorial.control.StartScreen:
@@ -93,9 +93,7 @@ class StartScreen implements Control<TutStep> {
     }
 
     private function spawnPlayer() {
-        var planeModConstruct = function (plane) return
-            new TutPlaneMod(plane);
-        cont.player.spawn(planeModConstruct, new Vector(1600, 900), 0);
+        cont.player.spawn(new Vector(1600, 900), 0);
     }
 
     public function conclude():Null<TutStep> {

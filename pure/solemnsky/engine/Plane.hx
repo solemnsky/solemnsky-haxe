@@ -6,6 +6,7 @@ import nape.phys.BodyType;
 import nape.shape.Polygon;
 import util.Util;
 import util.Vector;
+import solemnsky.engine.mod.PlayerMod;
 
 /**
  * solemnsky.engine.Plane:
@@ -70,7 +71,7 @@ class PlaneGraphicsState {
     public function new() {}
 }
 
-class Plane<D,P> {
+class Plane<A,P> {
     /*************************************************************************/
     /* constructor
     /*************************************************************************/
@@ -78,33 +79,26 @@ class Plane<D,P> {
     // we're using an active object pattern here; the plane object
     // runs a lot of logic in itself and needs access to these values
     // (other methods such at those in Graphics also do)
-    public var parent:Engine<D,P>;
+    public var player:Player<A,P>;
+    public var parent:Engine<A,P>;
     public var id:Int;
-    public var mod:PlaneMod<D,P>;
-    public var custom:D;
+    public var mod:PlayerMod<A,P>;
     
-    public var custom(get,set):D;
-    public function get_custom() return mod.custom;
-    public function set_custom(x:D) {
-        mod.custom = x; return mod.custom;
-    }
-
     public var state:PlaneState;
     public var gfxState:PlaneGraphicsState;
     public var body:Body;
 
     public function new(
-        parent:Engine<D,P>, id:Int
-        , modConstruct:Plane<D,P>->PlaneMod<D,P>
+        player:Player<A,P>, id:Int
         , pos:Vector, rot:Float
     ):Void {
-        this.parent = parent;
+        this.player = player;
+        parent = player.parent;
+        mod = player.mod;
         this.id = id;
 
         this.state = new PlaneState(pos, rot);
         this.gfxState = new PlaneGraphicsState();
-        
-        this.mod = modConstruct(this);
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
@@ -118,7 +112,6 @@ class Plane<D,P> {
         body.align();
         body.space = parent.space;
         writeToNape();
-
     }
 
     /*************************************************************************/

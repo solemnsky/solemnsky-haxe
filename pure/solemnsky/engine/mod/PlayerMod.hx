@@ -24,12 +24,13 @@ class PlayerMod<A,P> {
     public var exitStallThreshold:Float = 130;
 
     // mechanics when not stalled
-    public var maxRotation:Float; 
+        public var maxRotation:Float; 
     public var speed:Float = 330;
     public var speedThrottleInfluence:Float = 0.6 ;
     public var speedThrottleForce:Float = 0.3;
     public var speedThrottleDeaccForce:Float = 1.1;
     public var speedGravityForce:Float = 0.5;
+    public var speedAfterburnForce:Float = 0.9;
     public var enterStallThreshold:Float = 100;
 
     // misc values and damping
@@ -44,7 +45,10 @@ class PlayerMod<A,P> {
 
     private var player:Player<A,P>;
     private var engine:Engine<A,P>;
-    private var custom:A;
+
+    private var custom(get,set):A;
+    public function get_custom() return player.custon;
+    public function set_custom(n) return player.custom = n;
 
     public function new(player:Player<A,P>) {
         maxRotationStalled = Math.PI * 1.2;
@@ -52,7 +56,6 @@ class PlayerMod<A,P> {
 
         this.player = player;
         engine = player.parent;
-        custom = player.custom;
     }
 
     /**************************************************************/

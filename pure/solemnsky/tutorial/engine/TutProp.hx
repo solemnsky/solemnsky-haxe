@@ -15,9 +15,13 @@ import util.Vector;
 
 class TutProp {
     public var pos:Vector;
+    public var vel:Vector;
     public var life:Float;
 
-    public function new() {
+    public function new(pos:Vector, vel:Vector) {
+        this.pos = pos;
+        this.vel = vel;
+
         life = 1000;
     }
 
@@ -26,19 +30,18 @@ class TutProp {
     }
 }
 
-class TutPropMod extends PropMod<TutPlane,TutProp>
-{
+class TutPropMod extends PropMod<TutPlayer, TutProp> {
     private var body:Body;
 
     public function new(
-        prop:Prop<TutPlane,TutProp>, pos:Vector, vel:Vector
+        prop:Prop<TutPlayer,TutProp> 
     ) {
         super(prop);
 
         body = new Body(BodyType.DYNAMIC);
         body.shapes.add(new Circle(10));
-        body.position.setxy(pos.x, pos.y);
-        body.velocity.setxy(vel.x, vel.y);
+        body.position.setxy(custom.pos.x, custom.pos.y);
+        body.velocity.setxy(custom.vel.x, custom.vel.y);
         body.space = engine.space;
 
         custom = new TutProp();
@@ -49,14 +52,18 @@ class TutPropMod extends PropMod<TutPlane,TutProp>
         custom.pos = Util.vectorFromNape(body.position);
     }
 
-    override function deleteHook() {
-        body.space = null;
-    }
+    /**************************************************************/
+    /* callbacks
+    /**************************************************************/
 
-    override function tick(delta:Float) {
+    override function onTick(delta:Float) {
         custom.life -= delta;
         if (custom.life < 0) prop.delete();
 
         writeToData();
+    }
+
+    override function onDelete() {
+        body.space = null;
     }
 }

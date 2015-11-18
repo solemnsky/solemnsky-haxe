@@ -26,11 +26,14 @@ class Prop<A,P> {
     
     public function new(
         parent:Engine<A,P>, id:Int, blame:Int
+        , custom:P
         , modConstruct:Prop<A,P>->PropMod<A,P>
     ) {
         this.parent = parent;
         this.id = id;
         this.blame = blame;
+        this.custom = custom;
+        
         this.mod = modConstruct(this);
     } 
 
@@ -39,11 +42,11 @@ class Prop<A,P> {
     /*************************************************************************/
 
     public function tick(delta:Float) {
-        mod.tick(delta);
+        mod.onTick(delta);
     }
     
     public function delete() {
-        mod.deleteHook();
+        mod.onDelete();
         parent.props.remove(id);
     }
 }

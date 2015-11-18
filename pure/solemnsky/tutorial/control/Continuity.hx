@@ -3,7 +3,8 @@ package solemnsky.tutorial.control;
 import solemnsky.engine.Engine;
 import solemnsky.engine.Environment;
 import solemnsky.engine.mod.EngineMod;
-import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.TutPlayer;
+import solemnsky.tutorial.engine.TutEngine;
 import util.Vector;
 import solemnsky.tutorial.engine.Synonyms;
 
@@ -21,17 +22,10 @@ class Continuity {
     public function new() {
         background = new TutBackground(3200, 1800);
 
-        engine = new Engine(myEngineMod());
+        engine = new Engine(new TutEngine());
         engine.loadEnvironment(new Environment(3200, 1800));
 
-        var planeModConstruct = function (plane) return
-            new TutPlaneMod(plane);
-        player = engine.addPlayer(0);
-    }
-
-    private static function myEngineMod():EngineMod {
-        var mod = new EngineMod();
-        mod.debugTrace = function(str){trace('engine log: '+str);};
-        return mod;
+        player = engine.addPlayer(0, new TutPlayer());
     }
 }
+

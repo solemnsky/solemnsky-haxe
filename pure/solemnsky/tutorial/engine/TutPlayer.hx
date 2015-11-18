@@ -1,7 +1,7 @@
 package solemnsky.tutorial.engine;
 
 import util.Vector;
-import solemnsky.engine.mod.PlaneMod;
+import solemnsky.engine.mod.PlayerMod;
 import solemnsky.tutorial.engine.TutProp;
 import solemnsky.tutorial.engine.Synonyms;
 
@@ -10,7 +10,7 @@ import solemnsky.tutorial.engine.Synonyms;
  * Our own plane mod with some extra functions.
  */
 
-class TutPlane {
+class TutPlayer {
     private var engine:MyEngine;
     private var plane:MyPlane;
 
@@ -26,25 +26,27 @@ class TutPlane {
     }
 
     public function pewpew(state:Bool) {
+        if (plane == null) return;
+
         shooting = state;
     }
 
     private function shoot() {
+        if (plane == null) return;
+
         var state = plane.state;
         var length = plane.mod.length;
 
-        var modConstruct = function(prop) return
-            new TutPropMod(
-                prop
-                , state.pos.add(
+        engine.spawnProp(plane.id, 
+            new TutProp(
+                state.pos.add(
                     Vector.fromAngle(state.rot).mult(length/2 + 10)
                 )
                 , state.vel.add(
                     Vector.fromAngle(state.rot).mult(500)
                 )
-            );
-
-        engine.spawnProp(plane.id, modConstruct);
+            )
+        );
 
         // recoil
         plane.applyImpulse(
@@ -62,7 +64,7 @@ class TutPlane {
     }
 }
 
-class TutPlayerMod extends PlayerMod<TutPlane,TutProp> {
+class TutPlayerMod extends PlayerMod<TutPlayer,TutProp> {
     public function new(prop) {
         super(prop);
 

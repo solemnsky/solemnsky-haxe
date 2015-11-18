@@ -8,7 +8,7 @@ import control.Scene;
 import solemnsky.tutorial.TutGraphics;
 import solemnsky.tutorial.control.Continuity;
 import solemnsky.tutorial.engine.Synonyms;
-import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.TutPlayer;
 import util.Vector;
 import util.Rename;
 

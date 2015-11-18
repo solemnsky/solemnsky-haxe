@@ -4,7 +4,7 @@ import solemnsky.engine.Engine;
 import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
 import solemnsky.engine.Prop;
-import solemnsky.tutorial.engine.TutPlane;
+import solemnsky.tutorial.engine.TutPlayer;
 import solemnsky.tutorial.engine.TutProp;
 
 /**
@@ -12,7 +12,7 @@ import solemnsky.tutorial.engine.TutProp;
  * Engine-related type synonyms parameterized on our custom classes.
  */
 
-typedef MyEngine = Engine<TutPlane,TutProp>;
-typedef MyPlane = Plane<TutPlane,TutProp>; 
-typedef MyPlayer = Player<TutPlane,TutProp>; 
-typedef MyProp = Prop<TutPlane,TutProp>; 
+typedef MyEngine = Engine<TutPlayer,TutProp>;
+typedef MyPlane = Plane<TutPlayer,TutProp>; 
+typedef MyPlayer = Player<TutPlayer,TutProp>; 
+typedef MyProp = Prop<TutPlayer,TutProp>; 
