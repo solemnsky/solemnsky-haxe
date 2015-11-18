@@ -45,7 +45,7 @@ class OfflinePackets implements Control<Noise> {
         var encoded = MsgPack.encode(engine.getSnap());
         var decoded = MsgPack.decode(encoded);
         trace(encoded);
-        trace(decoded);
+        trace(decoded.a[0].c);
     }
 
     /***************************************************************/

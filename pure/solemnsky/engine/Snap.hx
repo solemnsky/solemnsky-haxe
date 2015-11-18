@@ -32,18 +32,12 @@ class SnapPack {
 
         var movement =
             { pack: function(x)
-                return [x.right, x.left, x.forward, x.bckward]
+                return [x.right, x.left, x.forward, x.backward]
             , unpack: function(x)
                 return 
                     { right: x[0], left:x[1]
                     , forward: x[2], backward: x[3]} 
             }
-
-        var vector =
-            Pack.object(
-                [ {name:"x", rule:id}
-                , {name:"y", rule:id}
-                ]);
 
         var planeState =
             Pack.object(
@@ -51,7 +45,7 @@ class SnapPack {
                 , {name:"rot", rule:id}
                 , {name:"vel", rule:id}
                 , {name:"rotvel", rule:id}
-                , {name:"movement", movement}
+                , {name:"movement", rule:movement}
                 ]);
 
         var playerSnap = 
