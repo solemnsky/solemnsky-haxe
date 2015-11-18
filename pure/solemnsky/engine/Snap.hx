@@ -28,25 +28,43 @@ class SnapPack {
     private var snap:PackRule<Snap>;
 
     public function new() {
+        var id:PackRule<Dynamic> = Pack.identity();
+
+        var movement =
+            { pack: function(x)
+                return [x.right, x.left, x.forward, x.bckward]
+            , unpack: function(x)
+                return 
+                    { right: x[0], left:x[1]
+                    , forward: x[2], backward: x[3]} 
+            }
+
+        var vector =
+            Pack.object(
+                [ {name:"x", rule:id}
+                , {name:"y", rule:id}
+                ]);
+
         var planeState =
             Pack.object(
-                [ {name:"pos", rule:Pack.identity()}
-                , {name:"rot", rule:Pack.identity()}
-                , {name:"vel", rule:Pack.identity()}
-                , {name:"rotvel", rule:Pack.identity()}
+                [ {name:"pos", rule:id}
+                , {name:"rot", rule:id}
+                , {name:"vel", rule:id}
+                , {name:"rotvel", rule:id}
+                , {name:"movement", movement}
                 ]);
 
         var playerSnap = 
             Pack.object(
-                [ {name:"id", rule:Pack.identity()}
-                , {name:"custom", rule:Pack.identity()}
+                [ {name:"id", rule:id}
+                , {name:"custom", rule:id}
                 , {name:"state", rule:Pack.maybe(planeState)}
                 ]);
 
         var propSnap = 
             Pack.object(
-                [ {name:"id", rule:Pack.identity()}
-                , {name:"custom", rule:Pack.identity()}
+                [ {name:"id", rule:id}
+                , {name:"custom", rule:id}
                 ]);
 
         snap =

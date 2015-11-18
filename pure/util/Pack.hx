@@ -122,7 +122,7 @@ class Pack {
         , shorten:Bool
         , input:Dynamic
     ):Dynamic {
-        var result:Dynamic = {};
+        var result = {};
 
         for (field in Reflect.fields(input)) {
             var newField:String;
@@ -143,18 +143,4 @@ class Pack {
 
         return result; 
     }
-
-    /**
-     * Attends to the specified fields of an object, packing
-     * their respective values as well.
-     * Assume all the fields are always present, so they can be packed
-     * into an untyped array.
-     */
-    public static function fullObject<T>(
-        fields:Array<{name:String, rule:PackRule<Dynamic>}>
-    ): PackRule<T> {
-        return null;
-        // do we need this?
-    }
-
 }

@@ -11,6 +11,7 @@ import solemnsky.tutorial.engine.Synonyms;
 import solemnsky.tutorial.engine.TutPlayer;
 import util.Vector;
 import util.Pack;
+import msgpack.MsgPack;
 
 /**
  * solemnsky.ui.OfflinePackets:
@@ -40,7 +41,11 @@ class OfflinePackets implements Control<Noise> {
 
     public function tick(delta:Float):Void {
         engine.tick(delta);
-        trace(engine.getSnap());
+        // trace(engine.getSnap());
+        var encoded = MsgPack.encode(engine.getSnap());
+        var decoded = MsgPack.decode(encoded);
+        trace(encoded);
+        trace(decoded);
     }
 
     /***************************************************************/
