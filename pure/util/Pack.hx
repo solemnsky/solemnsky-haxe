@@ -32,20 +32,33 @@ class Pack {
      * Does not assume all the fields are always present, so
      * they must be attributed keys even in their packed state.
      */
-    public static function sparseObject<T>(
+    public static function object<T>(
         fields:Array<{name:String, rule:PackRule<Dynamic>}>
     ): PackRule<T> {
-        return null;
+        var fieldNames:Array<String> = [];
+        var rules:Map<String,PackRule<Dynamic>> = new Map();
+        for (field in fields) {
+            fieldNames.push(field.name);
+            rules.set(field.name, field.rule);
+        }
+        var map = mkRenameMap(fieldNames);
+
+        return 
+            { pack: function(x) 
+                return appRenameMap(map, rules, true, x)
+            , unpack: function(x)
+                return appRenameMap(map, rules, false, x)
+            }
     }
 
     /*************************************************************/
-    /* sparseObject
+    /* object
     /*************************************************************/
 
     private static function mkRenameMap(
         props:Array<String>
-    ): {shorten:String->String,unshorten:String->String} {
-        var map = {fromFull:new Map(), toFull:new Map()};
+    ): {shorten:Map<String,String>,unshorten:Map<String,String>} {
+        var map = {shorten:new Map(), unshorten:new Map()};
         var i:Int = 0;
 
         for (prop in props) {
@@ -65,14 +78,14 @@ class Pack {
     }
 
     private static function appRenameMap(
-        map:{shorten:String->String,unshorten:String->String}
+        map:{shorten:Map<String,String>,unshorten:Map<String,String>}
         , packRules:Map<String,PackRule<Dynamic>>
         , shorten:Bool
         , input:Dynamic
     ):Dynamic {
         var result:Dynamic = {};
 
-        for (field in Reflect.fields(signal)) {
+        for (field in Reflect.fields(input)) {
             var newField:String;
 
             if (shorten) newField = map.shorten.get(field);
@@ -94,29 +107,17 @@ class Pack {
         return result; 
     }
 
-    // private static function unshorten(
-    //     rules:RenameRules, carrier:Dynamic
-    // ):Dynamic {
-    //     var signal:Dynamic = {};
-
-    //     for (abbrv in Reflect.fields(carrier)) {
-    //         var field = rules.toFull.get(abbrv);
-    //         Reflect.setField(signal, field, Reflect.field(carrier, abbrv));
-    //     }
-
-    //     return signal;
-    // }
-
     /**
      * Attends to the specified fields of an object, packing
      * their respective values as well.
      * Assume all the fields are always present, so they can be packed
      * into an untyped array.
      */
-    public static function object<T>(
+    public static function fullObject<T>(
         fields:Array<{name:String, rule:PackRule<Dynamic>}>
     ): PackRule<T> {
         return null;
+        // do we need this?
     }
 
 }
