@@ -1,5 +1,7 @@
 package solemnsky.engine;
 
+import util.Pack;
+
 /**
  * solemnsky.engine.Snap:
  * Snapshot types and rename rules for compressing them.
@@ -17,36 +19,20 @@ typedef PropSnap = {
 }
 
 typedef Snap = {
-    playerSnaps: Array<PlayerSnap>;
-    propSnaps: Array<PropSnaps>;
+    playerSnaps: Array<PlayerSnap>
+    , propSnaps: Array<PropSnap>
 }
 
-class SnapRules {
+class SnapPack {
     public function new() {}
 
-    private var snap =
-        Rename.makeRules(
-            [ "playerSnaps"
-            , "propSnaps" 
-            ]);
-    private var propSnap =
-        Rename.makeRules(
-            [ "id"
-            , "custom" 
-            ]);
-    private var playerSnap =
-        Rename.makeRules(
-            [ "id"
-            , "state"
-            , "custom" 
-            ]);
+    private var rules:PackRule<Snap> = Pack.identity;
 
-    private var planeState =
-        Rename.makeRules(
-            [ "pos"
-            , "rot"
-            , "vel"
-            , "rotvel"
-            , "stalled"
-            ]);
+    public function pack(snap:Snap):Dynamic {
+        return rules.pack(snap);
+    }
+
+    public function unpack(dyn:Dynamic):Snap {
+        return rules.unpack(dyn);
+    }
 }

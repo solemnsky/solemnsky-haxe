@@ -31,7 +31,7 @@ class Player<A,P> {
         plane = null;
         simulating = false;
 
-        this.mod = modConstruct(this);
+        mod = engine.mod.playerMod(this);
     }
 
     /*************************************************************************/
@@ -91,7 +91,7 @@ class Player<A,P> {
     }
 
     /*************************************************************************/
-    /* simulation
+    /* snaps
     /*************************************************************************/
 
     public function getSnap():PlayerSnap {
@@ -99,7 +99,7 @@ class Player<A,P> {
     }    
 
     public function loadSnap(snap:PlayerSnap) {
-        
+
     }
 }
 

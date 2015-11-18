@@ -19,21 +19,21 @@ class Prop<A,P> {
     public var id:Int;
     public var blame:Int;
 
-    public var parent:Engine<A,P>;
+    public var engine:Engine<A,P>;
     
     public var mod:PropMod<A,P>;
     public var custom:P;
     
     public function new(
-        parent:Engine<A,P>, id:Int, blame:Int
+        engine:Engine<A,P>, id:Int, blame:Int
         , custom:P
     ) {
-        this.parent = parent;
+        this.engine = engine;
         this.id = id;
         this.blame = blame;
         this.custom = custom;
         
-        this.mod = parent.mod.(this);
+        mod = engine.mod.propMod(this);
     } 
 
     /*************************************************************************/
@@ -46,6 +46,18 @@ class Prop<A,P> {
     
     public function delete() {
         mod.onDelete();
-        parent.props.remove(id);
+        engine.props.remove(id);
+    }
+
+    /*************************************************************************/
+    /* snaps
+    /*************************************************************************/
+
+    public function getSnap():PlayerSnap {
+
+    }    
+
+    public function loadSnap(snap:PlayerSnap) {
+        
     }
 }

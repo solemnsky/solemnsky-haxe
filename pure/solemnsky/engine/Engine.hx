@@ -9,7 +9,6 @@ import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
 import solemnsky.engine.mod.PlayerMod;
 import util.Util;
-import util.Rename;
 import solemnsky.engine.Snap;
 
 /**
@@ -136,32 +135,37 @@ class Engine<A,P> {
     /* snap
     /*************************************************************************/
 
-    private var rules = new SnapRules();
+    private var packer = new SnapPack();
 
     public function getSnap():Dynamic {
         var playerSnaps:Array<PlayerSnap>;
         var propSnaps:Array<PropSnap>;
 
         for (player in players) 
-            playerSnaps.push(Rename.shorten(rules.snap,
-                player.getSnap()));
+            playerSnaps.push(player.getSnap());
 
         for (prop in props)
-            propSnaps.push(Rename.shorten(rules.propSnap,
-                prop.getSnap()));
+            propSnaps.push(prop.getSnap());
 
-        return Rename.shorten(snapRules,
+        var snap = 
             { playerSnaps: playerSnaps
             , propSnaps: propSnaps };
-        );
+
+        return packer.pack(snap);
     }
 
-    public function loadSnap(snap:Dynamic) {
-        for (playerSnap in snap.a) {
-            playerSnap = Rename.unshorten(rules.playerSnap,
-                playerSnap
-            ));
+    public function loadSnap(packed:Dynamic) {
+        var snap = packer.unpack(packed);
 
+        for (snap in snap.propSnaps) {
+            var prop = props.get(snap.id);
+            if (prop != null)
+                prop.loadSnap(snap);
+        }
+
+        for (snap in snap.playerSnaps) {
+            var player = players.get(snap.id);
+            if (player != null) player.loadSnap(snap);
         }
     }
 }
