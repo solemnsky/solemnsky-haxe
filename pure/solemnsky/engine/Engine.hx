@@ -9,16 +9,17 @@ import solemnsky.engine.mod.EngineMod;
 import solemnsky.engine.mod.PropMod;
 import solemnsky.engine.mod.PlayerMod;
 import util.Util;
+import util.Rename;
+import solemnsky.engine.Snap;
 
 /**
  * solemnsky.engine.Engine:
  * Core game engine.
+ * A: plane custom object
+ * P: prop custom object
  */
 
 class Engine<A,P> {
-    // A: player custom data (think "avion")
-    // P: prop custom data 
-
     /*************************************************************************/
     /* state and constructor
     /*************************************************************************/
@@ -128,6 +129,51 @@ class Engine<A,P> {
     public function tickGraphics(delta:Float) {
         for (player in players.iterator()) {
             player.tickGraphics(delta);
+        }
+    }
+    
+    /*************************************************************************/
+    /* snap
+    /*************************************************************************/
+
+    private var snapRules =
+        Rename.makeRules(
+            [ "playerSnaps"
+            , "propSnaps" ]);
+    private var propSnapRules =
+        Rename.makeRules(
+            [ "id"
+            , "custom" ]);
+    private var playerSnapRules =
+        Rename.makeRules(
+            [ "id"
+            , "state"
+            , "custom" ]);
+
+    public function getSnap():Dynamic {
+        var playerSnaps:Array<PlayerSnap>;
+        var propSnaps:Array<PropSnap>;
+
+        for (player in players) 
+            playerSnaps.push(Rename.shorten(playerSnapRules,
+                player.getSnap()));
+
+        for (prop in props)
+            propSnaps.push(Rename.shorten(propSnapRules,
+                prop.getSnap()));
+
+        return Rename.shorten(snapRules,
+            { playerSnaps: playerSnaps
+            , propSnaps: propSnaps };
+        );
+    }
+
+    public function loadSnap(snap:Dynamic) {
+        for (playerSnap in snap.a) {
+            playerSnap = Rename.unshorten(playerSnapRules(
+                playerSnap
+            ));
+            
         }
     }
 }

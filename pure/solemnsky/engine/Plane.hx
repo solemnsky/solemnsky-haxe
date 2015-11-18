@@ -7,6 +7,7 @@ import nape.shape.Polygon;
 import util.Util;
 import util.Vector;
 import solemnsky.engine.mod.PlayerMod;
+import solemnsky.engine.Snap;
 
 /**
  * solemnsky.engine.Plane:
@@ -80,7 +81,7 @@ class Plane<A,P> {
     // runs a lot of logic in itself and needs access to these values
     // (other methods such at those in Graphics also do)
     public var player:Player<A,P>;
-    public var parent:Engine<A,P>;
+    public var engine:Engine<A,P>;
     public var id:Int;
     public var mod:PlayerMod<A,P>;
     
@@ -93,7 +94,7 @@ class Plane<A,P> {
         , pos:Vector, rot:Float
     ):Void {
         this.player = player;
-        parent = player.parent;
+        engine = player.engine;
         mod = player.mod;
         this.id = id;
 
@@ -110,7 +111,7 @@ class Plane<A,P> {
         )));
         body.setShapeMaterials(nape.phys.Material.rubber());
         body.align();
-        body.space = parent.space;
+        body.space = engine.space;
         writeToNape();
     }
 
@@ -257,7 +258,7 @@ class Plane<A,P> {
             }
         } else {
             if (forwardVel < mod.enterStallThreshold) {
-                body.force = new Vec2(0, parent.mod.gravity);
+                body.force = new Vec2(0, engine.mod.gravity);
                 state.stalled = true;
                 state.throttle = 1;
                 state.speed = 0;

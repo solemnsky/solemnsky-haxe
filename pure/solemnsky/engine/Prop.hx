@@ -27,14 +27,13 @@ class Prop<A,P> {
     public function new(
         parent:Engine<A,P>, id:Int, blame:Int
         , custom:P
-        , modConstruct:Prop<A,P>->PropMod<A,P>
     ) {
         this.parent = parent;
         this.id = id;
         this.blame = blame;
         this.custom = custom;
         
-        this.mod = modConstruct(this);
+        this.mod = parent.mod.(this);
     } 
 
     /*************************************************************************/

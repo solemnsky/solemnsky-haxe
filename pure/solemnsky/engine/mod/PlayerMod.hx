@@ -24,7 +24,7 @@ class PlayerMod<A,P> {
     public var exitStallThreshold:Float = 130;
 
     // mechanics when not stalled
-        public var maxRotation:Float; 
+    public var maxRotation:Float; 
     public var speed:Float = 330;
     public var speedThrottleInfluence:Float = 0.6 ;
     public var speedThrottleForce:Float = 0.3;
@@ -39,48 +39,46 @@ class PlayerMod<A,P> {
     public var leftoverVelDamping:Float = 0.10;
     public var throttleSpeed:Float = 1.5;
 
+    private function writeValues() {
+        maxRotationStalled = Math.PI * 1.2;
+        maxRotation = Math.PI * 1;
+    }
+
     /**************************************************************/
     /* constructor and state
     /**************************************************************/
 
     private var player:Player<A,P>;
-    private var engine:Engine<A,P>;
-
-    private var custom(get,set):A;
-    public function get_custom() return player.custom;
-    public function set_custom(n) return player.custom = n;
 
     public function new(player:Player<A,P>) {
-        maxRotationStalled = Math.PI * 1.2;
-        maxRotation = Math.PI * 1;
-
+        writeValues();
         this.player = player;
-        engine = player.parent;
     }
+
+    /**************************************************************/
+    /* helpful properties
+    /**************************************************************/
+
+    private var engine(set,get):Engine<A,P>;
+    private function get_engine() return player.parent;
+    private function set_engine(n) return player.parent = n;
+    private var custom(set,get):A;
+    private function get_custom() return player.custom;
+    private function set_custom(n) return player.custom = n;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
-    /**
-     * Ticks on every game cycle. Be careful, young modders.
-     */
-    public function onTick(delta:Float) {
-        // do something with plane
-    }
+    public function onTick(delta:Float) {}
+    public function onTickPlane(delta:Float, plane:Plane<A,P>) {}
+    public function onSpawn() {}
+    public function onKill() {}
 
-    /**
-     * Ticks when the player has control of a plane (is alive).
-     */
-    public function onTickPlane(delta:Float, plane:Plane<A,P>) {
+    /**************************************************************/
+    /* snap
+    /**************************************************************/
 
-    }
-
-    public function onSpawn() {
-
-    }
-
-    public function onKill() {
-
-    }
+    public function getSnap():Dynamic return null;
+    public function loadSnap(snap:Dynamic) {}
 }

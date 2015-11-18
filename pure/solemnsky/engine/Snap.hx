@@ -2,21 +2,21 @@ package solemnsky.engine;
 
 /**
  * solemnsky.engine.Snap:
- * A snap is a single game related networking packet.
+ * Snapshot types.
  */
 
-typedef PlayerSnap {
+typedef PlayerSnap = {
     id: Int
-    , state: Null<PlaneState>
-    , custom: Null<Dynamic>
+    , custom: Dynamic
+    , state: PlaneState
 }
 
-typedef PropSnap {
+typedef PropSnap = {
     id: Int
     , custom: Dynamic
 }
 
-typedef Snap {
-    planes:Array<PlayerSnap>;
-    props:Array<PropSnap>;
+typedef Snap = {
+    playerSnaps: Array<PlayerSnap>;
+    propSnaps: Array<PropSnaps>;
 }

@@ -10,28 +10,39 @@ import solemnsky.engine.Engine;
  * of a Prop. Props are.. rather extensible.
  */
 
-class PropMod<D,P> {
+class PropMod<A,P> {
     /**************************************************************/
     /* constructor and state
     /**************************************************************/
 
-    private var prop:Prop<D,P>;
-    private var engine:Engine<D,P>;
-    private var custom:P;
+    private var prop:Prop<A,P>;
 
-    public function new(prop:Prop<D,P>) {
+    public function new(prop:Prop<A,P>) {
         this.prop = prop;
-        engine = prop.parent; 
-        custom = prop.custom;
     }
+
+    /**************************************************************/
+    /* helpful properties
+    /**************************************************************/
+
+    private var engine(set,get):Engine<A,P>;
+    private function get_engine() return prop.parent;
+    private function set_engine(n) return prop.parent = n;
+    private var custom(set,get):P;
+    private function get_custom() return prop.custom;
+    private function set_custom(n) return prop.custom = n;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
-    public function onTick(delta) {
-    }
+    public function onTick(delta) {}
+    public function onDelete() {}
 
-    public function onDelete() {
-    }
+    /**************************************************************/
+    /* snap
+    /**************************************************************/
+
+    public function getSnap():Dynamic return null;
+    public function loadSnap(snap:Dynamic) {}
 }

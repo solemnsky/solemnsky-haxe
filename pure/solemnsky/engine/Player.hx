@@ -15,7 +15,7 @@ class Player<A,P> {
 
     public var id:Int;
 
-    public var parent:Engine<A,P>;
+    public var engine:Engine<A,P>;
     public var plane:Null<Plane<A,P>>; 
 
     public var modType:Int;
@@ -23,12 +23,11 @@ class Player<A,P> {
     public var custom:A;
 
     public function new(
-        parent:Engine<A,P>, id:Int, custom:A
-        , modConstruct:Player<A,P>->PlayerMod<A,P>
+        engine:Engine<A,P>, id:Int, custom:A
     ) {
         this.id = id;
         this.custom = custom;
-        this.parent = parent;
+        this.engine = engine;
         plane = null;
         simulating = false;
 
@@ -44,7 +43,7 @@ class Player<A,P> {
     public function set_simulating(val:Bool):Bool {
         if (plane != null) {
             simulating = val;
-            if (val) plane.body.space = parent.space;
+            if (val) plane.body.space = engine.space;
             else plane.body.space = null;
         }
         return simulating;
@@ -91,5 +90,16 @@ class Player<A,P> {
             plane.tickGraphics(delta);
     }
 
+    /*************************************************************************/
+    /* simulation
+    /*************************************************************************/
+
+    public function getSnap():PlayerSnap {
+
+    }    
+
+    public function loadSnap(snap:PlayerSnap) {
+        
+    }
 }
 
