@@ -1,6 +1,8 @@
 package solemnsky.tutorial.engine;
 
 import solemnsky.engine.mod.EngineMod;
+import solemnsky.tutorial.engine.TutPlayer;
+import solemnsky.tutorial.engine.TutProp;
 
 /**
  * solemnsky.tutorial.engine.TutEngine:
@@ -10,11 +12,11 @@ import solemnsky.engine.mod.EngineMod;
 class TutEngineMod extends EngineMod<TutPlayer, TutProp> {
     public function new() {
         super();
-        mod.debugTrace = function(str){trace('engine log: '+str);};
+        debugTrace = function(str){trace('engine log: '+str);};
     }
 
     override function playerMod(player)  {
-        return new TutPlaneMod(player);
+        return new TutPlayerMod(player);
     }
 
     override function propMod(prop) {

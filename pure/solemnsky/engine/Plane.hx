@@ -264,7 +264,7 @@ class Plane<A,P> {
             }
         }
 
-        mod.tick(delta);
+        mod.onTick(delta);
     }
 
     public function applyImpulse(vec:Vector) {

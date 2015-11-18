@@ -44,7 +44,6 @@ class TutPropMod extends PropMod<TutPlayer, TutProp> {
         body.velocity.setxy(custom.vel.x, custom.vel.y);
         body.space = engine.space;
 
-        custom = new TutProp();
         writeToData();
     } 
 

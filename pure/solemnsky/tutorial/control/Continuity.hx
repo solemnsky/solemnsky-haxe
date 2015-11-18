@@ -22,7 +22,7 @@ class Continuity {
     public function new() {
         background = new TutBackground(3200, 1800);
 
-        engine = new Engine(new TutEngine());
+        engine = new Engine(new TutEngineMod());
         engine.loadEnvironment(new Environment(3200, 1800));
 
         player = engine.addPlayer(0, new TutPlayer());

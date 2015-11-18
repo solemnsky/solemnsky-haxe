@@ -80,7 +80,7 @@ class Phase2 implements Control<TutStep> {
                     state.movement.backward = kstate;
 
                 if (isKey(CharKey('f')) && player.plane != null)
-                    player.plane.custom.pewpew(kstate);
+                    player.custom.pewpew(kstate);
             }
             default: {}
             }

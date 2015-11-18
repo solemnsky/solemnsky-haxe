@@ -5,6 +5,8 @@ import util.Transform;
 import control.Scene;
 import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
+import solemnsky.engine.mod.PlayerMod;
+
 
 /**
  * solemnsky.engine.Graphics:
@@ -97,7 +99,7 @@ class Graphics {
         if (player.plane != null) {
             var gfxState:PlaneGraphicsState = player.plane.gfxState;
             var state:PlaneState = player.plane.state;
-            var mod:PlaneMod<D,P> = player.plane.mod;
+            var mod:PlayerMod<D,P> = player.plane.mod;
 
             // we have to make sure the player sprite
             // is centered on the COM of the player... 

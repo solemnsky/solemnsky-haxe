@@ -11,27 +11,34 @@ import solemnsky.tutorial.engine.Synonyms;
  */
 
 class TutPlayer {
-    private var engine:MyEngine;
-    private var plane:MyPlane;
-
     private var cooldown:Float;
     private var shooting:Bool;
 
-    public function new(plane:MyPlane) {
-        this.plane = plane;
-        engine = plane.parent;
+    private var player:MyPlayer;
+    private var engine:MyEngine;
 
+    public function new() {
         cooldown = 0;
         shooting = false;
     }
 
+    /******************************************************************/ 
+    /* custom logic
+    /******************************************************************/ 
+
+    public function attach(player:MyPlayer) {
+        this.player = player;
+        engine = player.parent;
+    }
+
     public function pewpew(state:Bool) {
-        if (plane == null) return;
+        if (player.plane == null) return;
 
         shooting = state;
     }
 
     private function shoot() {
+        var plane = player.plane;
         if (plane == null) return;
 
         var state = plane.state;
@@ -65,13 +72,13 @@ class TutPlayer {
 }
 
 class TutPlayerMod extends PlayerMod<TutPlayer,TutProp> {
-    public function new(prop) {
-        super(prop);
+    public function new(player) {
+        super(player);
 
-        custom = new TutPlane(plane);
+        custom.attach(player);
     } 
 
-    override function tick(delta:Float) {
+    override function onTick(delta:Float) {
         custom.tick(delta);
     }
 }

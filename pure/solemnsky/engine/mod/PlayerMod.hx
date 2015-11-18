@@ -47,7 +47,7 @@ class PlayerMod<A,P> {
     private var engine:Engine<A,P>;
 
     private var custom(get,set):A;
-    public function get_custom() return player.custon;
+    public function get_custom() return player.custom;
     public function set_custom(n) return player.custom = n;
 
     public function new(player:Player<A,P>) {

@@ -88,7 +88,8 @@ class Engine<A,P> {
     public function addPlayer(
         sig:Int, custom:A
     ):Player<A,P> {
-        var player = new Player(this, sig, custom, mod.playerMod);
+        var player = 
+            new Player(this, sig, custom, mod.playerMod);
         players.set(sig, player);
         return player;
     }

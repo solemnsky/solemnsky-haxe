@@ -18,6 +18,7 @@ import util.Rename;
  */
 
 class OfflinePackets implements Control<Noise> {
+    private var cont:Continuity;
     private var engine:MyEngine;
     private var player:MyPlayer;
 
@@ -29,10 +30,7 @@ class OfflinePackets implements Control<Noise> {
         player = cont.player;
         engine = cont.engine;
 
-        var planeModConstruct = function (plane) return
-            new TutPlaneMod(plane);
-        player.spawn(
-            planeModConstruct, new Vector(1600, 900), 0);
+        player.spawn(new Vector(1600, 900), 0);
         player.simulating = true;
 
         serialRules = Rename.makeRules(

@@ -66,7 +66,7 @@ class Player<A,P> {
     ) {
         mod.onSpawn();
 
-        plane = new Plane(parent, id, modConstruct, pos, rot);
+        plane = new Plane(this, id, pos, rot);
         set_simulating(simulating); 
             // needs to be reset when the body is re-allocated
     }
@@ -80,7 +80,7 @@ class Player<A,P> {
 
         if (plane != null && simulating) {
             plane.readFromNape();
-            mod.onTickPlane(delta);
+            mod.onTickPlane(delta, plane);
             plane.tick(delta);
             plane.writeToNape();
         }
