@@ -3,6 +3,8 @@ package solemnsky;
 import control.Control;
 import control.Noise;
 import solemnsky.tutorial.Tutorial;
+import solemnsky.core.vanilla.Vanilla;
+import solemnsky.ui.Demo;
 import solemnsky.ui.OfflinePackets;
 
 /**
@@ -17,5 +19,9 @@ class TopLevel {
 
     public static function offlinePackets() {
         return new OfflinePackets();
+    }
+
+    public static function demoVanilla() {
+        return Demo.run(new Vanilla());
     }
 }

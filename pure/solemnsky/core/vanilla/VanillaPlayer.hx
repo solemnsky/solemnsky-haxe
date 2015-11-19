@@ -1,7 +1,7 @@
 package solemnsky.core.vanilla;
 
 import solemnsky.engine.mod.PlayerMod;
-import solemnsky.vanilla.Synonyms;
+import solemnsky.core.vanilla.Synonyms;
 
 /**
  * solemnsky.core.vanilla.VanillaPlayer:

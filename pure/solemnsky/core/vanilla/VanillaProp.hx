@@ -1,7 +1,7 @@
 package solemnsky.core.vanilla;
 
-import solemnsky.engine.mod.PlayerMod;
-import solemnsky.vanilla.Synonyms;
+import solemnsky.engine.mod.PropMod;
+import solemnsky.core.vanilla.Synonyms;
 
 /**
  * solemnsky.core.vanilla.VanillaProp:
@@ -12,7 +12,7 @@ class VanillaProp {
     public function new() {}
 }
 
-class VanillaPropMod extends PlayerMod<VanillaPlayer,VanillaProp> {
+class VanillaPropMod extends PropMod<VanillaPlayer,VanillaProp> {
     public function new(prop:MyProp) {
         super(prop);
     }

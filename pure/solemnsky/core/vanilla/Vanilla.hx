@@ -1,5 +1,11 @@
 package solemnsky.core.vanilla;
 
+import haxe.io.Bytes;
+import control.Scene;
+import util.Vector;
+import util.Transform;
+import solemnsky.engine.Engine;
+import solemnsky.core.vanilla.Synonyms;
 import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
 
@@ -19,7 +25,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     private var engine:MyEngine;
 
     public function new() {
-        engine = new Engine(makeEngineTuning());
+        engine = new Engine(new VanillaEngineMod());
     }
 
     /*************************************************************************/
@@ -47,6 +53,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function listPlayers():Array<{sig:Int, name:String}> {
+        return null;
     }
 
     /************************************************************/
@@ -127,20 +134,5 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
 
     public function readSnap(bytes:Bytes):VanillaSnap {
         return null;
-    }
-
-    /*************************************************************************/
-    /* tuning
-    /*************************************************************************/
-
-    public function makeEngineTuning():EngineTuning {
-        var tuning = new EngineTuning();
-        tuning.debugTrace = function(str){trace('engine log: '+str);};
-        return tuning;
-    }
-
-    public function makePlaneTuning():PlaneTuning {
-        var tuning = new PlaneTuning();
-        return tuning;
     }
 }
