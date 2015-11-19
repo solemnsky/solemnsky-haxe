@@ -1,16 +1,6 @@
 package solemnsky.core.vanilla;
 
-import control.Event;
-import control.Scene;
-import control.Noise;
-import haxe.io.Bytes;
-import solemnsky.engine.Engine;
-import solemnsky.engine.Environment;
-import solemnsky.engine.tune.EngineTuning;
-import solemnsky.engine.tune.PlaneTuning;
-import util.Transform;
-import util.Util;
-import util.Vector;
+import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
 
 /**
@@ -26,17 +16,10 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /* constructor
     /*************************************************************************/
 
-    private var engine:Engine<PlayerData>;
-
-    public function makeEnvironment():Environment {
-        var environment = new Environment();   
-        // operations on environment
-        return environment;
-    }
+    private var engine:MyEngine;
 
     public function new() {
         engine = new Engine(makeEngineTuning());
-        engine.loadEnvironment(makeEnvironment());
     }
 
     /*************************************************************************/
@@ -47,7 +30,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function describeMeta():VanillaMeta {
-        return new VanillaMeta();
+        return null;
     }
 
     /*************************************************************************/

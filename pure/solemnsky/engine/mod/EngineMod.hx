@@ -31,7 +31,7 @@ class EngineMod<A,P> {
     }
 
     public function propMod(
-        plane:Prop<A,P>
+        prop:Prop<A,P>
     ):PropMod<A,P> {
         return null;
     }
