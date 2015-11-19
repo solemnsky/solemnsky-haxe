@@ -1,5 +1,6 @@
 package solemnsky.core;
 
+import util.Pack;
 import haxe.io.Bytes;
 import control.Event;
 import control.Scene;
@@ -75,5 +76,5 @@ interface Core<M,S> {
     /* network packing
     /*************************************************************************/
 
-    public var snapRules:PackRules<S>;
+    public var snapRules:PackRule<S>;
 }

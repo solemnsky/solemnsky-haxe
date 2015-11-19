@@ -10,6 +10,7 @@ import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
 import solemnsky.engine.Graphics;
 import solemnsky.engine.Environment;
+import util.Pack;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -82,6 +83,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /************************************************************/
 
     public function tick(delta:Float):Array<String> {
+        trace('ticking');
         engine.tick(delta);
         return [];
     }
@@ -155,7 +157,12 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function serverAssert():VanillaSnap {
-        clientAsset();  // stub
+        var snap = new VanillaSnap();
+
+        snap.engineSnap = engine.getSnap();
+        snap.score = score;
+
+        return snap;
     }
 
     public function clientMerge(sig:Int, snap:VanillaSnap) {
@@ -172,13 +179,13 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /* network compression
     /*************************************************************************/
 
-    public var snapRules:PackRules<VanillaSnap>;
+    public var snapRules:PackRule<VanillaSnap>;
 
     private function mkSnapRules() {
         snapRules = 
             Pack.object(
-                [ {name:"engineSnap", Pack.identity()
-                , {name:"score", Pack.identity()}}
+                [ {name:"engineSnap", rule:Pack.identity()}
+                , {name:"score", rule:Pack.identity()}
                 ]);
     }
 

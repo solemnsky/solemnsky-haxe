@@ -1,5 +1,6 @@
 package solemnsky.core.vanilla;
 
+import solemnsky.core.CoreControl;
 import solemnsky.engine.mod.PlayerMod;
 import solemnsky.core.vanilla.Synonyms;
 import solemnsky.core.CoreControl;
@@ -28,7 +29,17 @@ class VanillaPlayer {
     }
 
     public function handle(control:CoreControl) {
-         
+        var plane = player.plane;
+        if (plane == null) return;
+        var state = plane.state;
+
+        switch (control) {
+            case CCUp(x): state.movement.forward = x;
+            case CCDown(x): state.movement.backward = x;
+            case CCLeft(x): state.movement.left = x;
+            case CCRight(x): state.movement.right = x;
+            default: {}
+        }
     }
 }
 
