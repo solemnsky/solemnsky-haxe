@@ -38,11 +38,8 @@ interface Core<M,S> {
      * 'sig' is a unique id for the player and 'name' is the player's 
      * name.
      */
-    public function join(sig:Int, name:String):Void;
-    public function quit(sig:Int):Void;
-    public function loadPlayers(a:Array<{sig:Int, name:String}>):Void;
-        // for new clients
-    public function listPlayers():Array<{sig:Int, name:String}>;
+    public function addPlayer(sig:Int, name:String):Void;
+    public function removePlayer(sig:Int):Void;
 
     /*************************************************************************/
     /* user input

@@ -22,7 +22,7 @@ class DemoFromCore<M,S> implements Control<Noise> {
 
     public function new(core:Core<M,S>) {
         this.core = core;
-        core.join(0, 'offline player');
+        core.addPlayer(0, 'offline player');
     }
 
     public function init(_) {

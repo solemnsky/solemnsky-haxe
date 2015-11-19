@@ -8,6 +8,7 @@ import solemnsky.engine.Engine;
 import solemnsky.core.vanilla.Synonyms;
 import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
+import solemnsky.engine.Graphics;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -43,17 +44,12 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /* players
     /*************************************************************************/
 
-    public function join(sig:Int, name:String) {
+    public function addPlayer(sig:Int, name:String) {
+        engine.addPlayer(sig, new VanillaPlayer(name));
     }
 
-    public function quit(sig:Int) {
-    }
-
-    public function loadPlayers(a:Array<{sig:Int, name:String}>) {
-    }
-
-    public function listPlayers():Array<{sig:Int, name:String}> {
-        return null;
+    public function removePlayer(sig:Int) {
+        engine.removePlayer(sig);
     }
 
     /************************************************************/
@@ -61,7 +57,8 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /************************************************************/
 
     public function handle(sig:Int, control:CoreControl) {
-
+        var player = engine.players.get(sig);
+        if (player != null) player.custom.handle(control);
     }
 
     /************************************************************/
@@ -98,6 +95,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
 
         scene.children = [
             renderOverlay()
+            Graphics
         ];
         // for (player in players) {
         //     scene.children.push(Graphics.renderPlayer(player));
