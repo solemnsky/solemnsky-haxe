@@ -42,7 +42,7 @@ class DemoFromCore<M,S> implements Control<Noise> {
     }
 
     public function render(delta:Float):Scene {
-        return core.render(delta);
+        return core.render(0, delta);
     }
 
     public function profiling(profile:Profile):Void {
@@ -55,12 +55,16 @@ class DemoFromCore<M,S> implements Control<Noise> {
         case KbEvent(key, state): {
             var match = function(pat) return Type.enumEq(key, pat);
 
-            if (match(CharKey('i'))) control = CCUp(state);
-            if (match(CharKey('j'))) control = CCLeft(state);
-            if (match(CharKey('l'))) control = CCRight(state);
-            if (match(CharKey('k'))) control = CCDown(state);
-            if (match(CharKey('f'))) control = CCFire(state);
-            if (match(CharKey('d'))) control = CCSecondary(state);
+            if (core.isAlive(0)) {
+                if (match(CharKey('i'))) control = CCUp(state);
+                if (match(CharKey('j'))) control = CCLeft(state);
+                if (match(CharKey('l'))) control = CCRight(state);
+                if (match(CharKey('k'))) control = CCDown(state);
+                if (match(CharKey('f'))) control = CCFire(state);
+                if (match(CharKey('d'))) control = CCSecondary(state);
+            } else {
+                if (match(CharKey('f'))) control = CCSpawn;
+            }
         }
         default: {}
         }

@@ -14,4 +14,5 @@ enum CoreControl {
     CCRight(state:Bool);
     CCFire(state:Bool);
     CCSecondary(state:Bool);
+    CCSpawn;
 }

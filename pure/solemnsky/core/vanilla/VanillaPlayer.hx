@@ -2,6 +2,7 @@ package solemnsky.core.vanilla;
 
 import solemnsky.engine.mod.PlayerMod;
 import solemnsky.core.vanilla.Synonyms;
+import solemnsky.core.CoreControl;
 
 /**
  * solemnsky.core.vanilla.VanillaPlayer:
@@ -26,7 +27,9 @@ class VanillaPlayer {
         this.player = player;
     }
 
-    public function handle(control:CoreControl)
+    public function handle(control:CoreControl) {
+         
+    }
 }
 
 class VanillaPlayerMod extends PlayerMod<VanillaPlayer,VanillaProp> {

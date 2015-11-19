@@ -57,7 +57,8 @@ interface Core<M,S> {
     /* rendering
     /*************************************************************************/
     
-    public function render(delta:Float):Scene;
+    public function render(sig:Int, delta:Float):Scene;
+    public function isAlive(sig:Int):Bool;
 
     /*************************************************************************/
     /* network sync

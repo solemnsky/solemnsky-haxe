@@ -9,6 +9,7 @@ import solemnsky.core.vanilla.Synonyms;
 import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
 import solemnsky.engine.Graphics;
+import solemnsky.engine.Environment;
 
 /**
  * solemnsky.core.vanilla.Vanilla:
@@ -34,18 +35,23 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /*************************************************************************/
 
     public function loadMeta(meta:VanillaMeta) {
+        engine.loadEnvironment(new Environment(1600, 900));
     }
 
     public function describeMeta():VanillaMeta {
-        return null;
+        return new VanillaMeta;
     }
+
+    public function 
 
     /*************************************************************************/
     /* players
     /*************************************************************************/
 
     public function addPlayer(sig:Int, name:String) {
-        engine.addPlayer(sig, new VanillaPlayer(name));
+        var player = 
+            engine.addPlayer(sig, new VanillaPlayer(name));
+        player.simulating = true;
     }
 
     public function removePlayer(sig:Int) {
@@ -58,7 +64,11 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
 
     public function handle(sig:Int, control:CoreControl) {
         var player = engine.players.get(sig);
-        if (player != null) player.custom.handle(control);
+        if (player != null) {
+            if (Type.enumEq(control, CCSpawn)) 
+                player.spawn(new Vector(500, 500), 0);
+            player.custom.handle(control);
+        }
     }
 
     /************************************************************/
@@ -90,18 +100,39 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
         return scene;
     }
 
-    public function render(delta:Float):Scene {
+    public function renderGame(sig):Scene {
+        var scene = new Scene();
+
+        for (player in engine.players.iterator()) {
+            scene.children.push(Graphics.renderPlayer(player));
+        }
+
+        var player = engine.players.get(sig);
+        if (player != null)
+            scene.trans = Graphics.getPlayerView(player);
+
+        return scene;         
+    }
+
+    public function render(sig:Int, delta:Float):Scene {
+        engine.tickGraphics(delta);
+
         var scene = new Scene();
 
         scene.children = [
-            renderOverlay()
-            Graphics
+            // renderOverlay()
+            renderGame(sig)
         ];
-        // for (player in players) {
-        //     scene.children.push(Graphics.renderPlayer(player));
-        // }
 
         return scene;
+    }
+
+    public function isAlive(sig:Int):Bool {
+        var player = engine.players.get(sig);
+        if (player != null)
+            return (player.plane != null);
+
+        return false;
     }
 
     /************************************************************/
@@ -116,10 +147,9 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function clientMerge(sig:Int, snap:VanillaSnap) {
-
     }
+
     public function serverMerge(sig:Int, snap:VanillaSnap) {
-        // empty
     }
 
     /*************************************************************************/
