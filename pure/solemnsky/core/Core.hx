@@ -27,6 +27,7 @@ interface Core<M,S> {
      */
     public function loadMeta(meta:M):Void;
     public function describeMeta():M;
+    public function createMeta():M;
 
     /*************************************************************************/
     /* players
@@ -71,9 +72,8 @@ interface Core<M,S> {
     public function serverMerge(sig:Int, snap:S):Void;
 
     /*************************************************************************/
-    /* network compression
+    /* network packing
     /*************************************************************************/
 
-    public function serialiseSnap(snap:S):Bytes;
-    public function readSnap(bytes:Bytes):S;
+    public var snapRules:PackRules<S>;
 }

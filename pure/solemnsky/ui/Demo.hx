@@ -23,6 +23,8 @@ class DemoFromCore<M,S> implements Control<Noise> {
     public function new(core:Core<M,S>) {
         this.core = core;
         core.addPlayer(0, 'offline player');
+
+        core.loadMeta(core.createMeta());
     }
 
     public function init(_) {

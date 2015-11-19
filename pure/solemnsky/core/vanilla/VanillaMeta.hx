@@ -8,7 +8,7 @@ import util.Vector;
  */
 
 class VanillaMeta {
-    var dim:Vector;
+    public var dim:Vector;
 
     public function new(dim:Vector) {
         this.dim = dim; 

@@ -21,13 +21,16 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     public var modeId = "vanilla alpha";
 
     /*************************************************************************/
-    /* constructor
+    /* state and constructor
     /*************************************************************************/
 
+    private var meta:VanillaMeta;
     private var engine:MyEngine;
+    private var score:Int = 0;
 
     public function new() {
         engine = new Engine(new VanillaEngineMod());
+        mkSnapRules();
     }
 
     /*************************************************************************/
@@ -35,16 +38,19 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /*************************************************************************/
 
     public function loadMeta(meta:VanillaMeta) {
-        engine.loadEnvironment(new Environment(1600, 900));
+        this.meta = meta;
+        engine.loadEnvironment(new Environment(meta.dim.x, meta.dim.y));
     }
 
     public function describeMeta():VanillaMeta {
-        return new VanillaMeta;
+        return meta;
     }
 
-    public function 
+    public function createMeta():VanillaMeta {
+        return new VanillaMeta(new Vector(1600, 900)); 
+    }
 
-    /*************************************************************************/
+    /************************************************************************/
     /* players
     /*************************************************************************/
 
@@ -140,27 +146,40 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /************************************************************/
 
     public function clientAssert(sig:Int):VanillaSnap {
-        return new VanillaSnap();
+        var snap = new VanillaSnap();
+
+        snap.engineSnap = engine.getSnap();
+        snap.score = score;
+
+        return snap;
     }
+
     public function serverAssert():VanillaSnap {
-        return new VanillaSnap();
+        clientAsset();  // stub
     }
 
     public function clientMerge(sig:Int, snap:VanillaSnap) {
+        engine.loadSnap(snap.engineSnap);
+        score = snap.score;
     }
 
     public function serverMerge(sig:Int, snap:VanillaSnap) {
+        engine.loadSnap(snap.engineSnap);
+        score = snap.score;
     }
 
     /*************************************************************************/
     /* network compression
     /*************************************************************************/
 
-    public function serialiseSnap(snap:VanillaSnap):Bytes {
-        return null;
+    public var snapRules:PackRules<VanillaSnap>;
+
+    private function mkSnapRules() {
+        snapRules = 
+            Pack.object(
+                [ {name:"engineSnap", Pack.identity()
+                , {name:"score", Pack.identity()}}
+                ]);
     }
 
-    public function readSnap(bytes:Bytes):VanillaSnap {
-        return null;
-    }
 }
