@@ -29,6 +29,9 @@ class PlayerRep {
 
     // roll
     public var roll:Float;
+    private static var flipPrepMax:Float = 300;
+    private var flipPrep:Float = 0;
+    private var flipDirection:Bool = false;
     private var orientation:Bool;
     private var flipState:Float = 0;
     private var rollState:Float = 0;
@@ -60,13 +63,23 @@ class PlayerRep {
         stalled = state.stalled; afterburner = state.afterburner;
 
         // roll
-        orientation = Util.normAngle(rot + (Math.PI / 2)) > Math.PI;
+        var newOrientation = Util.normAngle(rot + (Math.PI / 2)) > Math.PI;
+        if (!(state.movement.left || state.movement.right) && (newOrientation != orientation))
+            flipPrep += delta;
+        if (flipPrep > flipPrepMax) {
+            if (newOrientation != orientation) {
+                flipDirection = true;
+                orientation = newOrientation;
+                flipPrep = 0;
+            }
+        }
+
         if (orientation) flipState = approach(delta, flipState, 1, 2);
         else flipState = approach(delta, flipState, 0, 2);
 
         var flipComponent:Float;
-        if (orientation) flipComponent = (Math.PI / 2) + flipState * Math.PI;
-        else flipComponent = (Math.PI / 2) - flipState * Math.PI;
+        if (flipDirection) flipComponent = (Math.PI / 2) - flipState * Math.PI;
+        else flipComponent = (Math.PI / 2) + flipState * Math.PI;
 
         var rolling:Bool = false;
         if (state.movement.left) {
