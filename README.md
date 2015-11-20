@@ -40,12 +40,13 @@ Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc)
 Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
 Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | Completed
 Goal 7 | Mature the tutorial flow, adding basic features. | Completed.
-Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | Waiting on graphics from Grape.
+Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | In progress with our graphic designer.
 Goal 8 | Integrate basic network functionalities into the game engine. | Completed
-Goal 9 | Implement a Core (Vanilla) with networking. | In progress, restarting.
-Goal 10 | Make an offline demo UI to test the Vanilla core. | None
-Goal 11 | Find or create UDP utilities. | Researched
+Goal 9 | Implement a Core (Vanilla) with networking. | Finishing.
+Goal 10 | Make an offline demo UI to test the Vanilla core. | In progress.
+Goal 11 | Find or create UDP utilities, successfully build to native. | In progress.
 Goal 12 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
+Goal 13 | Mature networking. | None
 Milestone | Add functionality to the client-server pair, make Vanilla playable | None
 
 ## build instructions
