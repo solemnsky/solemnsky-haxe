@@ -70,8 +70,8 @@ class Graphics {
             , DrawImageCrop(
                 new Vector(-100, -100)
                 , new Vector(0
-                    , 200*Math.round(
-                        29 * spriteRoll / Math.PI))
+                    , 200*Math.floor(
+                        30 * spriteRoll / Math.PI))
                 , new Vector(200, 200)
                 , "player"
             )
