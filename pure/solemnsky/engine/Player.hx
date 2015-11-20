@@ -71,7 +71,8 @@ class PlayerRep {
         else flipState = approach(delta, flipState, 0, 2);
 
         var flipComponent:Float;
-        flipComponent = (Math.PI / 2) - flipState * Math.PI;
+        if (orientation) flipComponent = (Math.PI / 2) - flipState * Math.PI;
+        else flipComponent = (Math.PI / 2) + flipState * Math.PI;
 
         var rolling:Bool = false;
         if (flipState == 0 || flipState == 1) {
