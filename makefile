@@ -25,7 +25,7 @@ kha-web-compiled: kha-web
 kha-native:
 	### KHA-NATIVE ###
 	cd export/kha-native && \
-	node Kha/make 	
+	node Kha/make --compile	
 
 	rm -rf dist/kha-native/ ; mkdir -p dist/kha-native/
 	cp -r export/kha-native/build/linux-build/* ./dist/kha-native/
