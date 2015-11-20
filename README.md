@@ -93,5 +93,7 @@ The Kha framework (by KTX Software Development) is sourced in /export/common/kha
 
 The logical core of the project is written in the Haxe language (http://haxe.org).
 
-All development besides the aforementioned utilities was done by myself, Chris Gadzinski. 
+All code besides the aforementioned utilities was written by myself, Chris Gadzinski. 
+
+All interesting graphics are created by Le Grape.
 
