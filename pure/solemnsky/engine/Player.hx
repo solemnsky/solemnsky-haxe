@@ -61,7 +61,7 @@ class PlayerRep {
 
         // roll
         var newOrientation = Util.normAngle(rot + (Math.PI / 2)) > Math.PI;
-        if (!(state.movement.left || state.movement.right) && (newOrientation != orientation)) {
+        if (!(state.movement.left || state.movement.right) && (newOrientation != orientation) && !state.stalled) {
             if (newOrientation != orientation) {
                 orientation = newOrientation;
             }
