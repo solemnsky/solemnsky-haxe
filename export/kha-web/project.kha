@@ -20,23 +20,8 @@
 		}
 		,{
 			"type": "image",
-			"file": "media/render-2d/placeholder/player.png",
+			"file": "media/render-3d/test_1/player.png",
 			"name": "player"
-		}
-		,{
-			"type": "image",
-			"file": "media/render-2d/placeholder/player-speed.png",
-			"name": "player-speed"
-		}
-		,{
-			"type": "image",
-			"file": "media/render-2d/placeholder/player-thrust.png",
-			"name": "player-thrust"
-		}
-		,{
-			"type": "image",
-			"file": "media/render-2d/placeholder/player-sheet.png",
-			"name": "player-sheet"
 		}
 	],
 	"rooms": [

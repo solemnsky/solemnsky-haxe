@@ -62,15 +62,6 @@ class PlaneState {
     }
 }
 
-/**
- * Animation values related to the plane; they have no effect on 
- * anything besides aesthetics.
- */
-class PlaneGraphicsState {
-    public var burnFade:Float = 0;
-
-    public function new() {}
-}
 
 class Plane<A,P> {
     /*************************************************************************/
@@ -86,7 +77,6 @@ class Plane<A,P> {
     public var mod:PlayerMod<A,P>;
     
     public var state:PlaneState;
-    public var gfxState:PlaneGraphicsState;
     public var body:Body;
 
     public function new(
@@ -99,7 +89,6 @@ class Plane<A,P> {
         this.id = id;
 
         this.state = new PlaneState(pos, rot);
-        this.gfxState = new PlaneGraphicsState();
 
         // initialise body
         body = new Body(BodyType.DYNAMIC, Util.napeFromVector(pos));
@@ -137,15 +126,6 @@ class Plane<A,P> {
     /* simulation
     /*************************************************************************/
 
-    /**
-     * Tick the plane's gfxState forward.
-     */
-    public function tickGraphics(delta:Float):Void {
-        if (state.afterburner) gfxState.burnFade += delta / 200;
-        else gfxState.burnFade -= delta / 200;
-        gfxState.burnFade = Math.max(0, gfxState.burnFade);
-        gfxState.burnFade = Math.min(1, gfxState.burnFade);
-    }
 
     /**
      * Mutate the plane's state value; this works hand in hand

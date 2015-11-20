@@ -15,110 +15,71 @@ import solemnsky.engine.mod.PlayerMod;
  */
 
 class Graphics {
-    public static function renderVector(vec:Vector):Scene {
-        var scene = new Scene();
-
-        scene.prims = [
-            SetColor(0, 255, 0, 255)
-            , DrawRect(new Vector(-2, 20), new Vector(2, 20))
-        ];
-
-        scene.trans = Transform.translation(800, 700)
-            .multmat(Transform.rotation(vec.angle()))
-            .multmat(Transform.scale(vec.length(), vec.length()));
-
-        return scene;
-    }
-
     /*************************************************************************/
     /* planes
     /*************************************************************************/
 
-    private inline static function planeTrans<D,P>(
-        plane:Plane<D,P>
+    private inline static function playerTrans<D,P>(
+        p:PlayerRep
     ): Transform {
-        var state = plane.state;
-        return Transform.translation(state.pos.x, state.pos.y)
-            .multmat(Transform.rotation(state.rot));
+        return Transform.translation(p.pos.x, p.pos.y)
+            .multmat(Transform.rotation(p.rot));
     }
 
     public static function renderDebugPlayer<D,P>(
-        player:Player<D,P>
+        p:PlayerRep
     ): Scene {
         var scene = new Scene();
-        if (player.plane != null) {
-            var state = player.plane.state;
-            var mod = player.plane.mod;
 
+        if (p.alive != null) {
             var bodyColor = SetColor(255, 255, 255, 255);
-            if (state.stalled) 
+            if (p.stalled) 
                 bodyColor = SetColor(200, 200, 200, 255);
 
             var headColor = SetColor(255, 0, 0, 255);
-            if (! state.afterburner)
+            if (! p.afterburner)
                 headColor = SetColor(200, 0, 0, 255);
 
             scene.prims = 
                 [ bodyColor
                 , DrawRect(
-                    new Vector(-mod.length / 2, -mod.width / 2)
-                    , new Vector(mod.length / 2, mod.width / 2))
+                    new Vector(-p.length / 2, -p.width / 2)
+                    , new Vector(p.length / 2, p.width / 2))
                 , headColor
                 , DrawRect(
-                    new Vector(mod.length / 3, -mod.width / 2)
-                    , new Vector(mod.length / 2, mod.width / 2)) ];
+                    new Vector(p.length / 3, -p.width / 2)
+                    , new Vector(p.length / 2, p.width / 2)) ];
 
-            scene.trans = planeTrans(player.plane);
+            scene.trans = playerTrans(p);
         }
         return scene;
     }
 
     /**
-     * Get one index of player-sheet.png
+     * Get one index of the player sheet.
      */
-    public static function playerSheet(i:Int) {
-        var scene = new Scene();
-
-        scene.prims = [
-            DrawImageCrop(
-                new Vector(-200, -100)
-                , new Vector(0, i * 200)
-                , new Vector(400, 200)
-                , "player-sheet"
-            )
-        ];
-
-        return scene;
+    public static function playerSprite(roll:Float):DrawPrim {
+        return DrawImageCrop(
+            new Vector(-200, -100)
+            , new Vector(0, 0)
+            , new Vector(1000, 1000)
+            , "player"
+        );
     }
 
     public static function renderPlayer<D,P>(
-        player:Player<D,P>
+        p:PlayerRep
     ): Scene {
         var scene = new Scene();
-
-        if (player.plane != null) {
-            var gfxState:PlaneGraphicsState = player.plane.gfxState;
-            var state:PlaneState = player.plane.state;
-            var mod:PlayerMod<D,P> = player.plane.mod;
-
-            // we have to make sure the player sprite
-            // is centered on the COM of the player... 
+        
+        if (p.alive) {
             scene.prims = [
                 SetColor(255, 255, 255, 255)
                 , SetAlpha(1)
-                , DrawImage(new Vector(-200, -100), "player")
-                , SetAlpha(gfxState.burnFade)
-                , DrawImage(new Vector(-400, -100), "player-thrust")
-                , SetAlpha(1)
+                , playerSprite(p.roll)
             ];
 
-            scene.children.push(playerSheet(
-                Math.round(
-                    4 + 4 * (state.rotvel / mod.maxRotationStalled)
-                )
-            ));
-
-            scene.trans = planeTrans(player.plane)
+            scene.trans = playerTrans(p)
                 .multmat(Transform.scale(1/5, 1/5));
         }
 

@@ -43,7 +43,7 @@ class TutGraphics {
         var scene = new Scene();
 
         scene.children.push(background.render(delta));
-        scene.children.push(Graphics.renderPlayer(player));
+        scene.children.push(Graphics.renderPlayer(player.rep));
         scene.children.push(gameLayer);
 
         for (prop in engine.props.iterator()) {

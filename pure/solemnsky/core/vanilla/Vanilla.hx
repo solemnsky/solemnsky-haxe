@@ -112,7 +112,7 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
         var scene = new Scene();
 
         for (player in engine.players.iterator()) {
-            scene.children.push(Graphics.renderPlayer(player));
+            scene.children.push(Graphics.renderPlayer(player.rep));
         }
 
         var player = engine.players.get(sig);

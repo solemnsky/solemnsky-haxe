@@ -51,8 +51,8 @@ class Encoder {
 
 	inline function writeInt64(d:Int64) {
 		o.writeByte(0xd3);
-		o.writeInt32(d.high);
-		o.writeInt32(d.low);
+		o.writeInt32(Int64.getHigh(d));
+		o.writeInt32(Int64.getLow(d));
 	}
 
 	inline function writeInt(d:Int) {

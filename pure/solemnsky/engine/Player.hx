@@ -9,6 +9,54 @@ import util.Vector;
  * Represents a player in the game.
  */
 
+/**
+ * State necessary to represent the player graphically.
+ */
+class PlayerRep {
+    public var alive:Bool = false;
+
+    // basic properties
+    public var pos:Vector;
+    public var rot:Float;
+    public var length:Float;
+    public var width:Float;    
+
+    // flight mechanics
+    public var burnFade:Float;
+    public var stalled:Bool;
+    public var afterburner:Bool;
+
+    // roll
+    public var roll:Float;
+    private var orientation:Bool;
+
+    public function new() {
+    }
+
+    public function tick<A,P>(delta:Float, plane:Plane<A,P>) {
+        alive = (plane != null);
+        if (!alive) return;
+        var state = plane.state;       
+
+        // basic properties
+        pos = state.pos; rot = state.rot;
+        width = plane.mod.length; length = plane.mod.width;
+
+        // flight mechanics
+        if (state.afterburner) burnFade += delta / 200;
+        else burnFade -= delta / 200;
+        burnFade = Math.max(0, burnFade);
+        burnFade = Math.min(1, burnFade);
+
+        stalled = state.stalled; afterburner = state.afterburner;
+
+        // roll
+        orientation = (rot > 180);
+        if (orientation) roll = 0;
+        else roll = 180;
+    }
+}
+
 class Player<A,P> {
     /*************************************************************************/
     /* state and constructor
@@ -23,6 +71,8 @@ class Player<A,P> {
     public var mod:PlayerMod<A,P>;
     public var custom:A;
 
+    public var rep:PlayerRep;
+
     public function new(
         engine:Engine<A,P>, id:Int, custom:A
     ) {
@@ -31,6 +81,8 @@ class Player<A,P> {
         this.engine = engine;
         plane = null;
         simulating = false;
+
+        rep = new PlayerRep();
 
         mod = engine.mod.playerMod(this);
     }
@@ -86,9 +138,11 @@ class Player<A,P> {
         }
     }
 
-    public function tickGraphics(delta:Float) {
-        if (plane != null && simulating)
-            plane.tickGraphics(delta);
+    /**
+     * Update / mutate the player's graphical representation state.
+     */
+    public function tickGraphics(delta:Float):Void {
+        rep.tick(delta, plane);
     }
 
     /*************************************************************************/

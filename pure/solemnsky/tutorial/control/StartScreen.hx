@@ -44,7 +44,8 @@ class StartScreen implements Control<TutStep> {
         var scene = new Scene();
 
         if (pressed) {
-            scene.children.push(Graphics.renderPlayer(cont.player));
+            scene.children.push(Graphics.renderPlayer(
+                cont.player.rep));
             scene.alpha = animTime / animDur;
         }
 
