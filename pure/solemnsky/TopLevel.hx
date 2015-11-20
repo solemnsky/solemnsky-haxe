@@ -13,15 +13,13 @@ import solemnsky.ui.OfflinePackets;
  */
 
 class TopLevel {
-    public static function tutorial():Control<Noise> {
+    public static function khaWeb():Control<Noise> {
         return Tutorial.run();
     }
 
-    public static function offlinePackets() {
-        return new OfflinePackets();
+    public static function khaNative() {
+        return Tutorial.run();
     }
 
-    public static function demoVanilla() {
-        return Demo.run(new Vanilla());
-    }
+        // return Demo.run(new Vanilla());
 }

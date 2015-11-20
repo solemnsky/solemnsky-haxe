@@ -32,7 +32,7 @@ class Graphics {
     ): Scene {
         var scene = new Scene();
 
-        if (p.alive != null) {
+        if (p.alive) {
             var bodyColor = SetColor(255, 255, 255, 255);
             if (p.stalled) 
                 bodyColor = SetColor(200, 200, 200, 255);

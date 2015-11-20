@@ -5,14 +5,6 @@ clean:
 	rm -rf export/flambe/build/
 	rm -rf export/kha-web/build/
 
-flambe:
-	### FLAMBE ###
-	cd export/flambe && \
-	flambe build html
-	
-	rm -rf dist/flambe/ ; mkdir -p dist/flambe/
-	cp -r export/flambe/build/web/* ./dist/flambe/
-
 kha-web:
 	### KHA-WEB ###
 	cd export/kha-web && \
@@ -41,7 +33,8 @@ kha-native:
 simple-js:
 	### SIMPLE-JS ###
 	cd export/simple-js && \
-	haxe build.hxml
+	# ../../export/common/kha/Kha/Tools/haxe/haxe-linux64 build.hxml
+	haxe build.hxml	
 
 	rm -rf dist/simple-js/ ; mkdir -p dist/simple-js/
 	cp -r export/simple-js/build/* ./dist/simple-js/
