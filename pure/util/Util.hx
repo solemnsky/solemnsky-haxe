@@ -39,4 +39,9 @@ class Util {
         for (k in map.keys()) len++;
         return len;
     }
+
+    public static function normAngle(angle:Float) {
+        var p2 = 2*Math.PI;
+        return angle - p2*(Math.floor(angle / p2));
+    }
 } 

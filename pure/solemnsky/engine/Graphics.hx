@@ -1,5 +1,6 @@
 package solemnsky.engine;
 
+import util.Util;
 import util.Vector;
 import util.Transform;
 import control.Scene;
@@ -55,32 +56,44 @@ class Graphics {
         return scene;
     }
 
-    /**
-     * Get one index of the player sheet.
-     */
-    public static function playerSprite(roll:Float):DrawPrim {
-        return DrawImageCrop(
-            new Vector(-200, -100)
-            , new Vector(0, 0)
-            , new Vector(1000, 1000)
-            , "player"
-        );
+    public static function playerSprite<D,P>(roll:Float):Scene {
+        roll = Util.normAngle(roll);
+
+        var scene = new Scene();
+
+        var spriteRoll:Float;
+        if (roll > Math.PI) spriteRoll = (2*Math.PI - roll)
+        else spriteRoll = roll;
+
+        scene.prims = [
+            SetColor(255, 255, 255, 255)
+            , DrawImageCrop(
+                new Vector(-100, -100)
+                , new Vector(0
+                    , 200*Math.round(
+                        29 * spriteRoll / Math.PI))
+                , new Vector(200, 200)
+                , "player"
+            )
+        ];
+
+        if (roll > Math.PI) scene.trans = Transform.scale(1, -1);
+
+        return scene;
     }
 
     public static function renderPlayer<D,P>(
         p:PlayerRep
     ): Scene {
         var scene = new Scene();
-        
+
         if (p.alive) {
-            scene.prims = [
-                SetColor(255, 255, 255, 255)
-                , SetAlpha(1)
-                , playerSprite(p.roll)
+            scene.children = [
+                playerSprite(p.rot)
             ];
 
             scene.trans = playerTrans(p)
-                .multmat(Transform.scale(1/5, 1/5));
+                .multmat(Transform.scale(-1/2, 1/2));
         }
 
         return scene;

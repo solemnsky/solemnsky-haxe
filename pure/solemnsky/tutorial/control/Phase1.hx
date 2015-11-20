@@ -119,7 +119,8 @@ class Phase1 implements Control<TutStep> {
         var pos = objectives[curObjective].boxPos;
         var dim = objectives[curObjective].boxDim;
         scene.prims = [
-            DrawRect(
+            SetColor(255, 255, 255, 255)
+            , DrawRect(
                 pos.sub(dim.mult(0.5))
                 , pos.add(dim.mult(0.5)))
         ];

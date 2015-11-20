@@ -20,7 +20,7 @@
 		}
 		,{
 			"type": "image",
-			"file": "media/render-3d/test_1/player.png",
+			"file": "media/render-3d/test_1/player_200.png",
 			"name": "player"
 		}
 	],
@@ -32,10 +32,7 @@
 			"assets": [
 				"Arial14.kravur",
 				"title",
-                "player",
-                "player-speed",
-                "player-thrust",
-                "player-sheet"
+                    "player"
 			]
 		}
 	]
