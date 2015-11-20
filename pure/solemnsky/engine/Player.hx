@@ -71,22 +71,23 @@ class PlayerRep {
         else flipState = approach(delta, flipState, 0, 2);
 
         var flipComponent:Float;
-        if (orientation) flipComponent = (Math.PI / 2) - flipState * Math.PI;
-        else flipComponent = (Math.PI / 2) + flipState * Math.PI;
+        flipComponent = (Math.PI / 2) - flipState * Math.PI;
 
         var rolling:Bool = false;
-        if (state.movement.left) {
-            rollState = approach(delta, rollState, -1, 2);
-            rolling = true;
-        } if (state.movement.right) { 
-            rollState = approach(delta, rollState, 1, 2);
-            rolling = true;
+        if (flipState == 0 || flipState == 1) {
+            if (state.movement.left) {
+                rollState = approach(delta, rollState, -1, 2);
+                rolling = true;
+            } if (state.movement.right) { 
+                rollState = approach(delta, rollState, 1, 2);
+                rolling = true;
+            }
         }
         if (!rolling) rollState = approach(delta, rollState, 0, 2);
 
         var rollComponent:Float;
-        if (orientation) rollComponent = (-Math.PI / 4) * rollState;
-        else rollComponent = (Math.PI / 4) * rollState;
+        if (orientation) rollComponent = (-Math.PI / 6) * rollState;
+        else rollComponent = (Math.PI / 6) * rollState;
 
         roll = flipComponent + rollComponent;
     }
