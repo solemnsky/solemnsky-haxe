@@ -93,7 +93,7 @@ class Graphics {
             ];
 
             scene.trans = playerTrans(p)
-                .multmat(Transform.scale(-1/2, 1/2));
+                .multmat(Transform.scale(-0.7, 0.7));
         }
 
         return scene;

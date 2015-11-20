@@ -14,8 +14,8 @@ class PlayerMod<A,P> {
     /**************************************************************/
 
     // physical dimensions
-    public var length:Float = 80;
-    public var width:Float = 20;
+    public var length:Float = 120;
+    public var width:Float = 40;
 
     // mechanics when stalled
     public var maxRotationStalled:Float; 
