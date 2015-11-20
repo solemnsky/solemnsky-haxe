@@ -8,10 +8,13 @@ package util;
 
 /**
  * Rules to pack and unpack an object.
+ * Can turn a T into a packed Dynamic, and can turn
+ * it subsequently into a Dynamic with a similar structure
+ * to the original T.
  */
 typedef PackRule<T> = 
     { pack:T->Dynamic
-    , unpack:Dynamic->T };
+    , unpack:Dynamic->Dynamic };
 
 /**
  * PackRule constructors.
@@ -42,6 +45,13 @@ class Pack {
                 return null
                 else return rule.unpack(x)
             } 
+    }
+
+    public static function vector():PackRule<Vector> {
+        return Pack.object(
+            [ {name:"x", rule:Pack.identity()}
+            , {name:"y", rule:Pack.identity()}
+        ]);
     }
 
     /******************************************************************/

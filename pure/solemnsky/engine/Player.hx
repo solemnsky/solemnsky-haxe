@@ -193,7 +193,7 @@ class Player<A,P> {
     }    
 
     public function loadSnap(snap:PlayerSnap) {
-
+        
     }
 }
 

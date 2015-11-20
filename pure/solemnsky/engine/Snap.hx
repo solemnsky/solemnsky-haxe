@@ -2,6 +2,7 @@ package solemnsky.engine;
 
 import solemnsky.engine.Plane;
 import util.Pack;
+import util.Vector;
 
 /**
  * solemnsky.engine.Snap:
@@ -29,6 +30,7 @@ class SnapPack {
 
     public function new() {
         var id:PackRule<Dynamic> = Pack.identity();
+        var vector:PackRule<Vector> = Pack.vector();
 
         var movement =
             { pack: function(x)
@@ -41,9 +43,9 @@ class SnapPack {
 
         var planeState =
             Pack.object(
-                [ {name:"pos", rule:id}
+                [ {name:"pos", rule:vector}
                 , {name:"rot", rule:id}
-                , {name:"vel", rule:id}
+                , {name:"vel", rule:vector}
                 , {name:"rotvel", rule:id}
                 , {name:"movement", rule:movement}
                 ]);

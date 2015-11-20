@@ -39,7 +39,7 @@ class Encoder {
 					case "Array"  : writeArray (d);
 					case "haxe.ds.IntMap" | "haxe.ds.StringMap" | "haxe.ds.UnsafeStringMap" : 
 					     writeMap(d);
-					default: writeObject(d); // throw 'Error: ${Type.getClassName(c)} not supported';
+					default: throw 'Error: ${Type.getClassName(c)} not supported';
 				}
 
 			case TObject  : writeObject(d);
