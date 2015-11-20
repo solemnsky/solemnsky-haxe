@@ -40,8 +40,13 @@ class Util {
         return len;
     }
 
-    public static function normAngle(angle:Float) {
+    public static function normAngle(angle:Float):Float {
         var p2 = 2*Math.PI;
         return angle - p2*(Math.floor(angle / p2));
+    }
+
+    public static function sign(x:Float):Float {
+        if (x == 0) return 0;
+        return x / Math.abs(x);
     }
 } 

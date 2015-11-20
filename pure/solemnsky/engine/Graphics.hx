@@ -89,7 +89,7 @@ class Graphics {
 
         if (p.alive) {
             scene.children = [
-                playerSprite(p.rot)
+                playerSprite(p.roll)
             ];
 
             scene.trans = playerTrans(p)

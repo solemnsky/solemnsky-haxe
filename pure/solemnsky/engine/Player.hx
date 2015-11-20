@@ -1,5 +1,6 @@
 package solemnsky.engine;
 
+import util.Util;
 import solemnsky.engine.mod.PlayerMod;
 import solemnsky.engine.Snap;
 import util.Vector;
@@ -29,8 +30,18 @@ class PlayerRep {
     // roll
     public var roll:Float;
     private var orientation:Bool;
+    private var flipState:Float = 0;
+    private var rollState:Float = 0;
 
     public function new() {
+    }
+
+    private function approach(
+        delta:Float, x:Float, target:Float, vel:Float
+    ):Float {
+        // vel in s^-1
+        if ((delta / 1000) * vel > Math.abs(x - target)) return target;
+        return x + vel*(delta / 1000)*Util.sign(target - x);
     }
 
     public function tick<A,P>(delta:Float, plane:Plane<A,P>) {
@@ -43,17 +54,35 @@ class PlayerRep {
         width = plane.mod.length; length = plane.mod.width;
 
         // flight mechanics
-        if (state.afterburner) burnFade += delta / 200;
-        else burnFade -= delta / 200;
-        burnFade = Math.max(0, burnFade);
-        burnFade = Math.min(1, burnFade);
+        if (state.afterburner) burnFade  = approach(delta, burnFade, 1, 1);
+        else burnFade = approach(delta, burnFade, 0, 1);
 
         stalled = state.stalled; afterburner = state.afterburner;
 
         // roll
-        orientation = (rot > 180);
-        if (orientation) roll = 0;
-        else roll = 180;
+        orientation = Util.normAngle(rot + (Math.PI / 2)) > Math.PI;
+        if (orientation) flipState = approach(delta, flipState, 1, 2);
+        else flipState = approach(delta, flipState, 0, 2);
+
+        var flipComponent:Float;
+        if (orientation) flipComponent = (Math.PI / 2) + flipState * Math.PI;
+        else flipComponent = (Math.PI / 2) - flipState * Math.PI;
+
+        var rolling:Bool = false;
+        if (state.movement.left) {
+            rollState = approach(delta, rollState, -1, 2);
+            rolling = true;
+        } if (state.movement.right) { 
+            rollState = approach(delta, rollState, 1, 2);
+            rolling = true;
+        }
+        if (!rolling) rollState = approach(delta, rollState, 0, 2);
+
+        var rollComponent:Float;
+        if (orientation) rollComponent = (-Math.PI / 4) * rollState;
+        else rollComponent = (Math.PI / 4) * rollState;
+
+        roll = flipComponent + rollComponent;
     }
 }
 
