@@ -65,13 +65,14 @@ class Graphics {
         if (roll > Math.PI) spriteRoll = (2*Math.PI - roll)
         else spriteRoll = roll;
 
+        var index = Math.floor(30 * spriteRoll / Math.PI);
+        if (index > 14) index -= 14;
+
         scene.prims = [
             SetColor(255, 255, 255, 255)
             , DrawImageCrop(
                 new Vector(-100, -100)
-                , new Vector(0
-                    , 200*Math.floor(
-                        30 * spriteRoll / Math.PI))
+                , new Vector(0, 200*index)
                 , new Vector(200, 200)
                 , "player"
             )
