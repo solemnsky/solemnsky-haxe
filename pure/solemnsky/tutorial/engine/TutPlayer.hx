@@ -11,8 +11,8 @@ import solemnsky.tutorial.engine.Synonyms;
  */
 
 class TutPlayer {
-    private static inline var maxCooldownP:Float = 150;
-    private static inline var maxCooldownS:Float = 100;
+    private static inline var maxCooldownP:Float = 100;
+    private static inline var maxCooldownS:Float = 500;
     private var cooldownP:Float;
     private var cooldownS:Float;
     private var shootingP:Bool;

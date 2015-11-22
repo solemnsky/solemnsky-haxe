@@ -14,7 +14,7 @@ class EngineMod<A,P> {
     public var debugTrace:String->Void;
 
     // acceleration of gravity (px / s^2)
-    public var gravity:Float = 250;
+    public var gravity:Float = 150;
 
     public function new() {
         debugTrace = function(_){}

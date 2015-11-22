@@ -46,7 +46,7 @@ class Phase2 implements Control<TutStep> {
         );
 
         scene.children.push(TutGraphics.renderTutText(
-            "Make some fireworks!"
+            "('f' and 'd' fire weapons)"
         ));
 
         return scene;

@@ -141,7 +141,7 @@ class Phase1 implements Control<TutStep> {
             ));
         } else {
             scene.children.push(TutGraphics.renderTutText(
-                "You're a capable pilot. We've installed a gun on your plane, press f to fire."
+                "You're a capable pilot. Press f to continue."
             ));
         }
 
