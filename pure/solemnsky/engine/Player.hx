@@ -202,8 +202,8 @@ class Player<A,P> {
         if (plane == null) return null;
 
         if (rep.orientation)
-            return Vector.fromAngle(plane.state.vel.angle() + Math.PI);
-        else return Vector.fromAngle(plane.state.vel.angle() - Math.PI);
+            return Vector.fromAngle(plane.state.vel.angle() - (Math.PI / 2));
+        else return Vector.fromAngle(plane.state.vel.angle() + (Math.PI / 2));
     }
 }
 

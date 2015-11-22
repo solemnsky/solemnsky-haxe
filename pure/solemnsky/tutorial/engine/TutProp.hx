@@ -113,6 +113,7 @@ class TutBomb implements TutProp {
         body.position.setxy(_pos.x, _pos.y);
         body.velocity.setxy(_vel.x, _vel.y);
         body.space = engine.space;
+        body.force = new Vec2(0, engine.mod.gravity);
     }
 
     /************************************************************/
