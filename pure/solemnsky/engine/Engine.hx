@@ -125,12 +125,6 @@ class Engine<A,P> {
         }
     }
 
-    public function tickGraphics(delta:Float) {
-        for (player in players.iterator()) {
-            player.tickGraphics(delta);
-        }
-    }
-
     /*************************************************************************/
     /* snap
     /*************************************************************************/

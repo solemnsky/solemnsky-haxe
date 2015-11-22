@@ -172,12 +172,7 @@ class Player<A,P> {
             plane.tick(delta);
             plane.writeToNape();
         }
-    }
 
-    /**
-     * Update / mutate the player's graphical representation state.
-     */
-    public function tickGraphics(delta:Float):Void {
         rep.tick(delta, plane);
     }
 
@@ -194,6 +189,21 @@ class Player<A,P> {
 
     public function loadSnap(snap:PlayerSnap) {
         
+    }
+
+    /*************************************************************************/
+    /* game logic helpers
+    /*************************************************************************/
+
+    /**
+     * The vector perpindicular and downwards from the plane's perspective.
+     */
+    function downVector():Vector {
+        if (plane == null) return null;
+
+        if (rep.orientation)
+            return Vector.fromAngle(plane.state.vel.angle + Math.PI);
+        else return Vector.fromAngle(plane.state.vel.angle 0 Math.PI);
     }
 }
 

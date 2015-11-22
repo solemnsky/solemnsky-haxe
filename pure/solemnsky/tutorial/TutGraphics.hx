@@ -17,16 +17,19 @@ class TutGraphics {
     public static function renderProp(prop:MyProp):Scene {
         var scene = new Scene();
 
-        var custom = prop.custom;
+        var rep = prop.custom.getRep();
 
-        scene.prims = [
-            SetColor(255, 255, 255, 255)
-            , DrawCircle(new Vector(0, 0), 
-                custom.lifeFactor() * 10)
-        ];
+        switch (rep) {
+            case Bullet(pos, life): {
+                scene.prims = [
+                    SetColor(255, 255, 255, 255)
+                    , DrawCircle(new Vector(0, 0), 
+                        life * 10)
+                ];
 
-        var pos = custom.pos;
-        scene.trans = Transform.translation(pos.x, pos.y);
+                scene.trans = Transform.translation(pos.x, pos.y);
+            }
+        }
 
         return scene;
     }

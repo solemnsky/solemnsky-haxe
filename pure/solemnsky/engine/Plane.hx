@@ -126,7 +126,6 @@ class Plane<A,P> {
     /* simulation
     /*************************************************************************/
 
-
     /**
      * Mutate the plane's state value; this works hand in hand
      * with the physics simulation, interfaced with calls to 

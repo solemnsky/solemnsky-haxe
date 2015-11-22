@@ -11,15 +11,22 @@ import solemnsky.tutorial.engine.Synonyms;
  */
 
 class TutPlayer {
-    private var cooldown:Float;
-    private var shooting:Bool;
+    private static inline var maxCooldownP:Float = 150;
+    private static inline var maxCooldownS:Float = 100;
+    private var cooldownP:Float;
+    private var cooldownS:Float;
+    private var shootingP:Bool;
+    private var shootingS:Bool;
 
     private var player:MyPlayer;
     private var engine:MyEngine;
 
     public function new() {
-        cooldown = 0;
-        shooting = false;
+        cooldownP = 0;
+        shootingP = false;
+
+        cooldownS = 0;
+        shootingS = false;
     }
 
     /******************************************************************/ 
@@ -31,13 +38,15 @@ class TutPlayer {
         engine = player.engine;
     }
 
-    public function pewpew(state:Bool) {
-        if (player.plane == null) return;
-
-        shooting = state;
+    public function primary(state:Bool) {
+        shootingP = state;
     }
 
-    private function shoot() {
+    public function secondary(state:Bool) {
+        shootingS = state;
+    }
+
+    private function shootP() {
         var plane = player.plane;
         if (plane == null) return;
 
@@ -45,7 +54,7 @@ class TutPlayer {
         var length = plane.mod.length;
 
         engine.spawnProp(plane.id, 
-            new TutProp(
+            new TutBullet(
                 state.pos.add(
                     Vector.fromAngle(state.rot).mult(length/2 + 10)
                 )
@@ -54,19 +63,39 @@ class TutPlayer {
                 )
             )
         );
+    }
 
-        // recoil
-        plane.applyImpulse(
-            Vector.fromAngle(state.rot).mult(-200)
+    private function shootS() {
+        var plane = player.plane;
+        if (plane == null) return;
+
+        var state = plane.state;
+        var length = plane.mod.length;
+
+        engine.spawnProp(plane.id, 
+            new TutBomb(
+                state.pos.add(
+                    Vector.fromAngle(state.rot).mult(length/2 + 10)
+                )
+                , state.vel.add(
+                    state.vel;
+                )
+            )
         );
     }
 
-    public function tick(delta:Float) {
-        cooldown -= delta;
+    public function tickPlane(delta:Float) {
+        cooldownP -= delta;
+        cooldownS -= delta;
 
-        if (cooldown < 0 && shooting) {
-            cooldown = 100;
-            shoot();
+        if (cooldownP < 0 && shootingP) {
+            cooldownP = maxCooldownP;
+            shootP();
+        }
+
+        if (cooldownS < 0 && shootingS) {
+            cooldownS = maxCooldownS;
+            shootS();
         }
     }
 }
@@ -78,7 +107,7 @@ class TutPlayerMod extends PlayerMod<TutPlayer,TutProp> {
         custom.attach(player);
     } 
 
-    override function onTick(delta:Float) {
-        custom.tick(delta);
+    override function onTickPlane(delta:Float, _) {
+        custom.tickPlane(delta);
     }
 }

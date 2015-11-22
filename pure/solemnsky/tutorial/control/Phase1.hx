@@ -30,7 +30,6 @@ class Phase1 implements Control<TutStep> {
     private var endReady:Bool = false;
     private var concluded:Bool = false;
 
-
     // utility
     private var engine:MyEngine;
     private var player:MyPlayer;
