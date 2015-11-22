@@ -162,4 +162,16 @@ class Engine<A,P> {
             if (player != null) player.loadSnap(snap);
         }
     }
+
+    /*************************************************************************/
+    /* game logic helpers
+    /*************************************************************************/
+
+    public function applyGravity(body:Body) {
+        body.force = new Vec2(0, mod.gravity * body.mass);
+    }
+
+    public function applyZeroGravity(body:Body) {
+        body.force = new Vec2(0, 0);
+    }
 }

@@ -225,7 +225,7 @@ class Plane<A,P> {
         if (state.stalled) {
             if (forwardVel > mod.exitStallThreshold) {
                 state.stalled = false;
-                body.force = new Vec2(0, 0);
+                engine.applyZeroGravity(body);
                 state.leftoverVel = new Vector(
                     state.vel.x - forwardVel * Math.cos(state.rot)
                     , state.vel.y - forwardVel * Math.sin(state.rot)
@@ -237,7 +237,7 @@ class Plane<A,P> {
             }
         } else {
             if (forwardVel < mod.enterStallThreshold) {
-                body.force = new Vec2(0, engine.mod.gravity);
+                engine.applyGravity(body);
                 state.stalled = true;
                 state.throttle = 1;
                 state.speed = 0;

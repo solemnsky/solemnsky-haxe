@@ -1,6 +1,7 @@
 package solemnsky.tutorial.engine;
 
 import nape.phys.Body;
+import nape.geom.Vec2;
 import nape.phys.BodyType;
 import nape.shape.Circle;
 import solemnsky.engine.Prop;
@@ -113,7 +114,7 @@ class TutBomb implements TutProp {
         body.position.setxy(_pos.x, _pos.y);
         body.velocity.setxy(_vel.x, _vel.y);
         body.space = engine.space;
-        body.force = new Vec2(0, engine.mod.gravity);
+        engine.applyGravity(body);
     }
 
     /************************************************************/
