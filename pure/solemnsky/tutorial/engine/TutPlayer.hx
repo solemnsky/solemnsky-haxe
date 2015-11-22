@@ -70,16 +70,14 @@ class TutPlayer {
         if (plane == null) return;
 
         var state = plane.state;
-        var length = plane.mod.length;
+        var width = plane.mod.length;
 
         engine.spawnProp(plane.id, 
             new TutBomb(
                 state.pos.add(
-                    Vector.fromAngle(state.rot).mult(length/2 + 10)
+                    player.downVector().mult(width/2 + 10)
                 )
-                , state.vel.add(
-                    state.vel;
-                )
+                , state.vel
             )
         );
     }

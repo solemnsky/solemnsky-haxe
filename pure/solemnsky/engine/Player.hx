@@ -29,7 +29,7 @@ class PlayerRep {
 
     // roll
     public var roll:Float;
-    private var orientation:Bool;
+    public var orientation:Bool;
     private var flipState:Float = 0;
     private var rollState:Float = 0;
 
@@ -198,12 +198,12 @@ class Player<A,P> {
     /**
      * The vector perpindicular and downwards from the plane's perspective.
      */
-    function downVector():Vector {
+    public function downVector():Vector {
         if (plane == null) return null;
 
         if (rep.orientation)
-            return Vector.fromAngle(plane.state.vel.angle + Math.PI);
-        else return Vector.fromAngle(plane.state.vel.angle 0 Math.PI);
+            return Vector.fromAngle(plane.state.vel.angle() + Math.PI);
+        else return Vector.fromAngle(plane.state.vel.angle() - Math.PI);
     }
 }
 

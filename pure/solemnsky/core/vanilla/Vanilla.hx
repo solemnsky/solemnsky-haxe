@@ -123,8 +123,6 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function render(sig:Int, delta:Float):Scene {
-        engine.tickGraphics(delta);
-
         var scene = new Scene();
 
         scene.children = [

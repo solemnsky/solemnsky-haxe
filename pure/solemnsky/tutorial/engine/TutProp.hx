@@ -37,7 +37,7 @@ class TutBullet implements TutProp {
     // constructors
     private var _pos:Vector;
     private var _vel:Vector;
-    
+
     public function new(pos:Vector, vel:Vector) {
         _pos = pos; _vel = vel;
     }
@@ -81,7 +81,7 @@ class TutBullet implements TutProp {
 /**
  * TutBomb: a little bomb.
  */
-class TutBullet implements TutProp {
+class TutBomb implements TutProp {
     /************************************************************/
     /* state and constructor
     /************************************************************/
@@ -136,7 +136,7 @@ class TutBullet implements TutProp {
         return Bomb(
             Util.vectorFromNape(body.position)
             , life / 3000);
-
+}
 
 /**
  * Our custom prop type.

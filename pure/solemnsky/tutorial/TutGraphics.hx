@@ -29,6 +29,15 @@ class TutGraphics {
 
                 scene.trans = Transform.translation(pos.x, pos.y);
             }
+            case Bomb(pos, life): {
+                 scene.prims = [
+                    SetColor(255, 0, 0, 255)
+                    , DrawCircle(new Vector(0, 0), 
+                        life * 20)
+                ];
+
+                scene.trans = Transform.translation(pos.x, pos.y);               
+            }
         }
 
         return scene;
@@ -40,8 +49,6 @@ class TutGraphics {
         var engine = cont.engine;
         var player = cont.player;
         var background = cont.background;
-
-        engine.tickGraphics(delta);
 
         var scene = new Scene();
 
