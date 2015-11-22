@@ -8,7 +8,6 @@ import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
 import solemnsky.engine.mod.PlayerMod;
 
-
 /**
  * solemnsky.engine.Graphics:
  * Universally useful graphics functions.
@@ -65,14 +64,19 @@ class Graphics {
         if (roll > Math.PI) spriteRoll = (2*Math.PI - roll)
         else spriteRoll = roll;
 
-        var index = Math.floor(30 * spriteRoll / Math.PI);
-        if (index > 14) index -= 14;
+        var yindex = Math.floor(30 * spriteRoll / Math.PI);
+        var xindex = 0;
+        if (yindex > 14) {
+            yindex -= 15;
+            xindex = 1;
+        };
+
 
         scene.prims = [
             SetColor(255, 255, 255, 255)
             , DrawImageCrop(
                 new Vector(-100, -100)
-                , new Vector(0, 200*index)
+                , new Vector(200*xindex, 200*yindex)
                 , new Vector(200, 200)
                 , "player"
             )

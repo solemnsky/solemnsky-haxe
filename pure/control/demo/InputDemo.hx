@@ -3,6 +3,7 @@ package control.demo;
 import control.Control;
 import control.Event;
 import control.Scene;
+import control.Profile;
 import control.Key;
 import util.Vector;
 import util.Transform;
@@ -59,8 +60,8 @@ class InputDemo implements Control<DemoSelect> {
         return scene;
     }
 
-    public function profiling(d) {
-        trace(d.print());
+    public function profiling(d:Profile) {
+        # trace(d.print());
     }
 
     private function handleKb(key, state):Void {
