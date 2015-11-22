@@ -13,30 +13,26 @@ import util.Vector;
  * Simple prop, just a slow bullet that doesn't hurt anybody.
  */
 
-class TutProp {
-    public var pos:Vector;
-    public var vel:Vector;
-    public var life:Float;
-
-    public function new(pos:Vector, vel:Vector) {
-        this.pos = pos;
-        this.vel = vel;
-
-        life = 1000;
-    }
-
-    public function lifeFactor():Float {
-        return life / 1000;
-    }
+enum TutPropRep {
+    Bullet(pos:Vector, life:Float);
 }
 
-class TutPropMod extends PropMod<TutPlayer, TutProp> {
+/**
+ * TutBullet: a simple bullet.
+ */
+class TutBullet implements TutProp {
+    /************************************************************/
+    /* state and constructor
+    /************************************************************/
+
+    public var prop:Prop<TutPlayer,TutProp>;
     private var body:Body;
 
-    public function new(
-        prop:Prop<TutPlayer,TutProp> 
-    ) {
-        super(prop);
+    // game state
+    private var life:Float;
+
+    public function new(pos:Vector, vel:Vector) {
+        life = 1000;
 
         body = new Body(BodyType.DYNAMIC);
         body.shapes.add(new Circle(10));
@@ -45,24 +41,63 @@ class TutPropMod extends PropMod<TutPlayer, TutProp> {
         body.space = engine.space;
 
         writeToData();
-    } 
+    }
+
+    /************************************************************/
+    /* logic
+    /************************************************************/
 
     private function writeToData() {
         custom.pos = Util.vectorFromNape(body.position);
     }
+
+    public function tick(delta):Float {
+        life -= delta;
+        if (custom.life < 0) prop.delete();
+
+        writeToData();
+    }
+
+    public function delete() {
+        body.space = null;
+    }
+
+    /************************************************************/
+    /* representation
+    /************************************************************/
+
+    public function getRep() return Bullet(pos, life);
+
+}
+
+/**
+ * Our custom prop type.
+ */
+interface TutProp {
+    public var pos:Vector;
+
+    public function attach(prop:Prop<TutPlayer,TutProp>);
+    public function tick(delta:Float);
+    public function getRep():TutPropRep;
+}
+
+class TutPropMod extends PropMod<TutPlayer, TutProp> {
+    public function new(
+        prop:Prop<TutPlayer,TutProp> 
+    ) {
+        super(prop);
+        custom.attach(prop);
+    } 
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
     override function onTick(delta:Float) {
-        custom.life -= delta;
-        if (custom.life < 0) prop.delete();
-
-        writeToData();
+        custom.tick(delta);
     }
 
     override function onDelete() {
-        body.space = null;
+        custom.delete(delta);
     }
 }
