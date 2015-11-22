@@ -8,7 +8,7 @@ This project is not hacked together in the interest of producing a product quick
 
 Here's a quick overview of the way I have things set up...
 
-### the base
+### design sketch
 
 I have chosen the [Haxe language](http://haxe.org) for core development. Its virtues include:
 
@@ -16,37 +16,36 @@ I have chosen the [Haxe language](http://haxe.org) for core development. Its vir
 - Generally good OOP-based design, with a powerful type system and GADTs (yay).
 - A small history of being used for indie game development.
 
-### interfaces
+There are a lot of different frameworks for putting haxe on cross-platform interactive targets... for our purposes it turned out that Kha was a promising choice, but in order to wrap some of Kha's low-level interface and make future adoptions of different platforms painless I wrote a simple API to pass all our interactive code through; see /pure/control/.
 
-There are two important interfaces through with our code passes along its way to become a thing you can play:
+The general game infrastructure is fairly well organised into a several levels. At the bottom, we have our game engine; this manages the state and simulation of a game situation, encapsulates custom logic and data, and presents us with a host of utilities for networking and graphics. We reference [the nape physics engine](http://napephys.com) for the (fairly simple) physics and spacial querying we require. 
 
-Core: This is an interface representing a game mode, with networking functions and a whole load of stuff. It's turned into a Control through one of our UIs in solemnsky.ui.
+Further up, we have the Core interface, which represents, in a abstracted way, the way a game mode behaves. It is abstracted from the actual user interfaces and servers which can run the game mode.
 
-Control: This is an interface representing an interactive user interface or server. It's turned into a tangible export through one of our export media. By the power of haxe, the exact same Control object can be turned into a Flash .swf file, a html5 game, or a C++ executible.
+Finally we have several UI and server constructors which take a Core and run it in different ways (returning a Control).
 
-### the engine
-
-Using [the nape physics engine](http://napephys.com) for the heavy lifting, I define a central game engine, universally useful across our code. It's used directly in the gameplay tutorial (solemnsky.tutorial.Tutorial.run()) and in the various Cores. It should itself manage state and network syncing as well as gameplay mechanics, delegating only more meaningful tasks to its user.
+That's the sketch anyway; of course, the devil is in the details...
 
 ## roadmap
 
 Name | Description | Completion 
 ---- | ----------- | ---------
-Goal 1 | Investigate Haxe and interactive frameworks. | Completed 
-Goal 2 | Create a project-specific API (Control) to write our interactive code in function of, implement it in Kha. | Completed 
-Goal 3 | Create dockerized build system, organise project file structure, find a satisfactory physics engine. | Completed
-Goal 3 | Demonstrate the Control framework by creating a demo in it (using the physics engine), account for possible performance pitfalls. | Completed
-Goal 4 | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
-Goal 5 | Port code from the old javascript repository, begin writing a central game engine. | Completed
-Goal 6 | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | Completed
-Goal 7 | Mature the tutorial flow, adding basic features. | Completed.
-Milestone | Add graphics to the demo, make presentable, add it to solemnsky.com. | In progress with our graphic designer.
-Goal 8 | Integrate basic network functionalities into the game engine. | Completed
-Goal 9 | Implement a Core (Vanilla) with networking. | Finishing.
-Goal 10 | Make an offline demo UI to test the Vanilla core. | In progress.
-Goal 11 | Find or create UDP utilities, successfully build to native. | In progress.
-Goal 12 | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
-Goal 13 | Mature networking. | None
+Goal | Investigate Haxe and interactive frameworks. | Completed 
+Goal | Create a project-specific API (Control) to write our interactive code in function of, implement it in Kha. | Completed 
+Goal | Create dockerized build system, organise project file structure, find a satisfactory physics engine. | Completed
+Goal | Demonstrate the Control framework by creating a demo in it (using the physics engine), account for possible performance pitfalls. | Completed
+Goal | Sketch the project structure upwards of Control (Core, UI, Engine, etc). | Completed
+Goal | Port code from the old javascript repository, begin writing a central game engine. | Completed
+Goal | Mature the design and implementation of the game engine, using it to build a tutorial / gameplay demo. | Completed
+Goal | Mature the tutorial flow, adding basic features. | Completed.
+Goal | Further mature the tutorial flow, simultaneously giving an example of a fully fledged usage of the engine and making it something useful. | In progress.
+Goal | Integrate basic network functionalities into the game engine. | Completed
+Goal | Implement a Core (Vanilla) with networking. | Finishing.
+Goal | Make an offline demo UI to test the Vanilla core. | In progress.
+Goal | Find or create UDP utilities, successfully build to native. | In progress.
+Goal | Write a simple client-server pair with the UDP utilities, run Vanilla through it. | None
+Goal | Make some initial pokes at optimizing networking, at least make a basic zero-interaction non-deltacompressed situation playable. | None.
+Milestone | Add graphics (and some sound potentially) to the demo, make presentable, add it to solemnsky.com. | In progress with our graphic designer.
 Milestone | Add functionality to the client-server pair, make Vanilla playable | None
 
 ## build instructions

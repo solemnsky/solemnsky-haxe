@@ -39,7 +39,6 @@ class StartScreen implements Control<TutStep> {
         }
     }
 
-
     private function renderPlayerFade(delta:Float):Scene {
         var scene = new Scene();
 

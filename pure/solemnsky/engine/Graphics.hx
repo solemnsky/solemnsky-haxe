@@ -55,7 +55,7 @@ class Graphics {
         return scene;
     }
 
-    public static function playerSprite<D,P>(roll:Float):Scene {
+    public static function playerSprite<D,P>(sheet:String, roll:Float):Scene {
         roll = Util.normAngle(roll);
 
         var scene = new Scene();
@@ -71,14 +71,13 @@ class Graphics {
             xindex = 1;
         };
 
-
         scene.prims = [
             SetColor(255, 255, 255, 255)
             , DrawImageCrop(
                 new Vector(-100, -100)
                 , new Vector(200*xindex, 200*yindex)
                 , new Vector(200, 200)
-                , "player"
+                , sheet
             )
         ];
 
@@ -94,7 +93,7 @@ class Graphics {
 
         if (p.alive) {
             scene.children = [
-                playerSprite(p.roll)
+                playerSprite("player", p.roll)
             ];
 
             scene.trans = playerTrans(p)
