@@ -5,8 +5,7 @@ with pkgs.stdenv.lib; with pkgs;
 let
   unlines = strs: concatStrings ((map (x: x + "\n")) strs);
 
-
-  native = ./build/linux;
+  native = ../dist/kha-native;
 
 in 
   pkgs.callPackage (
@@ -19,7 +18,7 @@ in
 
       installPhase = ''
         mkdir -p $out
-        cp $src/* $out
+        cp -r $src/* $out
         mkdir $out/lib
         ${unlines (map (lib: "ln -s ${lib}/lib/*.so* $out/lib") libs)}
         patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) --set-rpath $out/lib $out/solemnsky

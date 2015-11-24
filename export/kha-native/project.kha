@@ -4,7 +4,7 @@
 		"name": "solemnsky",
 		"width": 1600,
 		"height": 900,
-		"antiAliasingSamples": 3
+		"antiAliasingSamples": 10
 	},
 	"assets": [
 		{
@@ -18,6 +18,11 @@
 			"file": "media/render-2d/placeholder/title.png",
 			"name": "title"
 		}
+		,{
+			"type": "image",
+			"file": "media/render-3d/test_1/player_200.png",
+			"name": "player"
+		}
 	],
 	"rooms": [
 		{
@@ -26,7 +31,8 @@
 			"neighbours": [],
 			"assets": [
 				"Arial14.kravur",
-				"title"
+				"title",
+                    "player"
 			]
 		}
 	]

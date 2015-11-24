@@ -28,7 +28,7 @@ kha-native:
 	node Kha/make --compile	
 
 	rm -rf dist/kha-native/ ; mkdir -p dist/kha-native/
-	cp -r export/kha-native/build/linux-build/* ./dist/kha-native/
+	cp -r export/kha-native/build/linux/* ./dist/kha-native/
 
 simple-js:
 	### SIMPLE-JS ###
