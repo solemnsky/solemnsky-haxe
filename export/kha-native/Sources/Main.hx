@@ -2,7 +2,7 @@ package;
 
 import kha.Game;
 import kha.Starter;
-import solemnsky.TopLevel;
+import control.demo.AllDemo;
 
 /**
  * Top-level for the kha web export.
@@ -11,7 +11,7 @@ import solemnsky.TopLevel;
 class Main {
   public static function main() {
     // create control
-    var control = TopLevel.khaNative();
+    var control = AllDemo.run();
 
     // run control
     var starter = new Starter(); 

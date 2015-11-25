@@ -12,7 +12,6 @@ import util.Transform;
  */
 
 class GraphicsDemo implements Control<DemoSelect> {
-                                      // from AllDemo.hx
     private var time:Float = 0;
     private var x:Float = 0;
     private var y:Float = 0;
@@ -26,7 +25,7 @@ class GraphicsDemo implements Control<DemoSelect> {
         time += delta;
     }
 
-    private function renderElem(centerPos:Vector, f:Frame) {
+    private function renderElem(f:Frame, centerPos:Vector) {
         f.pushTransform(Transform.identity()
             .multmat(Transform.translation(centerPos.x, centerPos.y))
             .multmat(Transform.rotation(time / 1000))
@@ -35,14 +34,14 @@ class GraphicsDemo implements Control<DemoSelect> {
         var pos = new Vector(0, 0);
         var offset = new Vector(27, 0);
 
-        f.color(0, 255, 0, 255)
-        f.circle(pos, 20)
-        f.circle(pos.add(offset), 7)
+        f.color(0, 255, 0, 255);
+        f.circle(pos, 20);
+        f.circle(pos.add(offset), 7);
 
         f.popTransform();
     }
 
-    public function renderFront(delta:Float, f:Frame) {
+    public function renderFront(f:Frame, delta:Float) {
         f.pushTransform(Transform.identity()
             .multmat(Transform.translation(x, y))
             .multmat(Transform.rotation(-time / 1200))
@@ -53,19 +52,19 @@ class GraphicsDemo implements Control<DemoSelect> {
 
         var pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            renderElem(pos, f); pos = pos.add(offset); }
+            renderElem(f, pos); pos = pos.add(offset); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            renderElem(pos, f); pos = pos.add(offset2); }
+            renderElem(f, pos); pos = pos.add(offset2); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            renderElem(pos, f); pos = pos.sub(offset2); }
+            renderElem(f, pos); pos = pos.sub(offset2); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            renderElem(pos, f); pos = pos.sub(offset); }
+            renderElem(f, pos); pos = pos.sub(offset); }
 
         f.color(0, 0, 0, 100);
         f.rect(new Vector(0, 0), new Vector(200, 200));
@@ -77,8 +76,8 @@ class GraphicsDemo implements Control<DemoSelect> {
         f.popTransform();
     }
 
-    public function render(delta:Float, f:Frame) {
-        renderFront(delta, f);
+    public function render(f:Frame, delta:Float) {
+        renderFront(f, delta);
 
         f.color(255, 255, 255, 255);
         f.image(new Vector(0, 0), "title");

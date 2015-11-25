@@ -15,33 +15,33 @@ enum TextAlign { CenterText; LeftText; RightText; }
  * graphics in, man.
  * For now this is mostly verbatium Kha.
  */
-interface Frame {
+class Frame {
     /*************************************************************************/
     /* setting drawing attributes
     /*************************************************************************/
 
-    public function color(r:Int, g:Int, b:Int, a:Int):Void;
-    public function font(name:String, size:Int):Void;
+    public function color(r:Int, g:Int, b:Int, a:Int);
+    public function font(name:String, size:Int);
 
-    public function pushAlpha(a:Int):Void;
-    public function popAlpha():Void;
-    public function pushTransform(t:Transform):Void;
-    public function popTransform():Void;
+    public function pushAlpha(a:Int);
+    public function popAlpha();
+    public function pushTransform(t:Transform);
+    public function popTransform();
 
     /*************************************************************************/
     /* drawing stuff
     /*************************************************************************/
 
-    public function circle(c:Vector, r:Float):Void;
-    public function rect(tl:Vector, br:Vector):Void;
-    public function text(p:Vector, a:TextAlign, text:String):Void;
+    public function circle(c:Vector, r:Float);
+    public function rect(tl:Vector, br:Vector);
+    public function text(p:Vector, a:TextAlign, text:String);
 
     /*************************************************************************/
     /* drawing images
     /*************************************************************************/
 
-    public function image(pos:Vector, name:String):Void;
+    public function image(pos:Vector, name:String);
     public function imageCrop(
         pos:Vector, imgPos:Vector
-        , cropDims:Vector, name:String):Void;
+        , cropDims:Vector, name:String);
 }

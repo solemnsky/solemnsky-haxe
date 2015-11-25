@@ -3,7 +3,7 @@ package control.demo;
 import control.Control;
 import control.Event;
 import control.Key;
-import control.Scene;
+import control.Frame;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
@@ -253,19 +253,24 @@ class PhysDemo implements Control<DemoSelect> {
         trace(d.print());
     }
 
-    private static inline function rotatedBox(
-        pos:Vector
+    private static inline function rotatedBox(f:Frame
+        , pos:Vector
         , width:Float
         , alpha:Float
-        , color:Scene.DrawPrim
-    ):Scene {
-        var scene = new Scene();
-        scene.prims = [
-            color
-            , DrawRect(new Vector(-width, -width), new Vector(width, width))];
-        scene.trans = Transform.translation(pos.x, pos.y)
-            .multmat(Transform.rotation(alpha));
-        return scene;
+        , color:Frame->Void
+    ) {
+        f.pushTransform(
+            Transform.translation(pos.x, pos.y)
+            .multmat(Transform.rotation(alpha))
+        );
+
+        color(f);
+        f.rect(
+            new Vector(-width, -width)
+            , new Vector(width, width)
+        );
+
+        f.popTransform();
     }
 
     private function controlling():Bool {
@@ -274,53 +279,48 @@ class PhysDemo implements Control<DemoSelect> {
         return false;
     }
 
-    private function score():Scene {
+    private function score(f:Frame) {
         var text = 'use i/j/k/l to move';
-        var scene = new Scene();
-        scene.prims = [
-            SetColor(0, 0, 0, 255)
-            , SetFont("Arial", 14) 
-            , DrawText(new Vector(0, 0), CenterText, text)
-        ];
-        scene.trans = Transform.translation(800, 20)
-            .multmat(Transform.scale(3, 3));
-        return scene;
 
+        f.pushTransform(
+            Transform.translation(800, 20)
+            .multmat(Transform.scale(3, 3))
+        );
+
+        f.color(0, 0, 0, 255);
+        f.font("Arial", 14);
+        f.text(new Vector(0, 0), CenterText, text);
+
+        f.popTransform();
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
+    public function render(f:Frame, delta:Float) {
+        if (controlling()) f.color(50, 0, 0, 255);
+        else f.color(0, 0, 0, 255);
 
-        scene.prims = [
-            DrawCircle(Util.vectorFromNape(ball.position), 40)
-            , SetColor(0, 255, 0, 255)
-        ];
-
-        if (controlling())
-            scene.prims.unshift(SetColor(50, 0, 0, 255));
-        else scene.prims.unshift(SetColor(0, 0, 0, 255));
+        f.circle(Util.vectorFromNape(ball.position), 40);
+        f.color(0, 255, 0, 255);
 
         for (box in boxes) {
-            scene.children.push(rotatedBox(
-                Util.vectorFromNape(box.box.position)
+            rotatedBox(f
+                , Util.vectorFromNape(box.box.position)
                 , 12
                 , box.box.rotation
-                , SetColor(0, 255, 0, 255)
-            ));
+                , function(f) f.color(0, 255, 0, 255)
+            );
         }
 
         for (p in projectiles) {
-            scene.children.push(rotatedBox(
-                Util.vectorFromNape(p.box.position)
+            rotatedBox(f
+                , Util.vectorFromNape(p.box.position)
                 , 10
                 , p.box.rotation 
-                , SetColor(200, 0, 0, Math.round(p.vivacity() * 255))
-            ));
+                , function (f) f.color(
+                    200, 0, 0, Math.round(p.vivacity() * 255))
+            );
         }
 
-        scene.children.push(score());
-
-        return scene;
+        score(f);
     }
 
     /*************************************************************************/

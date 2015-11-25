@@ -6,6 +6,7 @@ import kha.FontStyle;
 import kha.Loader;
 import kha.graphics2.Graphics;
 import util.Transform;
+import util.Vector;
 
 using kha.graphics2.GraphicsExtension;
 
@@ -17,8 +18,13 @@ class KhaFrame implements Frame {
     private var g:Graphics;
     public var prims:Int = 0;
 
+    private var trans:Array<Transform>;
+    private var alpha:Array<Float>;
+
     public function new(g:Graphics) {
         this.g = g;
+        trans = [Transform.identity()];
+        alpha = [1];
     }
 
     /*************************************************************************/
@@ -26,7 +32,7 @@ class KhaFrame implements Frame {
     /*************************************************************************/
 
     public function color(r:Int, g:Int, b:Int, a:Int) {
-        g.color = Color.fromBytes(r, g, b, a); prims++;
+        this.g.color = Color.fromBytes(r, g, b, a); prims++;
     }
 
     public function font(name:String, size:Int) {
@@ -36,20 +42,26 @@ class KhaFrame implements Frame {
     }
 
     public function pushAlpha(a:Int) {
-        g.pushOpacity(a);
+        alpha.push(a*alpha[alpha.length - 1]);
+        g.opacity = alpha[alpha.length - 1];
         prims++;
     }
 
     public function popAlpha() {
-        g.popOpacity(); prims++;
+        alpha.pop();
+        g.opacity = alpha[alpha.length - 1];
     }
 
     public function pushTransform(t:Transform) {
-        g.pushTransformation(matrixFromTrans(t)); prims++;
+        trans.push(t.multmat(trans[trans.length - 1]));
+        g.transformation = matrixFromTrans(trans[trans.length - 1]);
+        prims++;
     }
 
     public function popTransform() {
-        g.popTransformation(); prims++;
+        trans.pop();
+        g.transformation = matrixFromTrans(trans[0]);
+        prims++;
     }
 
     /*************************************************************************/
@@ -57,50 +69,49 @@ class KhaFrame implements Frame {
     /*************************************************************************/
 
     public function circle(c:Vector, r:Float) {
-        gr.fillCircle(pos.x, pos.y, radius); prims++;
+        g.fillCircle(c.x, c.y, r); prims++;
     }
 
     public function rect(tl:Vector, br:Vector) {
-        var width  = bottomRight.x - topLeft.x; 
-        var height = bottomRight.y - topLeft.y;
-        gr.fillRect(topLeft.x, topLeft.y, width, height);
+        var dims = br.sub(tl);
+        g.fillRect(tl.x, tl.y, dims.x, dims.y);
         prims++;
     }
 
-    public function text(p:Vector, a:TextAlign, text:String) {
+    public function text(pos:Vector, align:TextAlign, text:String) {
         var xPos:Float = pos.x;
         var textWidth:Float;
 
         switch (align) {
             case CenterText: {
-                textwidth = gr.font.stringwidth(text);
+                textWidth = g.font.stringWidth(text);
                 xPos -= textWidth / 2;
             }
             case RightText: {
-                textWidth = gr.font.stringWidth(text);
+                textWidth = g.font.stringWidth(text);
                 xPos += textWidth;
             }
             default: {}
         }
 
-        gr.drawString(text, xPos, pos.y); prims++;
+        g.drawString(text, xPos, pos.y); prims++;
     }
 
     /*************************************************************************/
     /* drawing images
     /*************************************************************************/
 
-    public function image(pos:Vector, name:String) {
+    public function image(pos:Vector, image:String) {
         var image = Loader.the.getImage(image);
-        gr.drawImage(image, pos.x, pos.y); prims++;
+        g.drawImage(image, pos.x, pos.y); prims++;
     }
 
     public function imageCrop(
         pos:Vector, imgPos:Vector
-        , cropDims:Vector, name:String
+        , cropDims:Vector, image:String
     ) {
         var image = Loader.the.getImage(image);
-        gr.drawSubImage(
+        g.drawSubImage(
             image
             , pos.x, pos.y
             , imgPos.x, imgPos.y 
@@ -109,7 +120,7 @@ class KhaFrame implements Frame {
         prims++;
     }
 
-    private static function matrixFromTrans(trans:Transform
+    private function matrixFromTrans(trans:Transform
     ):kha.math.FastMatrix3 {
         return new kha.math.FastMatrix3(
               trans._00, trans._10, trans._20

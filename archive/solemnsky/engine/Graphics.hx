@@ -3,7 +3,7 @@ package solemnsky.engine;
 import util.Util;
 import util.Vector;
 import util.Transform;
-import control.Scene;
+import control.Frame;
 import solemnsky.engine.Plane;
 import solemnsky.engine.Player;
 import solemnsky.engine.mod.PlayerMod;

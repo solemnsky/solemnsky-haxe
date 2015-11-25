@@ -2,7 +2,7 @@ package control.demo;
 
 import control.Control;
 import control.Event;
-import control.Scene;
+import control.Frame;
 import control.Profile;
 import control.Key;
 import util.Vector;
@@ -47,17 +47,11 @@ class InputDemo implements Control<DemoSelect> {
             ball.add((new Vector(-1, 0)).mult(moveScale));
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.prims = [
-            SetColor(0, 255, 0, 255)
-            , DrawCircle(ball, 50)
-            , SetColor(255, 0, 0, 127)
-            , DrawCircle(pos, 50)
-        ];
-
-        return scene;
+    public function render(f:Frame, delta:Float) {
+        f.color(0, 255, 0, 255);
+        f.circle(ball, 50);
+        f.color(255, 0, 0, 127);
+        f.circle(pos, 50);
     }
 
     public function profiling(d:Profile) {

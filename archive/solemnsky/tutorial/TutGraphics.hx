@@ -1,6 +1,6 @@
 package solemnsky.tutorial;
 
-import control.Scene;
+import control.Frame;
 import solemnsky.engine.Prop;
 import solemnsky.engine.Graphics;
 import solemnsky.tutorial.engine.Synonyms;

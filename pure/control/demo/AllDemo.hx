@@ -30,9 +30,7 @@ class SelectionScreen implements Control<DemoSelect> {
     /* rendering
     /*************************************************************************/
 
-    private static function renderText():Scene {
-        var scene = new Scene();
-
+    private static function renderText(f:Frame){
         var text = [
             "Welcome to the solemnsky control technical demo."
             , "What you are seeing is the the control object control.AllDemo.run()"
@@ -42,27 +40,25 @@ class SelectionScreen implements Control<DemoSelect> {
             , "Press 'w', 'e', or 'r' to select a demo from here and 'q' to exit a demo."
         ];
 
-        scene.prims = [
-            SetColor(0, 0, 0, 255)
-            ,SetFont("Arial", 14)
-            , DrawText(new Vector(800 / 3, 0), CenterText, text[0])
-            , DrawText(new Vector(0, 25), LeftText, text[1])
-            , DrawText(new Vector(0, 40), LeftText, text[2])
-            , DrawText(new Vector(0, 65), LeftText, text[3])
-            , DrawText(new Vector(0, 80), LeftText, text[4])
-            , DrawText(new Vector(800 / 3, 105), CenterText, text[5])
-        ];
+        f.pushTransform(
+            Transform.translation(0, 5)
+            .multmat(Transform.scale(3, 3))
+        );
 
-        scene.trans = Transform.translation(0, 5)
-            .multmat(Transform.scale(3, 3));
+        f.color(0, 0, 0, 255);
+        f.font("Arial", 14);
+        f.text(new Vector(800 / 3, 0), CenterText, text[0]);
+        f.text(new Vector(0, 25), LeftText, text[1]);
+        f.text(new Vector(0, 40), LeftText, text[2]);
+        f.text(new Vector(0, 65), LeftText, text[3]);
+        f.text(new Vector(0, 80), LeftText, text[4]);
+        f.text(new Vector(800 / 3, 105), CenterText, text[5]);
 
-        return scene;
+        f.popTransform();
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
-        scene.children.push(renderText());
-        return scene;
+    public function render(f:Frame, delta:Float) {
+        renderText(f);
     }
 
     public function profiling(data:Profile):Void {

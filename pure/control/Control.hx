@@ -41,7 +41,7 @@ interface Control<T> {
      * since the last render. Only called when necessary, should not do
      * critical logic or simulation.
      */
-    public function render(delta:Float, f:Frame):Void;
+    public function render(f:Frame, delta:Float):Void;
 
     /**
      * Accept some profiling data.
@@ -70,8 +70,7 @@ class EmptyControl implements Control<Noise> {
 
     public function tick(delta:Float):Void {}
 
-    public function render(delta:Float):Scene {
-        return new Scene();
+    public function render(f:Frame, delta:Float) {
     }
 
     public function profiling(data:Profile):Void {

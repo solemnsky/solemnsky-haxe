@@ -53,8 +53,8 @@ class ControlNetwork<T> implements Control<Noise> {
             ctrl = moveThrough(conclusion);
     }
 
-    public function render(delta:Float):Scene {
-        return ctrl.render(delta);
+    public function render(f:Frame, delta:Float) {
+        ctrl.render(f, delta);
     }
 
     public function profiling(data:Profile) {

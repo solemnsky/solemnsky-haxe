@@ -284,11 +284,11 @@ class Manager extends Game {
      */ 
     private function controlRender(
         frame: Framebuffer
-        , deltaRaw:Float
+        , delta:Float
     ):Void {
-        renderStart = now; // BEGIN RENDER
+        renderStart = Timer.stamp(); // BEGIN RENDER
         var prims = Render.render(g, 
-            function(f) ctrl.render(delta, f)); 
+            function(f) ctrl.render(f, delta)); 
             // render to backbuffer
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);

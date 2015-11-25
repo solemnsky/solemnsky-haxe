@@ -5,7 +5,7 @@ import control.Control;
 import util.Vector;
 import control.Event;
 import control.Profile;
-import control.Scene;
+import control.Frame;
 import solemnsky.tutorial.engine.Synonyms;
 import solemnsky.tutorial.TutGraphics;
 import nape.phys.Body;
@@ -113,32 +113,27 @@ class Phase1 implements Control<TutStep> {
     /* rendering
     /***************************************************************/
 
-    public function renderGameLayer(delta:Float):Scene {
-        var scene = new Scene();
+    public function renderGameLayer(delta:Float, f:Frame) {
         var pos = objectives[curObjective].boxPos;
         var dim = objectives[curObjective].boxDim;
-        scene.prims = [
-            SetColor(255, 255, 255, 255)
-            , DrawRect(
-                pos.sub(dim.mult(0.5))
-                , pos.add(dim.mult(0.5)))
-        ];
-        return scene; 
+
+        f.color(255, 255, 255, 255);
+        f.rect(
+            pos.sub(dim.mult(0.5))
+            , pos.add(dim.mult(0.5)));
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.children.push(TutGraphics.renderGame
-            ( cont
-            , renderGameLayer(delta)
-            , delta )
-        );
+    public function render(f:Fame, delta:Float) {
+        TutGraphics.renderGame(
+            cont
+            , renderGameLayer
+            , delta, f);
 
         if (!endReady) {
-            scene.children.push(TutGraphics.renderTutText(
+            TutGraphics.renderTutText(
                 objectives[curObjective].helpText
-            ));
+                , f
+            );
         } else {
             scene.children.push(TutGraphics.renderTutText(
                 "You're a capable pilot. Press f to continue."
