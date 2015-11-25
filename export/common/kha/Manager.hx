@@ -39,8 +39,8 @@ class Manager extends Game {
     /**
      * resizing
      */
-    private var realHeight:Float;
-    private var realWidth:Float;
+    private var realHeight:Float = 900;
+    private var realWidth:Float = 1600;
 
     /**
      * profiling settings

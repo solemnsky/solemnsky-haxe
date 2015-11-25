@@ -2,6 +2,7 @@ package solemnsky;
 
 import control.Control;
 import control.Noise;
+import control.demo.AllDemo;
 import solemnsky.tutorial.Tutorial;
 import solemnsky.core.vanilla.Vanilla;
 import solemnsky.ui.Demo;
@@ -18,8 +19,7 @@ class TopLevel {
     }
 
     public static function khaNative() {
-        return Tutorial.run();
+        return AllDemo.run();
+        // return Tutorial.run();
     }
-
-        // return Demo.run(new Vanilla());
 }

@@ -249,7 +249,7 @@ class PhysDemo implements Control<DemoSelect> {
     /* render
     /*************************************************************************/
 
-    public function profiling(d) {
+    public function profiling(d:Profile) {
         trace(d.print());
     }
 

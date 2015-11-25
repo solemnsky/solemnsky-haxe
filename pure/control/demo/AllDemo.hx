@@ -39,7 +39,7 @@ class SelectionScreen implements Control<DemoSelect> {
             , "compiled through one of our export media."
             , "It demonstrates several features that should be achieved in a "
             , " technically sound export media. "
-            , "Press '1', '2', or '3' to select a demo from here and 'q' to exit a demo."
+            , "Press 'w', 'e', or 'r' to select a demo from here and 'q' to exit a demo."
         ];
 
         scene.prims = [
@@ -76,9 +76,10 @@ class SelectionScreen implements Control<DemoSelect> {
     public function handle(e:Event):Void {
         switch(e) {
         case KbEvent(key, _): {
-            if (Type.enumEq(key, CharKey('1'))) selection = GraphicsSelect;
-            if (Type.enumEq(key, CharKey('2'))) selection = InputSelect;
-            if (Type.enumEq(key, CharKey('3'))) selection = PhysSelect;
+            trace(key);
+            if (Type.enumEq(key, CharKey('w'))) selection = GraphicsSelect;
+            if (Type.enumEq(key, CharKey('e'))) selection = InputSelect;
+            if (Type.enumEq(key, CharKey('r'))) selection = PhysSelect;
         }
         default: {}
         } 

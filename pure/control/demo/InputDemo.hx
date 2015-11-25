@@ -61,7 +61,7 @@ class InputDemo implements Control<DemoSelect> {
     }
 
     public function profiling(d:Profile) {
-        # trace(d.print());
+        trace(d.print());
     }
 
     private function handleKb(key, state):Void {
