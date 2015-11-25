@@ -53,7 +53,7 @@ class KhaFrame implements Frame {
     }
 
     public function pushTransform(t:Transform) {
-        trans.push(t.multmat(trans[trans.length - 1]));
+        trans.push(trans[trans.length - 1].multmat(t));
         g.transformation = matrixFromTrans(trans[trans.length - 1]);
         prims++;
     }

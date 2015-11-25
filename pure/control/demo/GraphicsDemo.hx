@@ -77,13 +77,16 @@ class GraphicsDemo implements Control<DemoSelect> {
     }
 
     public function render(f:Frame, delta:Float) {
-        renderFront(f, delta);
-
         f.color(255, 255, 255, 255);
         f.image(new Vector(0, 0), "title");
         f.color(0, 0, 0, 255);
         f.font("Arial", 14);
-        f.text(new Vector(500, 500), LeftText, "this text isn't part of the image");
+        f.text(
+            new Vector(500, 500)
+            , LeftText
+            , "this text isn't part of the image");
+
+        renderFront(f, delta);
     }
 
     public function handle(e:Event):Void {

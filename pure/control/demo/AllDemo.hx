@@ -72,7 +72,6 @@ class SelectionScreen implements Control<DemoSelect> {
     public function handle(e:Event):Void {
         switch(e) {
         case KbEvent(key, _): {
-            trace(key);
             if (Type.enumEq(key, CharKey('w'))) selection = GraphicsSelect;
             if (Type.enumEq(key, CharKey('e'))) selection = InputSelect;
             if (Type.enumEq(key, CharKey('r'))) selection = PhysSelect;
