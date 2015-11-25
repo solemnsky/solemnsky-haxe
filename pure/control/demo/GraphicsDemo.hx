@@ -2,7 +2,7 @@ package control.demo;
 
 import control.Control;
 import control.Event;
-import control.Scene;
+import control.Frame;
 import util.Vector;
 import util.Transform;
 
@@ -26,84 +26,65 @@ class GraphicsDemo implements Control<DemoSelect> {
         time += delta;
     }
 
-    private function renderElem(centerPos:Vector):Scene {
-        var scene = new Scene();
+    private function renderElem(centerPos:Vector, f:Frame) {
+        f.pushTransform(Transform.identity()
+            .multmat(Transform.translation(centerPos.x, centerPos.y))
+            .multmat(Transform.rotation(time / 1000))
+        );
+
         var pos = new Vector(0, 0);
         var offset = new Vector(27, 0);
 
-        scene.prims = 
-            [ SetColor(0, 255, 0, 255)
-            , DrawCircle(pos, 20)
-            , DrawCircle(pos.add(offset), 7)
-            ];
-        scene.trans = Transform.identity()
-            .multmat(Transform.translation(centerPos.x, centerPos.y))
-            .multmat(Transform.rotation(time / 1000))
-            ;
-        return scene;
+        f.color(0, 255, 0, 255)
+        f.circle(pos, 20)
+        f.circle(pos.add(offset), 7)
+
+        f.popTransform();
     }
 
-    public function renderFront(delta:Float):Scene {
-        var scene = new Scene();
+    public function renderFront(delta:Float, f:Frame) {
+        f.pushTransform(Transform.identity()
+            .multmat(Transform.translation(x, y))
+            .multmat(Transform.rotation(-time / 1200))
+        );
 
         var offset  = new Vector(40, -40);
         var offset2 = new Vector(40, 40);
 
         var pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            scene.children.push(renderElem(pos));
-            pos = pos.add(offset);
-        }
+            renderElem(pos, f); pos = pos.add(offset); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            scene.children.push(renderElem(pos));
-            pos = pos.add(offset2);
-        }
+            renderElem(pos, f); pos = pos.add(offset2); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            scene.children.push(renderElem(pos));
-            pos = pos.sub(offset2);
-        }
+            renderElem(pos, f); pos = pos.sub(offset2); }
 
         pos = new Vector(0, 0);
         for (i in 1 ... 20) {
-            scene.children.push(renderElem(pos));
-            pos = pos.sub(offset);
-        }
+            renderElem(pos, f); pos = pos.sub(offset); }
 
-        scene.prims = [
-            SetColor(0, 0, 0, 100)
-            , DrawRect(new Vector(0, 0), new Vector(200, 200))
-            , DrawRect(new Vector(0, 0), new Vector(-200, -200))
-            , SetColor(0, 0, 0, 200)
-            , DrawRect(new Vector(0, 0), new Vector(200, -200))
-            , DrawRect(new Vector(0, 0), new Vector(-200, 200))
-        ];
+        f.color(0, 0, 0, 100);
+        f.rect(new Vector(0, 0), new Vector(200, 200));
+        f.rect(new Vector(0, 0), new Vector(-200, -200));
+        f.color(0, 0, 0, 200);
+        f.rect(new Vector(0, 0), new Vector(200, -200));
+        f.rect(new Vector(0, 0), new Vector(-200, 200));
 
-        scene.trans = Transform.identity()
-            .multmat(Transform.translation(x, y))
-            .multmat(Transform.rotation(-time / 1200))
-            ;
-        return scene;
+        f.popTransform();
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
+    public function render(delta:Float, f:Frame) {
+        renderFront(delta, f);
 
-        scene.children = [renderFront(delta)];
-
-        scene.prims = [
-            SetColor(255, 255, 255, 255)
-            , DrawImage(new Vector(0, 0), "title")
-            , SetColor(0, 0, 0, 255)
-            , SetFont("Arial", 14)
-            , DrawText(new Vector(500, 500), LeftText, "this text isn't part of the image")
-            // , DrawRect(new Vector(0, 0), new Vector(1600, 900))
-        ];
-
-        return scene;
+        f.color(255, 255, 255, 255);
+        f.image(new Vector(0, 0), "title");
+        f.color(0, 0, 0, 255);
+        f.font("Arial", 14);
+        f.text(new Vector(500, 500), LeftText, "this text isn't part of the image");
     }
 
     public function handle(e:Event):Void {

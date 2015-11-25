@@ -5,7 +5,7 @@ import control.Control;
 import control.Event;
 import control.Noise;
 import control.Profile;
-import control.Scene;
+import control.Frame;
 import util.Transform;
 import solemnsky.engine.Graphics;
 import solemnsky.tutorial.engine.TutPlayer;
@@ -39,7 +39,7 @@ class StartScreen implements Control<TutStep> {
         }
     }
 
-    private function renderPlayerFade(delta:Float):Scene {
+    private function renderPlayerFade(delta:Float, f:Frame) {
         var scene = new Scene();
 
         if (pressed) {

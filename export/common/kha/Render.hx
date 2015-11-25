@@ -1,6 +1,6 @@
 package;
 
-import control.Scene;
+import control.Frame;
 import kha.Color;
 import kha.FontStyle;
 import kha.Loader;
@@ -13,106 +13,100 @@ using kha.graphics2.GraphicsExtension;
  * Scene implementation for the kha web export.
  */
 
-class Render {
-    private static function renderPrim(
-        gr:Graphics
-        ,prim:DrawPrim
-        ,parentAlpha:Float 
-    ){
-        switch (prim) {
-            // setting state
-            case SetColor(r, g, b, a): {
-                gr.color = Color.fromBytes(r, g, b, 
-                    Math.round(a * parentAlpha));
-            }
+class KhaFrame implements Frame {
+    private var g:Graphics;
+    public var prims:Int = 0;
 
-            case SetAlpha(a): {
-                gr.opacity = a * parentAlpha;
-            }
-
-            case SetFont(name, size): {
-                gr.font = Loader.the.loadFont(
-                    name, new FontStyle(false, false, false), size);
-            }
-
-            // drawing primitives
-            case DrawCircle(pos, radius): {
-                gr.fillCircle(pos.x, pos.y, radius);
-            }
-
-            case DrawRect(topLeft, bottomRight): {
-                var width  = bottomRight.x - topLeft.x; 
-                var height = bottomRight.y - topLeft.y;
-                // var center = 
-                //     { x: (bottomRight.x + topLeft.x) / 2
-                //     , y: (bottomRight.y + topLeft.y) / 2 }
-                gr.fillRect(topLeft.x, topLeft.y, width, height);
-            }
-
-            case DrawText(pos, align, text): {
-                var xPos:Float = pos.x;
-                var textWidth:Float;
-                switch (align) {
-                    case CenterText: {
-                        textWidth = gr.font.stringWidth(text);
-                        xPos -= textWidth / 2;
-                    }
-                    case RightText: {
-                        textWidth = gr.font.stringWidth(text);
-                        xPos += textWidth;
-                    }
-                    default: {}
-                }
-                gr.drawString(text, xPos, pos.y);
-            }
-
-            // images
-            case DrawImage(pos, image): {
-                var image = Loader.the.getImage(image);
-                gr.drawImage(image, pos.x, pos.y);
-            }
-
-            // images
-            case DrawImageCrop(pos, imgPos, cropDims, image): {
-                var image = Loader.the.getImage(image);
-                gr.drawSubImage(
-                    image
-                    , pos.x, pos.y
-                    , imgPos.x, imgPos.y 
-                    , cropDims.x, cropDims.y );
-            }
-        }
+    public function new(g:Graphics) {
+        this.g = g;
     }
 
-    public static function renderNoInit(
-        pTrans:Transform // parent
-        ,pOpacity:Float // parent
-        ,g:Graphics
-        ,scene:Scene
-    ):Int {
-        var primCnt = scene.prims.length;
+    /*************************************************************************/
+    /* setting drawing attributes
+    /*************************************************************************/
 
-        var resultTrans = pTrans.multmat(scene.trans);
-        var resultOpacity = pOpacity * scene.alpha;
-
-        g.transformation = matrixFromTrans(resultTrans);
-        g.opacity = resultOpacity;
-
-        for (prim in scene.prims){
-            renderPrim(g, prim, resultOpacity);
-        }
-        for (child in scene.children){
-            primCnt += renderNoInit(resultTrans, resultOpacity, g, child);
-        }
-        
-        return primCnt;
+    public function color(r:Int, g:Int, b:Int, a:Int) {
+        g.color = Color.fromBytes(r, g, b, a); prims++;
     }
 
-    public static function render(g:Graphics, scene:Scene):Int {
-        g.begin(true, 0xffffff);
-        var prims = renderNoInit(Transform.identity(), 1, g, scene);
-        g.end();
-        return prims;
+    public function font(name:String, size:Int) {
+        g.font = Loader.the.loadFont(
+            name, new FontStyle(false, false, false), size);
+        prims++;
+    }
+
+    public function pushAlpha(a:Int) {
+        g.pushOpacity(a);
+        prims++;
+    }
+
+    public function popAlpha() {
+        g.popOpacity(); prims++;
+    }
+
+    public function pushTransform(t:Transform) {
+        g.pushTransformation(matrixFromTrans(t)); prims++;
+    }
+
+    public function popTransform() {
+        g.popTransformation(); prims++;
+    }
+
+    /*************************************************************************/
+    /* drawing stuff
+    /*************************************************************************/
+
+    public function circle(c:Vector, r:Float) {
+        gr.fillCircle(pos.x, pos.y, radius); prims++;
+    }
+
+    public function rect(tl:Vector, br:Vector) {
+        var width  = bottomRight.x - topLeft.x; 
+        var height = bottomRight.y - topLeft.y;
+        gr.fillRect(topLeft.x, topLeft.y, width, height);
+        prims++;
+    }
+
+    public function text(p:Vector, a:TextAlign, text:String) {
+        var xPos:Float = pos.x;
+        var textWidth:Float;
+
+        switch (align) {
+            case CenterText: {
+                textwidth = gr.font.stringwidth(text);
+                xPos -= textWidth / 2;
+            }
+            case RightText: {
+                textWidth = gr.font.stringWidth(text);
+                xPos += textWidth;
+            }
+            default: {}
+        }
+
+        gr.drawString(text, xPos, pos.y); prims++;
+    }
+
+    /*************************************************************************/
+    /* drawing images
+    /*************************************************************************/
+
+    public function image(pos:Vector, name:String) {
+        var image = Loader.the.getImage(image);
+        gr.drawImage(image, pos.x, pos.y); prims++;
+    }
+
+    public function imageCrop(
+        pos:Vector, imgPos:Vector
+        , cropDims:Vector, name:String
+    ) {
+        var image = Loader.the.getImage(image);
+        gr.drawSubImage(
+            image
+            , pos.x, pos.y
+            , imgPos.x, imgPos.y 
+            , cropDims.x, cropDims.y );   
+
+        prims++;
     }
 
     private static function matrixFromTrans(trans:Transform
@@ -122,5 +116,17 @@ class Render {
             , trans._01, trans._11, trans._21
             , trans._02, trans._12, trans._22
         );
+
+        prims++;
+    }
+}
+
+class Render {
+    public static function render(g:Graphics, f:Frame->Void):Int {
+        var frame = new KhaFrame(g);
+        g.begin(true, 0xffffff);
+        f(new KhaFrame(g));
+        g.end();
+        return frame.prims;
     }
 }

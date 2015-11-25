@@ -3,7 +3,7 @@ package control.demo;
 import util.Vector;
 import util.Transform;
 import control.Control;
-import control.Scene;
+import control.Frame;
 import control.Combinator;
 import control.Key;
 

@@ -282,15 +282,14 @@ class Manager extends Game {
     /**
      * called on a render
      */ 
-    private function controlRender(frame: Framebuffer, deltaRaw:Float):Void {
-        bufferStart = Timer.stamp(); // BEGIN BUFFER
-        var delta = deltaRaw * 1000;
-        var buffer = ctrl.render(delta); // buffer == scene graph
-        var now = Timer.stamp();
-        pushProfile(now - bufferStart, bufferOn); // END BUFFER
-
+    private function controlRender(
+        frame: Framebuffer
+        , deltaRaw:Float
+    ):Void {
         renderStart = now; // BEGIN RENDER
-        var prims = Render.render(g, buffer); // render to backbuffer
+        var prims = Render.render(g, 
+            function(f) ctrl.render(delta, f)); 
+            // render to backbuffer
         startRender(frame);
         Scaler.scale(backbuffer, frame, Sys.screenRotation);
         endRender(frame);

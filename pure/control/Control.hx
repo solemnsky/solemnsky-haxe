@@ -41,8 +41,7 @@ interface Control<T> {
      * since the last render. Only called when necessary, should not do
      * critical logic or simulation.
      */
-    public function render(delta:Float):Scene;
-
+    public function render(delta:Float, f:Frame):Void;
 
     /**
      * Accept some profiling data.
