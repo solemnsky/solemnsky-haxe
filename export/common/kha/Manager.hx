@@ -70,7 +70,6 @@ class Manager extends Game {
     /**
      * profiles
      */ 
-    private var bufferOn:Array<Int> = [];
     private var renderOn:Array<Int> = [];
     private var renderOff:Array<Int> = [];
     private var primCount:Array<Int> = [];
@@ -155,8 +154,7 @@ class Manager extends Game {
         if (profileTicker > profileUpdate) {
             profileTicker = 0;
             ctrl.profiling(new Profile(
-                bufferOn
-                , renderOn
+                renderOn
                 , renderOff
                 , primCount
                 , tickOn

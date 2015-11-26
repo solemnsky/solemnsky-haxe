@@ -17,7 +17,6 @@ typedef SampleData = {
 }
 
 class Profile {
-    public var bufferOn:SampleData;
     public var renderOn:SampleData;
     public var renderOff:SampleData;
     public var primCount:SampleData;
@@ -42,13 +41,11 @@ class Profile {
         }
     }
 
-    public function new(bufferOn:Array<Int>
-                       ,renderOn:Array<Int>
+    public function new(renderOn:Array<Int>
                        ,renderOff:Array<Int>
                        ,primCount:Array<Int>
                        ,tickOn:Array<Int>
                        ,tickOff:Array<Int>):Void {
-        this.bufferOn  = dataFromArray(bufferOn);
         this.renderOn  = dataFromArray(renderOn); 
         this.renderOff = dataFromArray(renderOff);
         this.primCount = dataFromArray(primCount);
@@ -66,8 +63,6 @@ class Profile {
 
     public function print():String {
         return ''
-            + 'buff:'
-            + printInterval(bufferOn) + '/'
             + 'rndr:'
             + printInterval(renderOn) + '/'
             + 'rslp:'

@@ -123,24 +123,21 @@ class Phase1 implements Control<TutStep> {
             , pos.add(dim.mult(0.5)));
     }
 
-    public function render(f:Fame, delta:Float) {
-        TutGraphics.renderGame(
-            cont
+    public function render(f:Frame, delta:Float) {
+        TutGraphics.renderGame(f
+            , cont
             , renderGameLayer
-            , delta, f);
+            , delta);
 
         if (!endReady) {
-            TutGraphics.renderTutText(
+            TutGraphics.renderTutText(f,
                 objectives[curObjective].helpText
-                , f
             );
         } else {
-            scene.children.push(TutGraphics.renderTutText(
+            TutGraphics.renderTutText(f, 
                 "You're a capable pilot. Press f to continue."
-            ));
+            );
         }
-
-        return scene;
     }
 
     public function profiling(profile:Profile):Void {

@@ -3,7 +3,7 @@ package solemnsky.core;
 import util.Pack;
 import haxe.io.Bytes;
 import control.Event;
-import control.Scene;
+import control.Frame;
 
 /**
  * solemnsky.core.Core: 
@@ -59,7 +59,7 @@ interface Core<M,S> {
     /* rendering
     /*************************************************************************/
     
-    public function render(sig:Int, delta:Float):Scene;
+    public function render(f:Frame, sig:Int, delta:Float):Void;
     public function isAlive(sig:Int):Bool;
 
     /*************************************************************************/

@@ -1,55 +1,63 @@
-package solemnsky.tutorial.control;
+package solemnsky.ui;
 
-import control.Frame;
-import control.Profile;
-import control.Event;
-import solemnsky.tutorial.engine.Synonyms;
-import solemnsky.tutorial.TutGraphics;
 import control.Control;
+import control.Event;
+import control.Noise;
+import control.Profile;
+import control.Frame;
+import solemnsky.tutorial.TutGraphics;
+import solemnsky.tutorial.control.Continuity;
+import solemnsky.tutorial.engine.Synonyms;
+import solemnsky.tutorial.engine.TutPlayer;
+import util.Vector;
+import util.Pack;
+import msgpack.MsgPack;
 
 /**
- * solemnsky.tutorial.control.Phase2:
- * Time for some fun with guns.
+ * solemnsky.ui.OfflinePackets:
+ * Testing out solemnsky.engine.Serial without networking.
  */
 
-class Phase2 implements Control<TutStep> {
+class OfflinePackets implements Control<Noise> {
     private var cont:Continuity;
     private var engine:MyEngine;
     private var player:MyPlayer;
 
-    public function new(cont:Continuity) {
-        this.cont = cont;
+    public function new() {
+        this.cont = new Continuity();
 
-        engine = cont.engine;
         player = cont.player;
+        engine = cont.engine;
 
+        player.spawn(new Vector(1600, 900), 0);
         player.simulating = true;
     }
 
     public function init(_) {}
 
+    /***************************************************************/
+    /* simulation logic
+    /***************************************************************/
+
     public function tick(delta:Float):Void {
         engine.tick(delta);
+        // trace(engine.getSnap());
+        var encoded = MsgPack.encode(engine.getSnap());
+        var decoded = MsgPack.decode(encoded);
+        trace(encoded);
+        trace(decoded.a[0].c);
     }
 
     /***************************************************************/
     /* rendering
     /***************************************************************/
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.children.push(TutGraphics.renderGame
-            ( cont
-            , new Scene()
-            , delta )
+    public function render(f:Frame, delta:Float):Void {
+        TutGraphics.renderGame(f
+            , cont
+            , function(f) {}
+            , delta
         );
-
-        scene.children.push(TutGraphics.renderTutText(
-            "('f' and 'd' fire weapons)"
-        ));
-
-        return scene;
     }
 
     public function profiling(profile:Profile):Void {
@@ -78,19 +86,13 @@ class Phase2 implements Control<TutStep> {
                     state.movement.right = kstate;
                 if (isKey(CharKey('k'))) 
                     state.movement.backward = kstate;
-
-                if (isKey(CharKey('f')))
-                    player.custom.primary(kstate);
-
-                if (isKey(CharKey('d')))
-                    player.custom.secondary(kstate);
             }
             default: {}
             }
         }
     }
 
-    public function conclude():Null<TutStep> {
+    public function conclude():Null<Noise> {
         return null;
     }
 }

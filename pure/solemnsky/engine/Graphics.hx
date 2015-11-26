@@ -26,39 +26,32 @@ class Graphics {
             .multmat(Transform.rotation(p.rot));
     }
 
-    public static function renderDebugPlayer<D,P>(
+    public static function renderDebugPlayer<D,P>(f:Frame,
         p:PlayerRep
-    ): Scene {
-        var scene = new Scene();
-
+    ) {
         if (p.alive) {
-            var bodyColor = SetColor(255, 255, 255, 255);
-            if (p.stalled) 
-                bodyColor = SetColor(200, 200, 200, 255);
+            f.pushTransform(playerTrans(p));
 
-            var headColor = SetColor(255, 0, 0, 255);
-            if (! p.afterburner)
-                headColor = SetColor(200, 0, 0, 255);
+            if (p.stalled) f.color(200, 200, 200, 255);
+            else f.color(255, 255, 255, 255);
 
-            scene.prims = 
-                [ bodyColor
-                , DrawRect(
-                    new Vector(-p.length / 2, -p.width / 2)
-                    , new Vector(p.length / 2, p.width / 2))
-                , headColor
-                , DrawRect(
-                    new Vector(p.length / 3, -p.width / 2)
-                    , new Vector(p.length / 2, p.width / 2)) ];
+            f.rect(
+                new Vector(-p.length / 2, -p.width / 2)
+                , new Vector(p.length / 2, p.width / 2));
 
-            scene.trans = playerTrans(p);
+            if (!p.afterburner) f.color(200, 0, 0, 255);
+            else f.color(255, 0, 0, 255);
+
+            f.rect(
+                new Vector(p.length / 3, -p.width / 2)
+                , new Vector(p.length / 2, p.width / 2));
+
+            f.popTransform();
         }
-        return scene;
     }
 
-    public static function playerSprite<D,P>(sheet:String, roll:Float):Scene {
+    public static function playerSprite<D,P>(f:Frame, sheet:String) {
         roll = Util.normAngle(roll);
-
-        var scene = new Scene();
 
         var spriteRoll:Float;
         if (roll > Math.PI) spriteRoll = (2*Math.PI - roll)
@@ -71,36 +64,31 @@ class Graphics {
             xindex = 1;
         };
 
-        scene.prims = [
-            SetColor(255, 255, 255, 255)
-            , DrawImageCrop(
-                new Vector(-100, -100)
-                , new Vector(200*xindex, 200*yindex)
-                , new Vector(200, 200)
-                , sheet
-            )
-        ];
+        if (roll > Math.PI) f.pushTransform(Transform.scale(1, -1));
 
-        if (roll > Math.PI) scene.trans = Transform.scale(1, -1);
+        f.color(255, 255, 255, 255);
+        f.imageCrop(
+            new Vector(-100, -100)
+            , new Vector(200*xindex, 200*yindex)
+            , new Vector(200, 200)
+            , sheet
+        );
 
-        return scene;
+        if (roll > Math.PI) f.popTransform();
     }
 
-    public static function renderPlayer<D,P>(
+    public static function renderPlayer<D,P>(f:Frame,
         p:PlayerRep
     ): Scene {
-        var scene = new Scene();
-
         if (p.alive) {
-            scene.children = [
-                playerSprite("player", p.roll)
-            ];
+            f.pushTransform(playerTrans(p)
+                .multmat(Transform.scale(-0.7, 0.7))
+            );
 
-            scene.trans = playerTrans(p)
-                .multmat(Transform.scale(-0.7, 0.7));
+            playerSprite(f, "player", p.roll);
+
+            f.popTransform();
         }
-
-        return scene;
     }
 
     /*************************************************************************/

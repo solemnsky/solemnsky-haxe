@@ -1,7 +1,7 @@
 package solemnsky.core.vanilla;
 
 import haxe.io.Bytes;
-import control.Scene;
+import control.Frame;
 import util.Vector;
 import util.Transform;
 import solemnsky.engine.Engine;
@@ -95,42 +95,32 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /**
      * Overlay making it very clear that this is a WIP.
      */
-    private function renderOverlay():Scene {
-        var scene = new Scene();
-        scene.prims = [
-            SetColor(0, 0, 0, 255)
-            , SetFont("Arial", 14)
-            , DrawText(new Vector(0, 0), CenterText
-                , "Development demo: enjoy at your own risk.")
-        ];
-        scene.trans = Transform.translation(800, 5)
-            .multmat(Transform.scale(3, 3));
-        return scene;
+    private function renderOverlay(f:Frame) {
+        f.pushTransform(Transform.translation(800, 5)
+            .multmat(Transform.scale(3, 3))
+        );
+
+        f.color(0, 0, 0, 255);
+        f.font("Arial", 14);
+        f.text(new Vector(0, 0), CenterText
+            , "Development demo: enjoy at your own risk.");
+
+        f.popTransform();
     }
 
-    public function renderGame(sig):Scene {
-        var scene = new Scene();
-
+    public function renderGame(f:Frame, sig:Int) {
         for (player in engine.players.iterator()) {
-            scene.children.push(Graphics.renderPlayer(player.rep));
+            Graphics.renderPlayer(f, player.rep);
         }
 
         var player = engine.players.get(sig);
         if (player != null)
             scene.trans = Graphics.getPlayerView(player);
-
-        return scene;         
     }
 
-    public function render(sig:Int, delta:Float):Scene {
-        var scene = new Scene();
-
-        scene.children = [
-            // renderOverlay()
-            renderGame(sig)
-        ];
-
-        return scene;
+    public function render(f:Frame, sig:Int, delta:Float) {
+        renderGame(f, sig);
+        renderOverlay(f);
     }
 
     public function isAlive(sig:Int):Bool {

@@ -60,7 +60,7 @@ class KhaFrame implements Frame {
 
     public function popTransform() {
         trans.pop();
-        g.transformation = matrixFromTrans(trans[0]);
+        g.transformation = matrixFromTrans(trans[trans.length - 1]);
         prims++;
     }
 

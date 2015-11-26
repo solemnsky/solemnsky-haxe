@@ -4,7 +4,7 @@ import control.Control;
 import control.Event;
 import control.Profile;
 import control.Noise;
-import control.Scene;
+import control.Frame;
 import solemnsky.core.CoreControl;
 import solemnsky.core.Core;
 import solemnsky.core.vanilla.Vanilla;
@@ -35,7 +35,7 @@ class DemoFromCore<M,S> implements Control<Noise> {
     /* control interface
     /*************************************************************************/
 
-    public function tick(delta:Float):Void {
+    public function tick(delta:Float) {
         var newNotes = core.tick(delta);
         for (note in newNotes) {
             trace(note);
@@ -43,8 +43,8 @@ class DemoFromCore<M,S> implements Control<Noise> {
         notes = notes.concat(newNotes);
     }
 
-    public function render(delta:Float):Scene {
-        return core.render(0, delta);
+    public function render(f:Frame, delta:Float) {
+        core.render(f, 0, delta);
     }
 
     public function profiling(profile:Profile):Void {
