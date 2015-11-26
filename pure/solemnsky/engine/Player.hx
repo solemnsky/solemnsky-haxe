@@ -98,7 +98,7 @@ class Player<A,P> {
     /* state and constructor
     /*************************************************************************/
 
-    public var id:Int;
+    public var sig:Int;
 
     public var engine:Engine<A,P>;
     public var plane:Null<Plane<A,P>>; 
@@ -110,9 +110,9 @@ class Player<A,P> {
     public var rep:PlayerRep;
 
     public function new(
-        engine:Engine<A,P>, id:Int, custom:A
+        engine:Engine<A,P>, sig:Int, custom:A
     ) {
-        this.id = id;
+        this.sig = sig;
         this.custom = custom;
         this.engine = engine;
         plane = null;
@@ -130,8 +130,8 @@ class Player<A,P> {
     public var simulating(default,set):Bool;   
 
     public function set_simulating(val:Bool):Bool {
+        simulating = val;
         if (plane != null) {
-            simulating = val;
             if (val) plane.body.space = engine.space;
             else plane.body.space = null;
         }
@@ -153,10 +153,8 @@ class Player<A,P> {
         pos:Vector, rot:Float
     ) {
         mod.onSpawn();
-
-        plane = new Plane(this, id, pos, rot);
-        set_simulating(simulating); 
-            // needs to be reset when the body is re-allocated
+        plane = new Plane(this, sig, pos, rot);
+        set_simulating(simulating);
     }
 
     /*************************************************************************/
@@ -182,7 +180,7 @@ class Player<A,P> {
 
     public function getSnap():PlayerSnap {
         return
-            { id: id
+            { sig: sig
             , custom: mod.getSnap()
             , state: if (plane != null) plane.state else null } 
     }    

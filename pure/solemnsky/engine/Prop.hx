@@ -16,7 +16,7 @@ class Prop<A,P> {
     /* state and constructor
     /*************************************************************************/
 
-    public var id:Int;
+    public var sig:Int;
     public var blame:Int;
 
     public var engine:Engine<A,P>;
@@ -25,11 +25,11 @@ class Prop<A,P> {
     public var custom:P;
     
     public function new(
-        engine:Engine<A,P>, id:Int, blame:Int
+        engine:Engine<A,P>, sig:Int, blame:Int
         , custom:P
     ) {
         this.engine = engine;
-        this.id = id;
+        this.sig = sig;
         this.blame = blame;
         this.custom = custom;
         
@@ -46,7 +46,7 @@ class Prop<A,P> {
     
     public function delete() {
         mod.onDelete();
-        engine.props.remove(id);
+        engine.props.remove(sig);
     }
 
     /*************************************************************************/

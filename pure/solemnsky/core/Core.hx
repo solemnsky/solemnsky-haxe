@@ -22,9 +22,8 @@ interface Core<M,S> {
     /*************************************************************************/
 
     /**
-     * 'metadata' is the data that is produced from a discontinuous 
-     * network delta; it contains everything a client that was
-     * not previously involved in the game needs to know about it
+     * The static data you need to know about the game that
+     * is not transmitted in snapshots.
      */
     public function loadMeta(meta:M):Void;
     public function describeMeta():M;

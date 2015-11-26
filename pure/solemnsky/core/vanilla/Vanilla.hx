@@ -72,8 +72,9 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     public function handle(sig:Int, control:CoreControl) {
         var player = engine.players.get(sig);
         if (player != null) {
-            if (Type.enumEq(control, CCSpawn)) 
+            if (Type.enumEq(control, CCSpawn)) {
                 player.spawn(new Vector(500, 500), 0);
+            }
             player.custom.handle(control);
         }
     }
@@ -83,7 +84,6 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     /************************************************************/
 
     public function tick(delta:Float):Array<String> {
-        trace('ticking');
         engine.tick(delta);
         return [];
     }

@@ -26,6 +26,7 @@ class Engine<A,P> {
     public var mod:EngineMod<A,P>;
 
     public var players:Map<Int, Player<A,P>>;
+    private var propSigAlloc:Int = 0;
     public var props:Map<Int, Prop<A,P>>;
     public var environment:Null<Environment>;
 
@@ -105,7 +106,7 @@ class Engine<A,P> {
     public function spawnProp(
         blame:Int, custom:P
     ):Prop<A,P> {
-        var sig = Util.allocNewId(props.keys());
+        var sig = propSigAlloc++;
         var prop = new Prop(this, sig, blame, custom);
         props.set(sig, prop);
         return prop;
@@ -131,14 +132,18 @@ class Engine<A,P> {
 
     private var packer = new SnapPack();
 
-    public function getSnap():Dynamic {
+    /**
+     * Take a snapshot of state and props of the players
+     * whose signatures satisfy the predicate.
+     */
+    public function getSnap(isSig:Array<Int>):Dynamic {
         var playerSnaps:Array<PlayerSnap> = [];
         var propSnaps:Array<PropSnap> = [];
 
-        for (player in players) 
-            playerSnaps.push(player.getSnap());
+        for (player in players) if (isSig(player.sig))
+                playerSnaps.push(player.getSnap());
 
-        for (prop in props)
+        for (prop in props) if (isSig(prop.owner))
             propSnaps.push(prop.getSnap());
 
         var snap = 
@@ -148,18 +153,24 @@ class Engine<A,P> {
         return packer.pack(snap);
     }
 
-    public function loadSnap(packed:Dynamic) {
+    /**
+     * Load a snapshot, modifying the states and props of the
+     * players whose signatures satisfy the predicate.
+     */
+    public function loadSnap(isSig:Int->Bool, packed:Dynamic) {
         var snap = packer.unpack(packed);
 
         for (snap in snap.propSnaps) {
             var prop = props.get(snap.id);
             if (prop != null)
-                prop.loadSnap(snap);
+                if (isSig(prop.owner)) prop.loadSnap(snap);
         }
 
         for (snap in snap.playerSnaps) {
-            var player = players.get(snap.id);
-            if (player != null) player.loadSnap(snap);
+            if (isSig(snap.sig)) {
+                var player = players.get(snap.sig);
+                if (player != null) player.loadSnap(snap);
+            }
         }
     }
 

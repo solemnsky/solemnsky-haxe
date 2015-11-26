@@ -20,6 +20,8 @@ class DemoFromCore<M,S> implements Control<Noise> {
     private var notes:Array<String> = [];
     private var myId:Int = 0;
 
+    private var snap:S;
+
     public function new(core:Core<M,S>) {
         this.core = core;
         core.loadMeta(core.createMeta());
@@ -67,6 +69,9 @@ class DemoFromCore<M,S> implements Control<Noise> {
             } else {
                 if (match(CharKey('f'))) control = CCSpawn;
             }
+
+            if (match(CharKey('y'))) snap = core.serverAssert();
+            if (match(CharKey('p'))) core.clientMerge(0, snap);
         }
         default: {}
         }

@@ -10,13 +10,13 @@ import util.Vector;
  */
 
 typedef PlayerSnap = {
-    id: Int
+    sig: Int
     , custom: Dynamic
     , state: Null<PlaneState>
 }
 
 typedef PropSnap = {
-    id: Int
+    sig: Int
     , custom: Dynamic
 }
 
@@ -52,14 +52,14 @@ class SnapPack {
 
         var playerSnap = 
             Pack.object(
-                [ {name:"id", rule:id}
+                [ {name:"sig", rule:id}
                 , {name:"custom", rule:id}
                 , {name:"state", rule:Pack.maybe(planeState)}
                 ]);
 
         var propSnap = 
             Pack.object(
-                [ {name:"id", rule:id}
+                [ {name:"sig", rule:id}
                 , {name:"custom", rule:id}
                 ]);
 
