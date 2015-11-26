@@ -109,13 +109,17 @@ class Vanilla implements Core<VanillaMeta, VanillaSnap> {
     }
 
     public function renderGame(f:Frame, sig:Int) {
+        var player = engine.players.get(sig);
+
+        if (player != null)
+            f.pushTransform(Graphics.getPlayerView(player));
+
         for (player in engine.players.iterator()) {
             Graphics.renderPlayer(f, player.rep);
         }
 
-        var player = engine.players.get(sig);
         if (player != null)
-            scene.trans = Graphics.getPlayerView(player);
+            f.popTransform();
     }
 
     public function render(f:Frame, sig:Int, delta:Float) {

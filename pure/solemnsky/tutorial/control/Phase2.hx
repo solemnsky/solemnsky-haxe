@@ -39,7 +39,7 @@ class Phase2 implements Control<TutStep> {
     public function render(f:Frame, delta:Float) {
         TutGraphics.renderGame(f
             , cont
-            , new Scene()
+            , function(f) {}
             , delta 
         );
 

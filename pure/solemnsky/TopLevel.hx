@@ -19,7 +19,7 @@ class TopLevel {
     }
 
     public static function khaNative() {
-        return AllDemo.run();
+        return Tutorial.run();
         // return Tutorial.run();
     }
 }

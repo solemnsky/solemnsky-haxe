@@ -126,7 +126,7 @@ class Phase1 implements Control<TutStep> {
     public function render(f:Frame, delta:Float) {
         TutGraphics.renderGame(f
             , cont
-            , renderGameLayer
+            , function(f) renderGameLayer(delta, f)
             , delta);
 
         if (!endReady) {

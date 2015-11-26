@@ -23,7 +23,7 @@ interface Frame {
     public function color(r:Int, g:Int, b:Int, a:Int):Void;
     public function font(name:String, size:Int):Void;
 
-    public function pushAlpha(a:Int):Void;
+    public function pushAlpha(a:Float):Void;
     public function popAlpha():Void;
     public function pushTransform(t:Transform):Void;
     public function popTransform():Void;

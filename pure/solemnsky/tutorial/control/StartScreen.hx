@@ -39,41 +39,33 @@ class StartScreen implements Control<TutStep> {
         }
     }
 
-    private function renderPlayerFade(delta:Float, f:Frame) {
-        var scene = new Scene();
-
+    private function renderPlayerFade(f:Frame, delta:Float) {
         if (pressed) {
-            scene.children.push(Graphics.renderPlayer(
-                cont.player.rep));
-            scene.alpha = animTime / animDur;
+            f.pushAlpha(animTime / animDur);
+            Graphics.renderPlayer(f, cont.player.rep);
+            f.popAlpha();
         }
-
-        return scene;
     }
 
-    public function renderInstructions():Scene {
-        var scene = new Scene();
-        scene.children.push(TutGraphics.renderTutText(
-            "press f to start the tutorial!"));
-        scene.alpha = 1 - (animTime / animDur);
-        return scene;
+    public function renderInstructions(f:Frame) {
+        f.pushAlpha(1 - (animTime / animDur));
+        TutGraphics.renderTutText(f,
+            "press f to start the tutorial!");
+        f.popAlpha();
     }
 
-    public function renderGame(delta:Float):Scene {
-        var scene = new Scene();
+    public function renderGame(f:Frame, delta:Float) {
+        f.pushTransform(Graphics.getPlayerView(cont.player));
 
-        scene.children.push(cont.background.render(delta));
-        scene.children.push(renderPlayerFade(delta));
-        scene.trans = Graphics.getPlayerView(cont.player);
+        cont.background.render(f, delta);
+        renderPlayerFade(f, delta);
 
-        return scene;
+        f.popTransform();
     }
 
-    public function render(delta:Float):Scene {
-        var scene = new Scene();
-        scene.children.push(renderGame(delta));
-        scene.children.push(renderInstructions());
-        return scene;
+    public function render(f:Frame, delta:Float) {
+        renderGame(f, delta);
+        renderInstructions(f);
     }
 
     public function profiling(data:Profile):Void {

@@ -41,7 +41,7 @@ class KhaFrame implements Frame {
         prims++;
     }
 
-    public function pushAlpha(a:Int) {
+    public function pushAlpha(a:Float) {
         alpha.push(a*alpha[alpha.length - 1]);
         g.opacity = alpha[alpha.length - 1];
         prims++;

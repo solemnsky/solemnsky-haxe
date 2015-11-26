@@ -1,6 +1,6 @@
 package solemnsky.tutorial;
 
-import control.Scene;
+import control.Frame;
 import util.Transform;
 import util.Vector;
 
@@ -22,16 +22,13 @@ class TutBackground {
         dims = new Vector(x, y);
     } 
 
-    public function render(delta:Float) {
-        var scene = new Scene();
+    public function render(f:Frame, delta:Float) {
+        f.pushTransform(
+            Transform.scale(dims.x / 1600, dims.y / 900));
 
-        scene.prims = [
-            SetColor(20, 20, 50, 255)
-            , DrawImage(new Vector(0, 0), "title")
-        ];
+        f.color(20, 20, 50, 255);
+        f.image(new Vector(0, 0), "title");
 
-        scene.trans = Transform.scale(dims.x / 1600, dims.y / 900);
-
-        return scene;
+        f.popTransform();
     }
 }

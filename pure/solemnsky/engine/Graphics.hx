@@ -50,7 +50,10 @@ class Graphics {
         }
     }
 
-    public static function playerSprite<D,P>(f:Frame, sheet:String) {
+    public static function playerSprite<D,P>(f:Frame
+        , sheet:String
+        , roll:Float
+    ) {
         roll = Util.normAngle(roll);
 
         var spriteRoll:Float;
@@ -79,7 +82,7 @@ class Graphics {
 
     public static function renderPlayer<D,P>(f:Frame,
         p:PlayerRep
-    ): Scene {
+    ) {
         if (p.alive) {
             f.pushTransform(playerTrans(p)
                 .multmat(Transform.scale(-0.7, 0.7))
