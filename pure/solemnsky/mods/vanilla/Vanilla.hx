@@ -17,7 +17,7 @@ import util.Pack;
  * Vanilla core object.
  */
 
-class Vanilla implements Core<VanillaMeta, VanillaSnap> {
+class Vanilla implements EngineMod<VanillaWorld,VanillaPlayer> {
 
     public var modeId = "vanilla alpha";
 

@@ -6,7 +6,14 @@ package solemnsky.engine.mod;
  * functionality.
  */
 
-class EngineMod<A,P> {
+class EngineMod<W,P> {
+    /**************************************************************/
+    /* initWorld
+    /**************************************************************/
+
+    public function initWorld():W return null
+
+
     /**************************************************************/
     /* misc variables and constructor
     /**************************************************************/
@@ -25,21 +32,17 @@ class EngineMod<A,P> {
     /**************************************************************/
 
     public function playerMod(
-        player:Player<A,P>
-    ):PlayerMod<A,P> {
-        return null;
-    }
+        player:Player<W,P>
+    ):PlayerMod<W,P> return null;
 
     public function propMod(
-        prop:Prop<A,P>
-    ):PropMod<A,P> {
-        return null;
-    }
+        prop:Prop<W,P>
+    ):PropMod<W,P> return null;
 
     /**************************************************************/
     /* callbacks
     /**************************************************************/
 
-    // maybe eventually?
-    // props and players have callbacks as well...
+
+    public function tick(delta):Void {}
 }
