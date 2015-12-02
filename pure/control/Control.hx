@@ -52,7 +52,6 @@ interface Control<T> {
      * Accept an event.
      */
      public function handle(e:Event):Void;
-         
 
     /**
      * Potentially conclude the control by returning a T instead of a null.

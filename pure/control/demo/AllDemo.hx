@@ -18,8 +18,17 @@ import control.Key;
  */
 class SelectionScreen implements Control<DemoSelect> {
     private var selection:Null<DemoSelect> = null;
+    private var text:Array<String>;
 
     public function new() {
+        text = [
+            "Welcome to the solemnsky control technical demo."
+            , "What you are seeing is the the control object control.AllDemo.run()"
+            , "compiled through one of our export media."
+            , "It demonstrates several features that should be achieved in a "
+            , " technically sound export media. "
+            , "Press 'w', 'e', or 'r' to select a demo from here and 'q' to exit a demo."
+        ];
     }
 
     public function init(_) {}
@@ -30,15 +39,13 @@ class SelectionScreen implements Control<DemoSelect> {
     /* rendering
     /*************************************************************************/
 
-    private static function renderText(f:Frame){
-        var text = [
-            "Welcome to the solemnsky control technical demo."
-            , "What you are seeing is the the control object control.AllDemo.run()"
-            , "compiled through one of our export media."
-            , "It demonstrates several features that should be achieved in a "
-            , " technically sound export media. "
-            , "Press 'w', 'e', or 'r' to select a demo from here and 'q' to exit a demo."
-        ];
+    private var fontSet = false;
+
+    private function renderText(f:Frame){
+        if (!fontSet) {
+            f.font("Arial", 14);
+            fontSet = true;
+        }
 
         f.pushTransform(
             Transform.translation(0, 5)
@@ -46,13 +53,13 @@ class SelectionScreen implements Control<DemoSelect> {
         );
 
         f.color(0, 0, 0, 255);
-        f.font("Arial", 14);
         f.text(new Vector(800 / 3, 0), CenterText, text[0]);
-        f.text(new Vector(0, 25), LeftText, text[1]);
-        f.text(new Vector(0, 40), LeftText, text[2]);
-        f.text(new Vector(0, 65), LeftText, text[3]);
-        f.text(new Vector(0, 80), LeftText, text[4]);
-        f.text(new Vector(800 / 3, 105), CenterText, text[5]);
+        // f.text(new Vector(800 / 3, 0), CenterText, text[0]);
+        // f.text(new Vector(0, 25), LeftText, text[1]);
+        // f.text(new Vector(0, 40), LeftText, text[2]);
+        // f.text(new Vector(0, 65), LeftText, text[3]);
+        // f.text(new Vector(0, 80), LeftText, text[4]);
+        // f.text(new Vector(800 / 3, 105), CenterText, text[5]);
 
         f.popTransform();
     }

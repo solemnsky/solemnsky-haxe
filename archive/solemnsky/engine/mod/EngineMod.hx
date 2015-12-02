@@ -13,7 +13,6 @@ class EngineMod<W,P> {
 
     public function initWorld():W return null
 
-
     /**************************************************************/
     /* misc variables and constructor
     /**************************************************************/
@@ -34,10 +33,6 @@ class EngineMod<W,P> {
     public function playerMod(
         player:Player<W,P>
     ):PlayerMod<W,P> return null;
-
-    public function propMod(
-        prop:Prop<W,P>
-    ):PropMod<W,P> return null;
 
     /**************************************************************/
     /* callbacks

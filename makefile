@@ -30,6 +30,12 @@ kha-native:
 	rm -rf dist/kha-native/ ; mkdir -p dist/kha-native/
 	cp -r export/kha-native/build/linux/* ./dist/kha-native/
 
+kha-native-clean:
+	### sometimes stuff happens and we need to clear the source files kha-native generates
+	cd export/kha-native && \
+	rm -rf build/
+
+
 simple-js:
 	### SIMPLE-JS ###
 	cd export/simple-js && \

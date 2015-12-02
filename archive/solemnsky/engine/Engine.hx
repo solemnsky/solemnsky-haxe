@@ -24,7 +24,6 @@ class Engine<W,P> {
     /*************************************************************************/
 
     public var mod:EngineMod<W,P>;
-
     public var world:W;
 
     public var players:Map<Int, Player<W,P>>;
@@ -34,6 +33,7 @@ class Engine<W,P> {
 
     public function new(mod:EngineMod<W,P>) {
         this.mod = mod;
+        world = mod.initWorld();
 
         players = new Map();
         props = new Map();
@@ -87,7 +87,7 @@ class Engine<W,P> {
     /*************************************************************************/
 
     public function addPlayer(
-        sig:Int, custom:A
+        sig:Int 
     ):Player<W,P> {
         var player = 
             new Player(this, sig, custom);

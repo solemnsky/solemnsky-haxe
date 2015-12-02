@@ -247,16 +247,18 @@ class Manager extends Game {
     /**
      * pushes a profile value to a profile
      */ 
-    private function 
-        pushProfile(point:Float, profile:Array<Int>):Void {
+    private function pushProfile(
+        point:Float, profile:Array<Int>
+    ):Void {
         profile.push(Math.round(point * 1000));
         if (profile.length > profileWindow) {
             profile.shift(); 
         } 
     }
 
-    private function 
-        pushProfileValue(point:Int, profile:Array<Int>):Void {
+    private function pushProfileValue(
+        point:Int, profile:Array<Int>
+    ):Void {
         profile.push(point);
         if (profile.length > profileWindow) {
             profile.shift(); 
