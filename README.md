@@ -1,5 +1,7 @@
 # SolemnSky
 
+***** THIS REPO IS ARCHIVED, SEE 'SOLEMNSKY' FOR THE NEW CODEBASE IN C++ *****
+
 [Our website](http://solemnsky.com) will be updated accordingly when certain milestones in project development are met. For now this repository is the primary hub of SolemnSky project activity.
 
 ## project design
